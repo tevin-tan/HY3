@@ -1,0 +1,5 @@
+/test/data.json
+
+*.pyc
+/test
+*.log
