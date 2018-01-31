@@ -6,16 +6,12 @@ import os
 from com import common
 from com import custom
 from com.login import Login
-from com.custom import Log
-
-import sys
-
-# reload(sys)
-# sys.setdefaultencoding("utf-8")
+from com.custom import Log, print_env
 
 
 class IntoCase(unittest.TestCase):
 	'''进件场景'''
+	
 	def setUp(self):
 		try:
 			import config
@@ -26,7 +22,7 @@ class IntoCase(unittest.TestCase):
 				self.da = json.load(f)
 				self.number = self.da["number"]
 				self.env = self.da["enviroment"]
-			
+			f.close()
 			filename = "data_cwd.json"
 			data, company = custom.enviroment_change(filename, self.number, self.env)
 			self.page = Login()
@@ -36,9 +32,10 @@ class IntoCase(unittest.TestCase):
 					data=data,
 					company=company
 					)
+			print_env(self.env, self.evt['company'])
 		except Exception as e:
 			print('load config error:', str(e))
-			raise
+			raise e
 	
 	def tearDown(self):
 		pass

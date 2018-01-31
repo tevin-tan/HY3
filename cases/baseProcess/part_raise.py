@@ -34,13 +34,12 @@ class PartRaise(unittest.TestCase):
 			self.company = company
 		except Exception as e:
 			self.log.error('load config error:', str(e))
-			raise
+			raise e
 	
 	def get_next_user(self, page, applyCode):
 		next_id = common.process_monitor(page, applyCode)
 		if next_id is None:
-			self.log.error("没有找到下一步处理人！")
-			raise
+			raise ValueError("没有找到下一步处理人")
 		else:
 			self.next_user_id = next_id
 			self.log.info("下一步处理人:" + next_id)
@@ -83,8 +82,7 @@ class PartRaise(unittest.TestCase):
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
 		else:
-			self.log.error("流程监控查询出错！")
-			raise
+			raise ValueError("流程监控查询出错！")
 		
 		# ---------------------------------------------------------------------------------------
 		# 	                        2. 风控审批流程
@@ -97,7 +95,7 @@ class PartRaise(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise ValueError("审批失败")
 		else:
 			self.log.info("分公司主管审批通过！")
 			self.get_next_user(page, applyCode)
@@ -109,7 +107,7 @@ class PartRaise(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司经理审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise ValueError("审批失败")
 		else:
 			self.log.info("分公司经理审批通过！")
 			self.get_next_user(page, applyCode)
@@ -121,7 +119,7 @@ class PartRaise(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'区域预复核审批通过', 0)
 		if not res:
 			self.log.error("区域预复核审批失败！")
-			raise
+			raise ValueError("区域预复核审批失败!")
 		else:
 			self.log.info("区域经理审批通过")
 			self.get_next_user(page, applyCode)
@@ -133,7 +131,7 @@ class PartRaise(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'审批经理审批通过', 0)
 		if not res:
 			self.log.error("审批经理审批失败！")
-			raise
+			raise ValueError("审批经理审批失败！")
 		else:
 			self.log.info("审批经理审批通过成功！")
 			self.get_next_user(page, applyCode)
@@ -186,7 +184,7 @@ class PartRaise(unittest.TestCase):
 			self.get_next_user(page, self.applyCode)
 		else:
 			self.log.error("合规审查失败")
-			raise
+			raise ValueError("合规审查失败")
 		
 		# -----------------------------------------------------------------------------
 		#                                权证办理
@@ -198,7 +196,7 @@ class PartRaise(unittest.TestCase):
 		res = common.process_monitor(page, self.applyCode)
 		if not res:
 			self.log.error("上传权证资料失败")
-			raise
+			raise ValueError("上传权证资料失败")
 		else:
 			self.log.info("权证办理完成")
 			self.next_user_id = res
@@ -211,8 +209,7 @@ class PartRaise(unittest.TestCase):
 		res = common.warrant_apply(page, self.applyCode)
 		if not res:
 			self.log.error("权证请款失败！")
-			raise
+			raise ValueError('权证请款失败！')
 		else:
 			self.log.info("完成权证请款")
 			self.get_next_user(page, self.applyCode)
-		

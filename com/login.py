@@ -22,14 +22,14 @@ class Login(object):
 		登录页面
 	'''
 	
-	def __init__(self, username='xn018991', env="SIT"):
+	def __init__(self, username='xn018170', env="SIT"):
 		'''
 		
 		:param username: 登录用户名
 		:param env: 环境选择 SIT/UAT
 		'''
 		
-		self.conf_path = "E:/HouseLoanAuto/config/env.json"
+		self.conf_path = "E:/HouseLoanAutoPy3/config/env.json"
 		with open(self.conf_path, 'r', encoding='utf-8') as f:
 			self.data = json.load(f)
 			self.number = self.data["number"]

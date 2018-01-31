@@ -1,17 +1,16 @@
 # coding:utf-8
 
-'''
-    过桥通录单流程
-'''
+# --------------------------------------------------
+# 过桥通录单流程
+# ---------------------------------------------------
 
-import random
 import unittest
 import os
 import json
 from com import common
 from com.login import Login
+from com import custom
 from com.custom import getName, Log, enviroment_change
-
 
 
 class GQT(unittest.TestCase):
@@ -69,9 +68,10 @@ class GQT(unittest.TestCase):
 			self.data = data
 			# 分公司选择
 			self.company = company
+			custom.print_env(self.env, self.company)
 		except Exception as e:
 			print('load config error:', str(e))
-			raise
+			raise e
 	
 	def tearDown(self):
 		self.page.quit()
@@ -145,7 +145,7 @@ class GQT(unittest.TestCase):
 		result = self.test_gqt_05_get_applyCode()[0]
 		next_id = common.process_monitor(self.page, self.applyCode)
 		if next_id:
-			self.log.info("下一个处理人:"+ next_id)
+			self.log.info("下一个处理人:" + next_id)
 			self.next_user_id = next_id
 		else:
 			raise ValueError("没有找到下一个处理人！")
@@ -168,10 +168,10 @@ class GQT(unittest.TestCase):
 		
 		if not res:
 			self.log.error("流程监控查询失败")
-			raise
+			raise AssertionError('流程监控查询失败')
 		else:
 			self.page.user_info['auth']["username"] = res  # 更新下一个登录人
-			print (self.page.user_info['auth']["username"])
+			print(self.page.user_info['auth']["username"])
 			self.next_user_id = res
 			self.log.info("完成流程监控查询")
 			return res, result[0]  # (下一个处理人ID, 申请件ID)
@@ -181,7 +181,7 @@ class GQT(unittest.TestCase):
 		
 		# 获取分公司登录ID
 		res = self.test_gqt_07_process_monitor()
-		print ("userId:" + res[0])
+		print("userId:" + res[0])
 		
 		# 下一个处理人重新登录
 		page = Login(res[0])
@@ -196,7 +196,7 @@ class GQT(unittest.TestCase):
 		next_id = common.process_monitor(page, self.applyCode)
 		if not res:
 			self.log.error("流程监控查询失败")
-			raise
+			raise AssertionError('流程监控查询失败')
 		else:
 			self.next_user_id = next_id
 			self.log.info("风控审批-分公司主管审批结束")
@@ -284,8 +284,6 @@ class GQT(unittest.TestCase):
 	def test_gqt_12_contract_signing(self):
 		'''签约'''
 		
-		i_frame = 'bTabs_tab_house_commonIndex_todoList'
-		
 		rec_bank_info = dict(
 				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
 				recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
@@ -357,7 +355,7 @@ class GQT(unittest.TestCase):
 		res = common.process_monitor(page, self.applyCode)
 		if not res:
 			self.log.error("上传权证资料失败")
-			raise
+			raise AssertionError('上传权证资料失败')
 		else:
 			self.log.info("权证办理完成")
 			self.next_user_id = res
@@ -376,7 +374,7 @@ class GQT(unittest.TestCase):
 		res = common.warrant_apply(page, self.applyCode)
 		if not res:
 			self.log.error("权证请款失败！")
-			raise
+			raise AssertionError('权证请款失败！')
 		else:
 			self.log.info("完成权证请款")
 		# page = Login('xn052298')
@@ -445,7 +443,7 @@ class GQT(unittest.TestCase):
 			self.log.info("财务流程-风控经理审批结束")
 		else:
 			self.log.error("Error: 风控经理审批出错！")
-			raise
+			raise AssertionError('风控经理审批出错')
 		# page = Login('xn003625')
 		# common.finace_approve(page, "CS20171215X14", remark)
 		# 查看下一步处理人
@@ -470,7 +468,7 @@ class GQT(unittest.TestCase):
 			self.log.info("财务流程-资金主管审批结束")
 		else:
 			self.log.error("Error-资金主管审批报错！")
-			raise
+			raise AssertionError('资金主管审批报错!')
 		# page = Login('xn037166')
 		# common.finace_approve(page, "CS20171215X09", remark)
 		
@@ -497,7 +495,7 @@ class GQT(unittest.TestCase):
 			self.log.info("财务流程-财务会计审批结束")
 		else:
 			self.log.error("Error-财务会计审批报错！")
-			raise
+			raise AssertionError('Error-财务会计审批报错！')
 		# page = Login('xn037166')
 		# common.finace_approve(page, "CS20171215X09", remark)
 		
@@ -524,7 +522,7 @@ class GQT(unittest.TestCase):
 			self.log.info("财务流程-财务经理审批结束")
 		else:
 			self.log.error("Error-财务经理审批出错！")
-			raise
+			raise AssertionError('Error-财务经理审批出错！')
 	
 	def test_gqt_22_funds_raise(self):
 		'''资金主管募资审批'''
@@ -539,7 +537,7 @@ class GQT(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error("Error-募资出错！")
-			raise
+			raise AssertionError('募资出错')
 
 
 if __name__ == '__main__':

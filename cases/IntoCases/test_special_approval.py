@@ -6,12 +6,11 @@
 '''
 
 import unittest
-import time
 import json
 import os
 from com import common
 from com.login import Login
-from com.custom import Log, enviroment_change
+from com.custom import Log, enviroment_change, print_env
 
 
 class SPA(unittest.TestCase):
@@ -28,7 +27,7 @@ class SPA(unittest.TestCase):
 				self.da = json.load(f)
 				self.number = self.da["number"]
 				self.env = self.da["enviroment"]
-			
+			f.close()
 			filename = "data_eyt.json"
 			data, company = enviroment_change(filename, self.number, self.env)
 			self.page = Login()
@@ -37,6 +36,7 @@ class SPA(unittest.TestCase):
 			self.data = data
 			# 分公司选择
 			self.company = company
+			print_env(self.env, self.company)
 		except Exception as e:
 			self.log.error('load config error:', str(e))
 			raise
@@ -45,7 +45,7 @@ class SPA(unittest.TestCase):
 		next_id = common.process_monitor(page, applyCode)
 		if next_id is None:
 			self.log.error("没有找到下一步处理人！")
-			raise
+			raise AssertionError('没有找到下一步处理人！')
 		else:
 			self.next_user_id = next_id
 			self.log.info("下一步处理人:" + next_id)
@@ -84,7 +84,7 @@ class SPA(unittest.TestCase):
 			self.log.info("申请件查询完成:" + self.applyCode)
 		else:
 			self.log.error("申请件查询失败！")
-			raise
+			raise AssertionError('申请件查询失败！')
 		
 		# 流程监控
 		result = common.process_monitor(self.page, applyCode)
@@ -94,7 +94,7 @@ class SPA(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		'''
 			------------------------------------------------------------
@@ -108,7 +108,7 @@ class SPA(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司主管审批通过！')
 			self.get_next_user(page, applyCode)
@@ -120,7 +120,7 @@ class SPA(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司经理回退到申请录入', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司经理审批通过！')
 			self.get_next_user(page, applyCode)
@@ -133,7 +133,7 @@ class SPA(unittest.TestCase):
 			res = common.approval_to_review(page, applyCode, u'区域审批经理审批', 0)
 			if not res:
 				self.log.error("区域审批经理审批失败")
-				raise
+				raise AssertionError('区域审批经理审批失败')
 			else:
 				self.log.info(u'区域审批经理审批成功!')
 				self.get_next_user(page, applyCode)
@@ -141,7 +141,7 @@ class SPA(unittest.TestCase):
 			r = common.special_approval(page, self.applyCode, u'区域特批')
 			if not r:
 				self.log.error('区域特批出错！')
-				raise
+				raise AssertionError('区域特批出错！')
 			else:
 				self.log.info('区域特批通过！')
 				page.driver.quit()
@@ -155,7 +155,7 @@ class SPA(unittest.TestCase):
 		r = common.special_approval(page, self.applyCode, u'高级经理特批')
 		if not r:
 			self.log.error('高级经理特批出错！')
-			raise
+			raise AssertionError('高级经理特批出错！')
 		else:
 			self.log.info('高级经理特批通过！')
 			self.get_next_user(page, self.applyCode)
@@ -171,7 +171,7 @@ class SPA(unittest.TestCase):
 		# r = common.approval_to_review(page, self.applyCode, u'区域审批经理审批', 0)
 		if not r:
 			self.log.error('风控总监特批出错！')
-			raise
+			raise AssertionError('风控总监特批出错！')
 		else:
 			self.log.info('风控总监特批通过！')
 			self.get_next_user(page, self.applyCode)

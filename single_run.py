@@ -1,10 +1,8 @@
 # coding:utf-8
-import os
 import time
 import unittest
-import sys
 # from HTMLTestRunner import HTMLTestRunner
-from HTMLTestRunnerCN import HTMLTestRunner
+from lib.HTMLTestRunnerCN import HTMLTestRunner
 from cases.baseProcess import test_suite_cwd
 # from cases.baseProcess import (
 # 	test_gqt_input_data,
@@ -21,7 +19,7 @@ if __name__ == "__main__":
 		# 定义报告存放路径以及格式
 		# local_dir = os.path.dirname(os.getcwd())
 		# local_dir = os.getcwd()
-		local_dir = "E:\HouseLoanAuto"
+		local_dir = "E:\HouseLoanAutoPy3"
 		print("local_dir: %s " % local_dir)
 		# path = local_dir + "\\report\\" + now + "-result.html"
 		path = local_dir + "\\report\\" + "index.html"
@@ -42,7 +40,7 @@ if __name__ == "__main__":
 	# suite.addTest(test_eyt_input_data.EYT('test_eyt_01_base_info'))
 	# suite.addTest(test_xhd_input_data.XHD('test_xhd_21_funds_raise'))
 	
-	suite.addTest(test_suite_cwd.CWD('test_cwd_11_manager_approval'))
+	suite.addTest(test_suite_cwd.CWD('test_cwd_01_base_info'))
 	
 	# suite.addTest(test_into_case.IntoCase('test_03_two_borrower'))
 	# suite.addTest(test_fallback.fallback('test_02_branch_manager_reject'))

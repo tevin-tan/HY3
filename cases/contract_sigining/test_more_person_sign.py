@@ -1,11 +1,11 @@
 # coding:utf-8
 
 import unittest
-import time
 import json
 import os
 from com import common
 from com.login import Login
+from com import custom
 from com.custom import Log, enviroment_change
 
 
@@ -18,11 +18,11 @@ class contractSign(unittest.TestCase):
 			rootdir = config.__path__[0]
 			config_env = os.path.join(rootdir, 'env.json')
 			print("config_env:" + config_env)
-			with open(config_env, 'r') as f:
+			with open(config_env, 'r', encoding='utf-8') as f:
 				self.da = json.load(f)
 				self.number = self.da["number"]
 				self.env = self.da["enviroment"]
-			
+			f.close()
 			filename = "data_cwd.json"
 			data, company = enviroment_change(filename, self.number, self.env)
 			self.page = Login()
@@ -32,15 +32,16 @@ class contractSign(unittest.TestCase):
 			self.data = data
 			# 分公司选择
 			self.company = company
+			custom.print_env(self.env, self.company)
 		except Exception as e:
 			self.log.error('load config error:', str(e))
-			raise
+			raise e
 	
 	def get_next_user(self, page, applyCode):
 		next_id = common.process_monitor(page, applyCode)
 		if next_id is None:
 			self.log.error("没有找到下一步处理人！")
-			raise
+			raise AssertionError('没有找到下一步处理人！')
 		else:
 			self.next_user_id = next_id
 			self.log.info("下一步处理人:" + next_id)
@@ -83,7 +84,7 @@ class contractSign(unittest.TestCase):
 			self.log.info("完成流程监控查询")
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		# ---------------------------------------------------------------------------------------
 		# 	                        2. 风控审批流程
@@ -96,7 +97,7 @@ class contractSign(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info("分公司主管审批通过！")
 			self.get_next_user(page, applyCode)
@@ -108,7 +109,7 @@ class contractSign(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司经理回退到申请录入', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info("分公司经理审批通过！")
 			self.get_next_user(page, applyCode)
@@ -120,7 +121,7 @@ class contractSign(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'区域预复核审批通过', 0)
 		if not res:
 			self.log.error("区域预复核审批失败！")
-			raise
+			raise AssertionError('区域预复核审批失败！')
 		else:
 			self.log.info("区域预复核审批通过")
 			self.get_next_user(page, applyCode)
@@ -132,7 +133,7 @@ class contractSign(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'审批经理审批通过', 0)
 		if not res:
 			self.log.error("审批经理审批失败！")
-			raise
+			raise AssertionError('审批经理审批失败!')
 		else:
 			self.log.info("审批经理审批通过成功！")
 			self.get_next_user(page, applyCode)
@@ -206,7 +207,7 @@ class contractSign(unittest.TestCase):
 			self.log.info("完成流程监控查询")
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		# ---------------------------------------------------------------------------------------
 		# 	                        2. 风控审批流程
@@ -219,7 +220,7 @@ class contractSign(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info("分公司主管审批通过！")
 			self.get_next_user(page, applyCode)
@@ -231,7 +232,7 @@ class contractSign(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司经理审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info("分公司经理审批通过！")
 			self.get_next_user(page, applyCode)
@@ -243,7 +244,7 @@ class contractSign(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'区域预复核审批通过', 0)
 		if not res:
 			self.log.error("区域预复核审批失败！")
-			raise
+			raise AssertionError('区域预复核审批失败！')
 		else:
 			self.log.info("区域经理审批通过")
 			self.get_next_user(page, applyCode)
@@ -255,7 +256,7 @@ class contractSign(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'审批经理审批通过', 0)
 		if not res:
 			self.log.error("审批经理审批失败！")
-			raise
+			raise AssertionError('审批经理审批失败！')
 		else:
 			self.log.info("审批经理审批通过成功！")
 			self.get_next_user(page, applyCode)
@@ -329,7 +330,7 @@ class contractSign(unittest.TestCase):
 			self.log.info("完成流程监控查询")
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		# ---------------------------------------------------------------------------------------
 		# 	                        2. 风控审批流程
@@ -342,7 +343,7 @@ class contractSign(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info("分公司主管审批通过")
 			self.get_next_user(page, applyCode)
@@ -354,7 +355,7 @@ class contractSign(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司经理审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info("分公司经理审批通过！")
 			self.get_next_user(page, applyCode)
@@ -366,7 +367,7 @@ class contractSign(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'区域预复核审批通过', 0)
 		if not res:
 			self.log.error("区域预复核审批失败！")
-			raise
+			raise AssertionError('区域预复核审批失败！')
 		else:
 			self.log.info("区域经理审批通过！")
 			self.get_next_user(page, applyCode)
@@ -378,7 +379,7 @@ class contractSign(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'审批经理审批通过', 0)
 		if not res:
 			self.log.error("审批经理审批失败！")
-			raise
+			raise AssertionError('审批经理审批失败！')
 		else:
 			self.log.info("高级审批经理审批成功！")
 			self.get_next_user(page, applyCode)
@@ -451,7 +452,7 @@ class contractSign(unittest.TestCase):
 			self.log.info("完成流程监控查询")
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		# ---------------------------------------------------------------------------------------
 		# 	                        2. 风控审批流程
@@ -464,7 +465,7 @@ class contractSign(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info("分公司主管审批通过")
 			self.get_next_user(page, applyCode)
@@ -476,7 +477,7 @@ class contractSign(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司经理审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info("分公司经理审批通过！")
 			self.get_next_user(page, applyCode)
@@ -488,7 +489,7 @@ class contractSign(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'区域预复核审批通过', 0)
 		if not res:
 			self.log.error("区域预复核审批失败！")
-			raise
+			raise AssertionError('区域预复核审批失败！')
 		else:
 			self.log.info("区域经理审批通过！")
 			self.get_next_user(page, applyCode)
@@ -500,7 +501,7 @@ class contractSign(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'审批经理审批通过', 0)
 		if not res:
 			self.log.error("审批经理审批失败！")
-			raise
+			raise AssertionError('审批经理审批失败！')
 		else:
 			self.log.info("高级审批经理审批成功！")
 			self.get_next_user(page, applyCode)
@@ -574,7 +575,7 @@ class contractSign(unittest.TestCase):
 			self.log.info("完成流程监控查询")
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		# ---------------------------------------------------------------------------------------
 		# 	                        2. 风控审批流程
@@ -587,7 +588,7 @@ class contractSign(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info("分公司主管审批通过")
 			self.get_next_user(page, applyCode)
@@ -599,7 +600,7 @@ class contractSign(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司经理审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info("分公司经理审批通过！")
 			self.get_next_user(page, applyCode)
@@ -611,7 +612,7 @@ class contractSign(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'区域预复核审批通过', 0)
 		if not res:
 			self.log.error("区域预复核审批失败！")
-			raise
+			raise AssertionError('区域预复核审批失败！')
 		else:
 			self.log.info("区域经理审批通过！")
 			self.get_next_user(page, applyCode)
@@ -623,7 +624,7 @@ class contractSign(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'审批经理审批通过', 0)
 		if not res:
 			self.log.error("审批经理审批失败！")
-			raise
+			raise AssertionError('审批经理审批失败！')
 		else:
 			self.log.info("高级审批经理审批成功！")
 			self.get_next_user(page, applyCode)

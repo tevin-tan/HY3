@@ -7,6 +7,16 @@ import json
 import os
 
 
+def print_env(env, company):
+	print('*' * 100)
+	print(' ' * 40 + '当前环境:' + env)
+	print(' ' * 40 + '当前公司:' + company['branchName'])
+	print(' ' * 40 + '风控专员:' + company['Commissioner']['user'])
+	print(' ' * 42 + '权证员:' + company['authority_member']['user'])
+	print(' ' * 40 + '业务助理:' + company['business_assistant']['user'])
+	print('*' * 100)
+
+
 def Log():
 	'''定义logger级别'''
 	
@@ -102,9 +112,9 @@ def get_current_function_name():
 
 
 def hello():
-	pwd = os.getcwdu()
+	pwd = os.getcwd()
 	father_path = os.path.abspath(os.path.dirname(pwd) + os.path.sep + ".")
-	with open(father_path + "/config/env.json", 'r') as f1:
+	with open(father_path + "/config/env.json", 'r', encoding='utf-8') as f1:
 		env = json.load(f1)
 		print(env)
 	

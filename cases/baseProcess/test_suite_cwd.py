@@ -5,6 +5,7 @@ import os
 from com import common
 from com.login import Login
 from com import custom
+import config
 
 
 class CWD(unittest.TestCase):
@@ -20,9 +21,9 @@ class CWD(unittest.TestCase):
 		# 环境初始化
 		# self._enviroment_change(0)
 		try:
-			import config
 			rootdir = config.__path__[0]
 			config_env = os.path.join(rootdir, 'env.json')
+			# print("root_dir:" + rootdir)
 			print("config_env:" + config_env)
 			with open(config_env, 'r', encoding='utf-8') as f:
 				self.fd = f
@@ -31,35 +32,37 @@ class CWD(unittest.TestCase):
 				self.env = self.da["enviroment"]
 			
 			f.close()
+			
 			filename = "data_cwd.json"
 			data, company = custom.enviroment_change(filename, self.number, self.env)
 			# 录入的源数据
 			self.data = data
 			# 分公司选择
 			self.company = company
+			custom.print_env(self.env, self.company)
 		except Exception as e:
 			print('load config error:', str(e))
 			raise ValueError("load config error")
 	
-	def _enviroment_change(self, i):
-		'''
-			环境切换
-		:param i:   分公司序号  "0" 广州， "1" 长沙
-		:return:
-		'''
-		# 导入数据
-		import config
-		rd = config.__path__[0]
-		config_env = os.path.join(rd, 'env.json')
-		data_config = os.path.join(rd, "data_cwd.json")
-		with open(data_config, 'r') as f:
-			self.data = json.load(f)
-			print(self.data['applyVo']['productName'])
-		
-		# 环境变量, 切换分公司
-		with open(config_env, 'r') as f1:
-			self.env = json.load(f1)
-			self.company = self.env["SIT"]["company"][i]
+	# def _enviroment_change(self, i):
+	# 	'''
+	# 		环境切换
+	# 	:param i:   分公司序号  "0" 广州， "1" 长沙
+	# 	:return:
+	# 	'''
+	# 	# 导入数据
+	# 	import config
+	# 	rd = config.__path__[0]
+	# 	config_env = os.path.join(rd, 'env.json')
+	# 	data_config = os.path.join(rd, "data_cwd.json")
+	# 	with open(data_config, 'r') as f:
+	# 		self.data = json.load(f)
+	# 		print(self.data['applyVo']['productName'])
+	#
+	# 	# 环境变量, 切换分公司
+	# 	with open(config_env, 'r') as f1:
+	# 		self.env = json.load(f1)
+	# 		self.company = self.env["SIT"]["company"][i]
 	
 	def tearDown(self):
 		self.fd.close()
@@ -84,7 +87,7 @@ class CWD(unittest.TestCase):
 				self.log.info("录入借款人信息结束")
 		except Exception as e:
 			self.log.error("Error:", e)
-			raise
+			raise e
 	
 	def test_cwd_03_Property_info(self):
 		'''物业信息录入'''
@@ -98,7 +101,7 @@ class CWD(unittest.TestCase):
 		if res:
 			self.log.info("录入物业信息结束")
 		else:
-			raise
+			raise AssertionError('录入物业信息出错！')
 	
 	def test_cwd_04_applydata(self):
 		'''申请件录入,提交'''
@@ -163,8 +166,9 @@ class CWD(unittest.TestCase):
 			raise ValueError("流程监控查询出错！")
 		else:
 			self.page.user_info['auth']["username"] = res  # 更新下一个登录人
-			print(self.page.user_info['auth']["username"])
+			# print(self.page.user_info['auth']["username"])
 			self.next_user_id = res
+			self.log.info("下一个处理人:" + self.next_user_id)
 			self.log.info("完成流程监控查询")
 		self.page.driver.quit()
 	

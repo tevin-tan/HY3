@@ -5,12 +5,11 @@
 	date: 2018-1-15
 '''
 import unittest
-import time
 import json
 import os
 from com import common
 from com.login import Login
-from com.custom import Log, enviroment_change
+from com.custom import Log, enviroment_change, print_env
 
 
 class fallback(unittest.TestCase):
@@ -26,7 +25,7 @@ class fallback(unittest.TestCase):
 				self.da = json.load(f)
 				self.number = self.da["number"]
 				self.env = self.da["enviroment"]
-			
+			f.close()
 			filename = "data_cwd.json"
 			data, company = enviroment_change(filename, self.number, self.env)
 			self.page = Login()
@@ -36,9 +35,10 @@ class fallback(unittest.TestCase):
 			self.data = data
 			# 分公司选择
 			self.company = company
+			print_env(self.env, self.company)
 		except Exception as e:
 			self.log.error('load config error:', str(e))
-			raise
+			raise e
 	
 	def tearDown(self):
 		pass
@@ -47,7 +47,7 @@ class fallback(unittest.TestCase):
 		next_id = common.process_monitor(page, applyCode)
 		if next_id is None:
 			self.log.error("没有找到下一步处理人！")
-			raise
+			raise AssertionError("没有找到下一步处理人！")
 		else:
 			self.next_user_id = next_id
 			self.log.info("下一步处理人:" + next_id)
@@ -88,7 +88,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		'''
 			2. 风控回退
@@ -141,7 +141,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		'''
 			------------------------------------------------------------
@@ -155,7 +155,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司主管审批通过!')
 			self.get_next_user(page, applyCode)
@@ -206,7 +206,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		'''
 			------------------------------------------------------------
@@ -220,7 +220,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司主管审批通过！')
 			self.get_next_user(page, applyCode)
@@ -232,7 +232,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司经理回退到申请录入', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司经理审批通过！')
 			self.get_next_user(page, applyCode)
@@ -283,7 +283,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		'''
 			------------------------------------------------------------
@@ -297,7 +297,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司主管审批通过！')
 			self.get_next_user(page, applyCode)
@@ -309,7 +309,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司经理审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司经理审批通过！')
 			self.get_next_user(page, applyCode)
@@ -321,7 +321,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'区域预复核审批通过', 0)
 		if not res:
 			self.log.error("区域预复核审批失败！")
-			raise
+			raise AssertionError('区域预复核审批失败！')
 		else:
 			self.log.info(u'区域预复核审批通过!')
 			self.get_next_user(page, applyCode)
@@ -333,7 +333,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'审批经理回退到申请录入成功', 1)
 		if not res:
 			self.log.error("审批经理回退失败！")
-			raise
+			raise AssertionError('审批经理回退失败！')
 		else:
 			self.log.info(u'审批经理回退到申请录入成功!')
 			self.get_next_user(page, applyCode)
@@ -375,7 +375,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		'''
 			------------------------------------------------------------
@@ -388,7 +388,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司主管审批通过！')
 			self.get_next_user(page, applyCode)
@@ -399,7 +399,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司经理审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司经理审批通过！')
 			self.get_next_user(page, applyCode)
@@ -410,7 +410,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'区域预复核审批通过', 0)
 		if not res:
 			self.log.error("区域预复核审批失败！")
-			raise
+			raise AssertionError('区域预复核审批失败！')
 		else:
 			self.log.info(u'区域预复核审批通过！')
 			self.get_next_user(page, applyCode)
@@ -421,7 +421,7 @@ class fallback(unittest.TestCase):
 		res = common.risk_approval_fallback(page, applyCode, option[0], u'回退到区域预复核')
 		if not res:
 			self.log.error("审批经理回退到区域预复核失败 ！")
-			raise
+			raise AssertionError('审批经理回退到区域预复核失败 ！')
 		else:
 			self.log.info(u'审批经理回退到区域预复核成功！')
 			self.get_next_user(page, applyCode)
@@ -432,7 +432,7 @@ class fallback(unittest.TestCase):
 		res = common.risk_approval_fallback(page, applyCode, option[1], u'回退到分公司经理')
 		if not res:
 			self.log.error("区域预复核回退到分公司经理失败 ！")
-			raise
+			raise AssertionError('区域预复核回退到分公司经理失败 ！')
 		else:
 			self.log.info(u'区域预复核回退到分公司经理成功！')
 			self.get_next_user(page, applyCode)
@@ -443,7 +443,7 @@ class fallback(unittest.TestCase):
 		res = common.risk_approval_fallback(page, applyCode, option[2], u'回退到分公司主管')
 		if not res:
 			self.log.error("分公司经理回退到分公司主管失败 ！")
-			raise
+			raise AssertionError('分公司经理回退到分公司主管失败 ！')
 		else:
 			self.log.info(u'区分公司经理回退到分公司主管成功！')
 			self.get_next_user(page, applyCode)
@@ -454,7 +454,7 @@ class fallback(unittest.TestCase):
 		res = common.risk_approval_fallback(page, applyCode, option[3], u'回退到申请录入')
 		if not res:
 			self.log.error("分公司主管回退到申请录入失败 ！")
-			raise
+			raise AssertionError('分公司主管回退到申请录入失败 ！')
 		else:
 			self.log.info(u'分公司主管回退到申请录入成功！')
 			self.get_next_user(page, applyCode)
@@ -494,7 +494,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		'''
 			2. 风控取消
@@ -506,7 +506,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'主管取消', 2)
 		if not res:
 			self.log.error("分公司主管取消失败")
-			raise
+			raise AssertionError('分公司主管取消失败')
 		else:
 			self.log.info(u'主管取消！')
 			self.get_next_user(page, applyCode)
@@ -548,7 +548,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		'''
 			------------------------------------------------------------
@@ -562,7 +562,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司主管审批通过!')
 			self.get_next_user(page, applyCode)
@@ -613,7 +613,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		'''
 			------------------------------------------------------------
@@ -627,7 +627,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司主管审批通过！')
 			self.get_next_user(page, applyCode, )
@@ -639,7 +639,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司经理审批通过!', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司经理审批通过！')
 			self.get_next_user(page, applyCode)
@@ -690,7 +690,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		'''
 			------------------------------------------------------------
@@ -704,7 +704,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司主管审批通过！')
 			self.get_next_user(page, applyCode)
@@ -716,7 +716,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司经理审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司经理审批通过！')
 			self.get_next_user(page, applyCode)
@@ -779,7 +779,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		'''
 			2. 风控拒绝
@@ -842,7 +842,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		# --------------------------------------------------------------
 		#               2. 风控拒绝
@@ -869,7 +869,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error(u'主管拒绝失败，复议出错！')
-			raise
+			raise AssertionError('主管拒绝失败，复议出错！')
 	
 	def test_01_branch_director_reject_fail(self):
 		'''主管拒绝,并复议不通过'''
@@ -905,7 +905,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		'''
 			2. 风控拒绝
@@ -917,7 +917,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'主管拒绝', 3)
 		if not res:
 			self.log.error("主管拒绝失败")
-			raise
+			raise AssertionError('主管拒绝失败，复议出错！')
 		else:
 			self.log.info(u'主管拒绝！')
 		page.driver.close()
@@ -1006,7 +1006,7 @@ class fallback(unittest.TestCase):
 			self.log.info(u'区域经理拒绝成功！')
 			self.get_next_user(page, self.applyCode)
 		
-		#  下一步处理人登录
+		# 下一步处理人登录
 		page = Login(self.next_user_id)
 		
 		# 高级经理拒绝
@@ -1158,7 +1158,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		'''
 			2. 风控拒绝
@@ -1197,7 +1197,7 @@ class fallback(unittest.TestCase):
 		else:
 			self.log.info(u'区域经理拒绝！')
 			self.get_next_user(page, applyCode)
-			
+		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
@@ -1256,7 +1256,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		'''
 			------------------------------------------------------------
@@ -1309,7 +1309,7 @@ class fallback(unittest.TestCase):
 		else:
 			self.log.info("高级经理拒绝拒绝成功！")
 			page.driver.quit()
-			
+		
 		# 高级审批经理登录
 		page = Login('xn003625')
 		
@@ -1357,7 +1357,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		'''
 			------------------------------------------------------------
@@ -1411,7 +1411,6 @@ class fallback(unittest.TestCase):
 			self.log.info(u'高级经理拒绝成功！')
 			page.driver.quit()
 		
-		
 		# 高级审批经理登录
 		page = Login('xn003625')
 		
@@ -1459,7 +1458,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		'''
 			------------------------------------------------------------
@@ -1560,7 +1559,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		# ------------------------------------------------------------
 		# 2. 风控审批拒绝
@@ -1659,7 +1658,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		'''
 			------------------------------------------------------------
@@ -1760,7 +1759,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
-			raise
+			raise AssertionError('流程监控查询出错！')
 		
 		'''
 			------------------------------------------------------------
@@ -1788,7 +1787,7 @@ class fallback(unittest.TestCase):
 			self.log.error("审批失败")
 			raise
 		else:
-			self.log.info( u'分公司经理审批通过！')
+			self.log.info(u'分公司经理审批通过！')
 			self.get_next_user(page, applyCode)
 		
 		# 下一个处理人重新登录
@@ -1801,7 +1800,7 @@ class fallback(unittest.TestCase):
 			raise
 		else:
 			self.log.info(u'区域预复核审批通过！')
-			self.get_next_user(page, applyCode )
+			self.get_next_user(page, applyCode)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
