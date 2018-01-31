@@ -12,7 +12,6 @@
 '''
 import time
 import json
-import os
 from selenium.common import exceptions as EC
 from com import common
 

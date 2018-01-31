@@ -77,7 +77,6 @@ def enviroment_change(filename, number=0, enviroment="SIT"):
 	'''
 		环境切换
 	:param enviroment: SIT/UAT
-	:param path:    "config/data_cwd.json"
 	:param number:  "0" 广州分公司; "1" 长沙分公司
 	:return:    录入的数据， 所选分公司
 	'''
