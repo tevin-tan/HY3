@@ -23,7 +23,7 @@ class SPA(unittest.TestCase):
 			rootdir = config.__path__[0]
 			config_env = os.path.join(rootdir, 'env.json')
 			self.log.info("config_env:" + config_env)
-			with open(config_env, 'r') as f:
+			with open(config_env, 'r', encoding='utf-8') as f:
 				self.da = json.load(f)
 				self.number = self.da["number"]
 				self.env = self.da["enviroment"]

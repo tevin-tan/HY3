@@ -105,6 +105,7 @@ import unittest
 from xml.sax import saxutils
 import sys
 
+
 # reload(sys)
 # sys.setdefaultencoding('utf-8')
 
@@ -578,7 +579,7 @@ class HTMLTestRunner(Template_mixin):
 		self.stopTime = datetime.datetime.now()
 		self.generateReport(test, result)
 		# print >> sys.stderr, '\nTime Elapsed: %s' % (self.stopTime - self.startTime)
-		print(sys.stderr, '\nTime Elapsed: %s' % (self.stopTime-self.startTime))
+		print(sys.stderr, '\nTime Elapsed: %s' % (self.stopTime - self.startTime))
 		return result
 	
 	def sortResult(self, result_list):

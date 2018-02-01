@@ -18,7 +18,7 @@ class PartRaise(unittest.TestCase):
 			rootdir = config.__path__[0]
 			config_env = os.path.join(rootdir, 'env.json')
 			print("config_env:" + config_env)
-			with open(config_env, 'r') as f:
+			with open(config_env, 'r', encoding='utf-8') as f:
 				self.da = json.load(f)
 				self.number = self.da["number"]
 				self.env = self.da["enviroment"]
@@ -191,7 +191,7 @@ class PartRaise(unittest.TestCase):
 		# -----------------------------------------------------------------------------
 		page = Login(self.company["authority_member"]["user"])
 		# 权证员上传权证信息
-		common.authority_card_transact(page, self.applyCode)
+		common.authority_card_transact(page, self.applyCode, self.env)
 		# 查看下一步处理人
 		res = common.process_monitor(page, self.applyCode)
 		if not res:

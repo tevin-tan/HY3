@@ -21,7 +21,7 @@ class fallback(unittest.TestCase):
 			rootdir = config.__path__[0]
 			config_env = os.path.join(rootdir, 'env.json')
 			print("config_env:" + config_env)
-			with open(config_env, 'r') as f:
+			with open(config_env, 'r', encoding='utf-8') as f:
 				self.da = json.load(f)
 				self.number = self.da["number"]
 				self.env = self.da["enviroment"]
@@ -651,7 +651,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'区域取消', 2)
 		if not res:
 			self.log.error("取消失败")
-			raise
+			raise AssertionError('取消失败')
 		else:
 			self.log.info(u'区域取消成功！')
 			self.get_next_user(page, applyCode)
@@ -728,7 +728,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'区域预复核审批通过', 0)
 		if not res:
 			self.log.error("区域预复核审批失败！")
-			raise
+			raise AssertionError('区域预复核审批失败！')
 		else:
 			self.log.info(u'区域预复核审批通过！')
 			self.get_next_user(page, applyCode)
@@ -739,8 +739,8 @@ class fallback(unittest.TestCase):
 		# 审批经理取消
 		res = common.approval_to_review(page, applyCode, u'审审批经理取消成功', 2)
 		if not res:
-			self.log.error("审审批经理取消失败！")
-			raise
+			self.log.error("审批经理取消失败！")
+			raise AssertionError('审审批经理取消失败')
 		else:
 			self.log.info(u'审审批经理取消成功！')
 			self.get_next_user(page, applyCode)
@@ -791,7 +791,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'主管拒绝', 3)
 		if not res:
 			self.log.error("主管拒绝失败")
-			raise
+			raise AssertionError('主管拒绝失败')
 		else:
 			self.log.info('主管拒绝结束！')
 		page.driver.close()
@@ -806,7 +806,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error(u'主管拒绝失败，拒绝队列未找到该笔单！')
-			raise
+			raise AssertionError('主管拒绝失败，拒绝队列未找到该笔单！')
 	
 	def test_01_branch_director_reject_pass(self):
 		'''主管拒绝,并复议通过'''
@@ -854,7 +854,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'主管拒绝', 3)
 		if not res:
 			self.log.error("主管拒绝失败")
-			raise
+			raise AssertionError('主管拒绝失败')
 		else:
 			self.log.info(u'主管拒绝！')
 		page.driver.close()
@@ -932,7 +932,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error(u'主管拒绝失败，复议不通过出错！')
-			raise
+			raise AssertionError('主管拒绝失败，复议不通过出错！')
 	
 	def test_02_branch_manager_reject(self):
 		'''分公司经理拒绝'''
@@ -977,7 +977,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司主管审批通过!')
 			self.get_next_user(page, applyCode)
@@ -989,7 +989,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司经理拒绝', 3)
 		if not res:
 			self.log.error("分公司经理拒绝失败！")
-			raise
+			raise AssertionError('分公司经理拒绝失败！')
 		else:
 			self.log.info(u'分公司经理拒绝！')
 			self.get_next_user(page, applyCode)
@@ -1001,7 +1001,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'区域经理拒绝', 3)
 		if not res:
 			self.log.error("区域经理拒绝失败！")
-			raise
+			raise AssertionError('区域经理拒绝失败！')
 		else:
 			self.log.info(u'区域经理拒绝成功！')
 			self.get_next_user(page, self.applyCode)
@@ -1013,7 +1013,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'高级经理拒绝', 3)
 		if not res:
 			self.log.error("高级经理拒绝失败！")
-			raise
+			raise AssertionError('高级经理拒绝失败！')
 		else:
 			self.log.info(u'高级经理拒绝成功！')
 		
@@ -1027,7 +1027,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error(u'分公司经理拒绝失败，拒绝队列未找到该笔单！')
-			raise
+			raise AssertionError('分公司经理拒绝失败，拒绝队列未找到该笔单！')
 	
 	def test_02_branch_manager_reject_pass(self):
 		'''分公司经理拒绝,并复议通过'''
@@ -1072,7 +1072,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司主管审批通过!')
 			self.get_next_user(page, applyCode)
@@ -1084,7 +1084,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司经理拒绝', 3)
 		if not res:
 			self.log.error("分公司经理拒绝失败！")
-			raise
+			raise AssertionError('分公司经理拒绝失败！')
 		else:
 			self.log.info(u'分公司经理拒绝！')
 			self.get_next_user(page, applyCode)
@@ -1096,7 +1096,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'区域经理拒绝', 3)
 		if not res:
 			self.log.error("区域经理拒绝拒绝失败！")
-			raise
+			raise AssertionError('区域经理拒绝拒绝失败')
 		else:
 			self.log.info(u'区域经理拒绝！')
 			self.get_next_user(page, applyCode)
@@ -1108,7 +1108,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'高级经理拒绝', 3)
 		if not res:
 			self.log.error("高级经理拒绝失败！")
-			raise
+			raise AssertionError('高级经理拒绝失败！')
 		else:
 			self.log.info(u'高级经理拒绝成功！')
 		
@@ -1122,7 +1122,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error(u'分公司经理拒绝失败，复议出错！')
-			raise
+			raise AssertionError('分公司经理拒绝失败，复议出错！')
 	
 	def test_02_branch_manager_reject_fail(self):
 		'''分公司经理拒绝,并复议不通过'''
@@ -1170,7 +1170,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司主管审批通过!')
 			self.get_next_user(page, applyCode)
@@ -1180,7 +1180,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司经理拒绝', 3)
 		if not res:
 			self.log.error("分公司经理拒绝失败")
-			raise
+			raise AssertionError('分公司经理拒绝失败')
 		else:
 			self.log.info(u'分公司经理拒绝！')
 		
@@ -1205,7 +1205,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'高级经理拒绝', 3)
 		if not res:
 			self.log.error("高级经理拒绝失败！")
-			raise
+			raise AssertionError('高级经理拒绝失败！')
 		else:
 			self.log.info(u'高级经理拒绝成功！')
 		
@@ -1219,7 +1219,7 @@ class fallback(unittest.TestCase):
 			page.driver.quit()
 		else:
 			self.log.error(u'分公司经理拒绝成功，但复议不通过出错！')
-			raise
+			raise AssertionError('分公司经理拒绝成功，但复议不通过出错！')
 	
 	def test_03_regional_reject(self):
 		'''区域复核拒绝'''
@@ -1270,7 +1270,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info("分公司主管审批通过")
 			self.get_next_user(page, applyCode)
@@ -1282,7 +1282,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司经理审批通过!', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司经理审批通过！')
 			self.get_next_user(page, applyCode)
@@ -1294,7 +1294,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'区域拒绝', 3)
 		if not res:
 			self.log.error("区域拒绝失败")
-			raise
+			raise AssertionError('区域拒绝失败')
 		else:
 			self.log.info("区域拒绝！")
 			self.get_next_user(page, self.applyCode)
@@ -1305,7 +1305,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'高级经理拒绝', 3)
 		if not res:
 			self.log.error("高级经理拒绝失败")
-			raise
+			raise AssertionError('高级经理拒绝失败')
 		else:
 			self.log.info("高级经理拒绝拒绝成功！")
 			page.driver.quit()
@@ -1320,7 +1320,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error(u'区域失败，拒绝队列未找到该笔单！')
-			raise
+			raise AssertionError('区域失败，拒绝队列未找到该笔单！')
 	
 	def test_03_regional_reject_pass(self):
 		'''区域复核拒绝，并复议通过'''
@@ -1371,7 +1371,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司主管审批通过！')
 			self.get_next_user(page, applyCode)
@@ -1383,7 +1383,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司经理审批通过!', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司经理审批通过！')
 			self.get_next_user(page, applyCode, )
@@ -1395,7 +1395,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'区域拒绝', 3)
 		if not res:
 			self.log.error("区域拒绝失败")
-			raise
+			raise AssertionError('区域拒绝失败')
 		else:
 			self.log.info("区域拒绝！")
 			self.get_next_user(page, self.applyCode)
@@ -1406,7 +1406,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'高级经理拒绝', 3)
 		if not res:
 			self.log.error("高级经理拒绝失败！")
-			raise
+			raise AssertionError('高级经理拒绝失败！')
 		else:
 			self.log.info(u'高级经理拒绝成功！')
 			page.driver.quit()
@@ -1421,7 +1421,7 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error(u'区域拒绝失败，复议出错！')
-			raise
+			raise AssertionError('区域拒绝失败，复议出错！')
 	
 	def test_03_regional_reject_fail(self):
 		'''区域复核拒绝，并复议不通过'''
@@ -1472,7 +1472,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司主管审批通过！')
 		self.get_next_user(page, applyCode)
@@ -1484,7 +1484,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司经理审批通过!', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司经理审批通过！')
 			self.get_next_user(page, applyCode)
@@ -1496,7 +1496,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'区域拒绝', 3)
 		if not res:
 			self.log.error("区域拒绝失败")
-			raise
+			raise AssertionError('区域拒绝失败')
 		else:
 			self.log.info("区域拒绝！")
 			self.get_next_user(page, self.applyCode)
@@ -1507,7 +1507,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'高级经理拒绝', 3)
 		if not res:
 			self.log.error("高级经理失败")
-			raise
+			raise AssertionError('高级经理失败')
 		else:
 			self.log.info("高级经理拒绝成功！")
 			page.driver.quit()
@@ -1522,10 +1522,10 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error(u'区域拒绝成功，复议不通过出错！')
-			raise
+			raise AssertionError('区域拒绝成功，复议不通过出错！')
 	
 	def test_04_manage_reject(self):
-		'''审批经理拒绝'''
+		'''高级审批经理拒绝'''
 		
 		'''
 			---------------------------------------------------------------------
@@ -1572,7 +1572,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司主管审批通过！')
 			self.get_next_user(page, applyCode)
@@ -1584,7 +1584,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司经理审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司经理审批通过！')
 			self.get_next_user(page, applyCode)
@@ -1596,7 +1596,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'区域预复核审批通过', 0)
 		if not res:
 			self.log.error("区域预复核审批失败！")
-			raise
+			raise AssertionError('区域预复核审批失败！')
 		else:
 			self.log.info(u'区域预复核审批通过！')
 			self.get_next_user(page, applyCode, )
@@ -1607,7 +1607,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'高级经理拒绝', 3)
 		if not res:
 			self.log.error("高级经理拒绝失败！")
-			raise
+			raise AssertionError('高级经理拒绝失败！')
 		else:
 			self.log.info(u'高级经理拒绝成功！')
 			page.driver.quit()
@@ -1622,10 +1622,10 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error(u'审批经理拒绝失败，拒绝队列未找到该笔单！')
-			raise
+			raise AssertionError(u'审批经理拒绝失败，拒绝队列未找到该笔单！')
 	
 	def test_04_manage_reject_pass(self):
-		'''审批经理拒绝,并复议通过'''
+		'''高级审批经理拒绝,并复议通过'''
 		
 		'''
 			---------------------------------------------------------------------
@@ -1672,7 +1672,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司主管审批通过！')
 			self.get_next_user(page, applyCode, )
@@ -1684,7 +1684,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司经理审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司经理审批通过！')
 			self.get_next_user(page, applyCode, )
@@ -1696,7 +1696,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'区域预复核审批通过', 0)
 		if not res:
 			self.log.error("区域预复核审批失败！")
-			raise
+			raise AssertionError('区域预复核审批失败！')
 		else:
 			self.log.info(u'区域预复核审批通过!')
 			self.get_next_user(page, applyCode)
@@ -1708,7 +1708,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'高级经理拒绝', 3)
 		if not res:
 			self.log.error("高级经理拒绝失败！")
-			raise
+			raise AssertionError('高级经理拒绝失败！')
 		else:
 			self.log.info(u'高级经理拒绝成功！')
 			page.driver.quit()
@@ -1723,10 +1723,10 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error(u'复议出错！')
-			raise
+			raise AssertionError('复议出错！')
 	
 	def test_04_manage_reject_fail(self):
-		'''审批经理拒绝,并复议不通过'''
+		'''高级审批经理拒绝,并复议不通过'''
 		
 		'''
 			---------------------------------------------------------------------
@@ -1773,7 +1773,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司主管审批通过！')
 			self.get_next_user(page, applyCode, )
@@ -1785,7 +1785,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'分公司经理审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
-			raise
+			raise AssertionError('审批失败')
 		else:
 			self.log.info(u'分公司经理审批通过！')
 			self.get_next_user(page, applyCode)
@@ -1797,7 +1797,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'区域预复核审批通过', 0)
 		if not res:
 			self.log.error("区域预复核审批失败！")
-			raise
+			raise AssertionError('区域预复核审批失败！')
 		else:
 			self.log.info(u'区域预复核审批通过！')
 			self.get_next_user(page, applyCode)
@@ -1809,7 +1809,7 @@ class fallback(unittest.TestCase):
 		res = common.approval_to_review(page, applyCode, u'高级经理拒绝', 3)
 		if not res:
 			self.log.error("高级经理拒绝失败！")
-			raise
+			raise AssertionError('高级经理拒绝失败！')
 		else:
 			self.log.info(u'高级经理拒绝成功！')
 			page.driver.quit()
@@ -1824,4 +1824,4 @@ class fallback(unittest.TestCase):
 			self.page.driver.quit()
 		else:
 			self.log.error(u'复议不通过出错！')
-			raise
+			raise AssertionError(u'复议不通过出错！')

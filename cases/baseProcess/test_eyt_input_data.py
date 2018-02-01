@@ -365,7 +365,7 @@ class EYT(unittest.TestCase):
 		# 权证员登录
 		page = Login(self.company["authority_member"]["user"])
 		# 权证员上传权证信息
-		rs = common.authority_card_transact(page, self.applyCode)
+		rs = common.authority_card_transact(page, self.applyCode, self.env)
 		if not rs:
 			Log().error("上传权证信息失败")
 			raise AssertionError('上传权证信息失败')

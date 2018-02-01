@@ -349,7 +349,7 @@ class GQT(unittest.TestCase):
 		# 权证员登录
 		page = Login(self.company["authority_member"]["user"])
 		# 权证员上传权证信息
-		common.authority_card_transact(page, self.applyCode)
+		common.authority_card_transact(page, self.applyCode, self.env)
 		# common.authority_card_transact(page, "GZ20171213C06")
 		# 查看下一步处理人
 		res = common.process_monitor(page, self.applyCode)

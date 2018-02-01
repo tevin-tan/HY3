@@ -678,18 +678,18 @@ def approval_to_review(page, condition, remark, action=0):
 		elif action == 2:
 			# 取消
 			Select(page.driver.find_element_by_name("appResult")).select_by_visible_text(u"取消")
-			Select(page.driver.find_element_by_name("resultReasonId")).select_by_value("05")
+			Select(page.driver.find_element_by_name("resultReasonId")).select_by_value("02")
 			# 填写意见
 			page.driver.find_element_by_id('remarkable2').send_keys(remark)
 		elif action == 3:
 			# 拒绝
 			Select(page.driver.find_element_by_name("appResult")).select_by_visible_text(u"拒绝")
-			Select(page.driver.find_element_by_name("resultReasonId")).select_by_value("06")
+			Select(page.driver.find_element_by_name("resultReasonId")).select_by_value("01")
 			# 填写意见
 			page.driver.find_element_by_id('remarkable2').send_keys(remark)
 		else:
 			Log().error("输入的参数有误(0-3)!")
-			raise
+			raise ValueError('参数有误！')
 		
 		# 保存
 		page.driver.find_element_by_xpath("//*[@id=\"apply_module_apply_save\"]/span/span/span[2]").click()
@@ -731,7 +731,7 @@ def special_approval(page, condition, remark):
 	# 输入申请编号
 	time.sleep(1)
 	page.driver.find_element_by_xpath("//*[@id='row-content']/div[1]/input").send_keys(condition)
-	# page.driver.find_element_by_xpath("//*[@id='row-content']/div[1]/input").send_keys("GZ20171116C05")
+	# page.driver.find_element_by_xpath("//*[@id='row-content']/div[1]/input").send_keys("CS20180201C23")
 	# 点击查询按钮
 	page.driver.find_element_by_xpath("/html/body/div[1]/div[1]/div[2]/a[1]/span").click()
 	time.sleep(1)
@@ -763,7 +763,7 @@ def special_approval(page, condition, remark):
 		# 提交
 		page.driver.find_element_by_xpath("//*[@id='apply_module_apply_submit']/span/span/span[2]").click()
 		time.sleep(2)
-		page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a[1]').click()
+		page.driver.find_element_by_xpath('/html/body/div[5]/div[3]/a[1]').click()
 		time.sleep(2)
 		page.driver.find_element_by_xpath("/html/body/div[5]/div[3]/a").click()
 		return True
@@ -1188,7 +1188,7 @@ def _task_search(page, condition):
 	return res
 
 
-def authority_card_transact(page, condition):
+def authority_card_transact(page, condition, env="SIT"):
 	'''
 		权证办理
 	:param page: 页面
@@ -1198,7 +1198,10 @@ def authority_card_transact(page, condition):
 	
 	# 权证管理
 	# page.driver.find_element_by_xpath("/html/body/header/ul/li[5]").click()
-	page.driver.find_element_by_id("1DF1731576B000013DB03A40A8601B66").click()
+	if env == "SIT":
+		page.driver.find_element_by_id("1DF1731576B000013DB03A40A8601B66").click()
+	else:
+		page.driver.find_element_by_id("1DF16C65668E000176ED2081C4D01896").click()
 	time.sleep(1)
 	page.driver.find_element_by_name("/house/commonIndex/warrantManageList").click()
 	time.sleep(2)

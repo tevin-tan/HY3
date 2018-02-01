@@ -351,7 +351,7 @@ class XHD(unittest.TestCase):
 		# 权证员登录
 		page = Login(self.company["authority_member"]["user"])
 		# 权证员上传权证信息
-		res = common.authority_card_transact(page, self.applyCode)
+		res = common.authority_card_transact(page, self.applyCode, self.env)
 		if not res:
 			Log().error("权证员上传资料失败")
 			raise AssertionError('权证员上传资料失败')
