@@ -823,7 +823,7 @@ def risk_approval_fallback(page, condition, option, remark):
 		# 提交
 		page.driver.find_element_by_xpath("//*[@id='apply_module_apply_submit']/span/span/span[2]").click()
 		time.sleep(2)
-		page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a[1]').click()
+		page.driver.find_element_by_xpath('/html/body/div[5]/div[3]/a[1]').click()
 		time.sleep(2)
 		page.driver.find_element_by_xpath("/html/body/div[5]/div[3]/a").click()
 		return True
