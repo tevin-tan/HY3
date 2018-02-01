@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3a993a30-e9f0-4783-a9dc-701479eafc78" name="Default" comment="优化代码">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+    <list default="true" id="3a993a30-e9f0-4783-a9dc-701479eafc78" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -976,7 +974,7 @@
       <workItem from="1517381413322" duration="16649000" />
       <workItem from="1517404438798" duration="9000" />
       <workItem from="1517404564297" duration="3031000" />
-      <workItem from="1517449809615" duration="16168000" />
+      <workItem from="1517449809615" duration="16175000" />
     </task>
     <task id="LOCAL-00001" summary="优化py3代码，调试ok">
       <created>1517399445514</created>
@@ -1006,7 +1004,14 @@
       <option name="project" value="LOCAL" />
       <updated>1517477720375</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="优化代码">
+      <created>1517477729143</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1517477729143</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1042,7 +1047,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="37970000" />
+    <option name="totallyTimeSpent" value="37977000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
