@@ -32,7 +32,7 @@
   "custInfoVo": [
 	{
 	  "custName": "花晶滢",
-	  "idNum": "130129198012128735",
+	  "idNum": "430122197712124526",
 	  "age": "36",
 	  "education": "高中/中专",
 	  "marriageStatus": "2",
@@ -208,8 +208,8 @@
 	{
 	  "loanAmount": "200000",
 	  "recAccountName": "花晶滢",
-	  "recIdNum": "420101198101010950",
-	  "recBankNum": "6225684825185480059",
+	  "recIdNum": "430122197712124526",
+	  "recBankNum": "6217002920133545856",
 	  "recPhone": "13686464782",
 	  "recBankNum1": "0006",
 	  "recBank": "广发银行",

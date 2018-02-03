@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/HouseLoanAutoPy3.iml" filepath="$PROJECT_DIR$/HouseLoanAutoPy3.iml" />
+      <module fileurl="file://E:/idCardNumber/idCardNumber.iml" filepath="E:/idCardNumber/idCardNumber.iml" />
     </modules>
   </component>
 </project>

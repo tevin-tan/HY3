@@ -12,6 +12,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 from config.locator import loc_cust_info, loc_borrower
 from selenium.common import exceptions as EC
 from com.custom import getName, Log
+# import common.getIdNumber as GT
+from com.idCardNumber import IdCardNumber as IDCN
 
 import datetime
 
@@ -87,17 +89,20 @@ def input_customer_borrow_info(page, data):
 		# 姓名元素变更，身份证号码变更
 		page.driver.find_element_by_xpath(loc_borrower['jkrxm']).send_keys(custName)  # 借款人姓名
 		time.sleep(1)
-		page._send_data(page.driver, "xpath", loc_borrower['sfzhm'], data["idNum"])  # 身份证号码
+		# page._send_data(page.driver, "xpath", loc_borrower['sfzhm'], data["idNum"])  # 身份证号码
+		page._send_data(page.driver, "xpath", loc_borrower['sfzhm'], IDCN.getRandomIdNumber()[0])  # 身份证号码
 		# 受教育程度
 		page._click_control(page.driver, "id", loc_borrower['sjycd']['locate'])
 		page._click_control(page.driver, "id", loc_borrower['sjycd']['value'])
 		time.sleep(1)
 		page._click_control(page.driver, "id", loc_borrower['hyzk']['locate'])  # 婚姻状况
+		
 		time.sleep(1)
 		page._click_control(page.driver, "id", loc_borrower['hyzk']['value'])
 		
 		page._send_data(page.driver, "id", loc_borrower['jtdzxx'], data['address'])  # 家庭地址信息
-		page._send_data(page.driver, "xpath", loc_borrower['xxfs'], data["phone"])  # 联系方式
+		# page._send_data(page.driver, "xpath", loc_borrower['xxfs'], data["phone"])  # 联系方式
+		page._send_data(page.driver, "xpath", loc_borrower['xxfs'], IDCN.createPhone())  # 联系方式
 		page._send_data(page.driver, "xpath", loc_borrower['dwmc'], data["companyName"])  # 单位名称
 		
 		# 公司规模
@@ -209,7 +214,7 @@ def input_bbi_Property_info(page):
 		raise e
 	
 	page.driver.find_element_by_name("propertyOwner").clear()
-	page.driver.find_element_by_name("propertyOwner").send_keys("moban_gqt_test_1")  # 产权人
+	page.driver.find_element_by_name("propertyOwner").send_keys(getName())  # 产权人
 	page.driver.find_element_by_name("propertyNo").clear()
 	page.driver.find_element_by_name("propertyNo").send_keys("gqt0132546")  # 房产证号
 	
@@ -270,7 +275,7 @@ def input_bbi_Property_info(page):
 	# 征信信息
 	page.driver.find_element_by_link_text(u"征信信息").click()
 	page.driver.find_element_by_name("loanIdNum").clear()
-	page.driver.find_element_by_name("loanIdNum").send_keys("moban_gqt_test_1")
+	page.driver.find_element_by_name("loanIdNum").send_keys(getName())
 	page.driver.find_element_by_name("creditOverdueNum").clear()
 	page.driver.find_element_by_name("creditOverdueNum").send_keys("0")
 	page.driver.find_element_by_name("queryLoanNum").clear()
@@ -492,7 +497,7 @@ def get_applycode(page, condition):
 		Log().info("applyCode: " + t1.text)
 		return t1.text
 	else:
-		raise
+		raise ValueError("Value error")
 
 
 # 待处理任务查询

@@ -6,6 +6,7 @@ from com import common
 from com.login import Login
 from com import custom
 import config
+import common.getIdNumber as GT
 
 
 class CWD(unittest.TestCase):

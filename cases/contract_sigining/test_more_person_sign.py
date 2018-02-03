@@ -49,7 +49,7 @@ class contractSign(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def tearDown(self):
-		pass
+		self.page.driver.quit()
 	
 	def test_one_person_sign(self):
 		'''单人签约'''
