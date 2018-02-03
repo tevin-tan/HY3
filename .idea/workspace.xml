@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3a993a30-e9f0-4783-a9dc-701479eafc78" name="Default" comment="增加身份证获取API">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/com/idCardNumber/全国县级地址码.xlsx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/cases/contract_sigining/add_contract.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/com/idCardNumber/IdCardNumber.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/com/idCardNumber/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/com/idCardNumber/addr.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/com/idCardNumber/readme.md" />
+    <list default="true" id="3a993a30-e9f0-4783-a9dc-701479eafc78" name="Default" comment="增加身份证获取API&#10;1. com.idCardNumber&#10;2. common.getIdNumber">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/bank_card" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/people.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/cases/contract_sigining/add_contract.py" afterPath="$PROJECT_DIR$/cases/contract_sigining/test_add_contract.py" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -83,11 +80,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="getIdNumber.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="test_more_person_sign.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/cases/contract_sigining/test_more_person_sign.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="771">
+              <caret line="318" column="13" lean-forward="false" selection-start-line="318" selection-start-column="13" selection-end-line="318" selection-end-column="13" />
+              <folding>
+                <element signature="e#249#900#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="getIdNumber.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/common/getIdNumber.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="15" column="18" lean-forward="true" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
+            <state relative-caret-position="443">
+              <caret line="19" column="54" lean-forward="true" selection-start-line="19" selection-start-column="54" selection-end-line="19" selection-end-column="54" />
               <folding>
                 <element signature="e#23#36#0" expanded="true" />
               </folding>
@@ -109,7 +118,7 @@
         <entry file="file://$PROJECT_DIR$/com/idCardNumber/IdCardNumber.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="338">
-              <caret line="105" column="24" lean-forward="true" selection-start-line="105" selection-start-column="24" selection-end-line="105" selection-end-column="24" />
+              <caret line="105" column="24" lean-forward="false" selection-start-line="105" selection-start-column="24" selection-end-line="105" selection-end-column="24" />
               <folding>
                 <element signature="e#169#192#0" expanded="true" />
               </folding>
@@ -156,16 +165,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="env.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/env.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="6" column="7" lean-forward="true" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="custom.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/com/custom.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -181,16 +180,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="add_contract.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cases/contract_sigining/add_contract.py">
+      <file leaf-file-name="test_add_contract.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cases/contract_sigining/test_add_contract.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="236">
-              <caret line="744" column="16" lean-forward="true" selection-start-line="744" selection-start-column="16" selection-end-line="744" selection-end-column="16" />
+            <state relative-caret-position="175">
+              <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
-                <element signature="e#8516#12110#0" expanded="false" />
-                <element signature="e#12152#15761#0" expanded="false" />
-                <element signature="e#15803#19413#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -300,6 +296,7 @@
         <option value="$PROJECT_DIR$/com/contract.py" />
         <option value="$PROJECT_DIR$/com/common.py" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/config/people.json" />
       </list>
     </option>
   </component>
@@ -358,6 +355,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="config" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HouseLoanAutoPy3" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HouseLoanAutoPy3" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="common" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -373,24 +384,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HouseLoanAutoPy3" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HouseLoanAutoPy3" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="idCardNumber" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -446,6 +439,9 @@
     <property name="com.intellij.database.dataSource.DataSourceTemplate" value="Oracle" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\HouseLoanAutoPy3\cases\test_contract_sigining" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\HouseLoanAutoPy3\com\idCardNumber" />
     </key>
@@ -462,8 +458,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.Unittests for add_contract.AddContract.test_01_6Person_contract">
-    <configuration default="false" name="Unittests for add_contract.AddContract.test_01_6Person_contract" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python tests.Unittests for cases.test_contract_sigining.add_contract.AddContract.test_01_6Person_contract">
+    <configuration default="false" name="Unittests for cases.test_contract_sigining.add_contract.AddContract.test_01_6Person_contract" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -475,7 +471,7 @@
       <module name="HouseLoanAutoPy3" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;add_contract.AddContract.test_01_6Person_contract&quot;" />
+      <option name="_new_target" value="&quot;cases.test_contract_sigining.add_contract.AddContract.test_01_6Person_contract&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method />
     </configuration>
@@ -536,7 +532,7 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="Unittests for add_contract.AddContract.test_01_1person_contract" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="Unittests for cases.test_contract_sigining.add_contract.AddContract.test_01_1person_contract" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -548,7 +544,7 @@
       <module name="HouseLoanAutoPy3" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;add_contract.AddContract.test_01_1person_contract&quot;" />
+      <option name="_new_target" value="&quot;cases.test_contract_sigining.add_contract.AddContract.test_01_1person_contract&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method />
     </configuration>
@@ -1085,17 +1081,17 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests for add_contract.AddContract.test_01_6Person_contract" />
+      <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests for cases.test_contract_sigining.add_contract.AddContract.test_01_6Person_contract" />
       <item index="1" class="java.lang.String" itemvalue="Python.IdCardNumber" />
       <item index="2" class="java.lang.String" itemvalue="Python.IdCardNumber (1)" />
       <item index="3" class="java.lang.String" itemvalue="Python.contract" />
-      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests for add_contract.AddContract.test_01_1person_contract" />
+      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests for cases.test_contract_sigining.add_contract.AddContract.test_01_1person_contract" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests for add_contract.AddContract.test_01_6Person_contract" />
+        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests for cases.test_contract_sigining.add_contract.AddContract.test_01_6Person_contract" />
         <item index="1" class="java.lang.String" itemvalue="Python.IdCardNumber (1)" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests for add_contract.AddContract.test_01_1person_contract" />
+        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests for cases.test_contract_sigining.add_contract.AddContract.test_01_1person_contract" />
         <item index="3" class="java.lang.String" itemvalue="Python.contract" />
         <item index="4" class="java.lang.String" itemvalue="Python.IdCardNumber" />
       </list>
@@ -1117,7 +1113,7 @@
       <workItem from="1517404564297" duration="3031000" />
       <workItem from="1517449809615" duration="22409000" />
       <workItem from="1517536276151" duration="23564000" />
-      <workItem from="1517621079991" duration="16199000" />
+      <workItem from="1517621079991" duration="17626000" />
     </task>
     <task id="LOCAL-00001" summary="优化py3代码，调试ok">
       <created>1517399445514</created>
@@ -1175,7 +1171,14 @@
       <option name="project" value="LOCAL" />
       <updated>1517647594998</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="增加身份证获取API&#10;1. com.idCardNumber&#10;2. common.getIdNumber">
+      <created>1517647810511</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1517647810511</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1211,7 +1214,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="83974000" />
+    <option name="totallyTimeSpent" value="85401000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1235,7 +1238,7 @@
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="JSON Utils" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19474249" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1309,7 +1312,8 @@
     <MESSAGE value="优化py3代码，调试ok" />
     <MESSAGE value="优化代码" />
     <MESSAGE value="增加身份证获取API" />
-    <option name="LAST_COMMIT_MESSAGE" value="增加身份证获取API" />
+    <MESSAGE value="增加身份证获取API&#10;1. com.idCardNumber&#10;2. common.getIdNumber" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加身份证获取API&#10;1. com.idCardNumber&#10;2. common.getIdNumber" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1337,20 +1341,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/config/caseNumber.yaml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3325">
-          <caret line="133" column="41" lean-forward="false" selection-start-line="133" selection-start-column="41" selection-end-line="133" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/report/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="11" column="42" lean-forward="false" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/rootdir.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="50">
@@ -1494,17 +1484,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/common/setIdNumber.py" />
-    <entry file="file://$PROJECT_DIR$/cases/contract_sigining/test_more_person_sign.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7375">
-          <caret line="318" column="13" lean-forward="false" selection-start-line="318" selection-start-column="13" selection-end-line="318" selection-end-column="13" />
-          <folding>
-            <element signature="e#16#31#0" expanded="false" />
-            <element signature="e#249#900#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/common/IdNumber.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-200">
@@ -1661,7 +1640,7 @@
     <entry file="file://$PROJECT_DIR$/com/idCardNumber/IdCardNumber.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="338">
-          <caret line="105" column="24" lean-forward="true" selection-start-line="105" selection-start-column="24" selection-end-line="105" selection-end-column="24" />
+          <caret line="105" column="24" lean-forward="false" selection-start-line="105" selection-start-column="24" selection-end-line="105" selection-end-column="24" />
           <folding>
             <element signature="e#169#192#0" expanded="true" />
           </folding>
@@ -1714,19 +1693,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cases/contract_sigining/add_contract.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="236">
-          <caret line="744" column="16" lean-forward="true" selection-start-line="744" selection-start-column="16" selection-end-line="744" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-            <element signature="e#8516#12110#0" expanded="false" />
-            <element signature="e#12152#15761#0" expanded="false" />
-            <element signature="e#15803#19413#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cases/tiaoshi.ipynb">
       <provider selected="true" editor-type-id="ipnb-editor">
         <state>
@@ -1734,12 +1700,48 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/config/people.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="475">
+          <caret line="19" column="28" lean-forward="true" selection-start-line="19" selection-start-column="28" selection-end-line="19" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/common/getIdNumber.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="15" column="18" lean-forward="true" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
+        <state relative-caret-position="443">
+          <caret line="19" column="54" lean-forward="true" selection-start-line="19" selection-start-column="54" selection-end-line="19" selection-end-column="54" />
           <folding>
             <element signature="e#23#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cases/test_contract_sigining/add_contract.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="137">
+          <caret line="163" column="20" lean-forward="true" selection-start-line="163" selection-start-column="20" selection-end-line="163" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cases/contract_sigining/test_add_contract.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cases/contract_sigining/test_more_person_sign.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="771">
+          <caret line="318" column="13" lean-forward="false" selection-start-line="318" selection-start-column="13" selection-end-line="318" selection-end-column="13" />
+          <folding>
+            <element signature="e#249#900#0" expanded="false" />
           </folding>
         </state>
       </provider>
