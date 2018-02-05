@@ -48,7 +48,7 @@ class AddContract(unittest.TestCase):
 			self.next_user_id = next_id
 			self.log.info("下一步处理人:" + next_id)
 			# 当前用户退出系统
-			self.page.driver.quit()
+			page.driver.quit()
 	
 	def test_01_1person_contract(self):
 		'''单人签约'''
@@ -81,6 +81,7 @@ class AddContract(unittest.TestCase):
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
+			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
@@ -199,6 +200,7 @@ class AddContract(unittest.TestCase):
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
+			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
@@ -318,6 +320,7 @@ class AddContract(unittest.TestCase):
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
+			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
@@ -437,6 +440,7 @@ class AddContract(unittest.TestCase):
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
+			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
@@ -556,6 +560,7 @@ class AddContract(unittest.TestCase):
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
+			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
@@ -674,6 +679,7 @@ class AddContract(unittest.TestCase):
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
+			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
@@ -792,6 +798,7 @@ class AddContract(unittest.TestCase):
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
+			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
@@ -911,6 +918,7 @@ class AddContract(unittest.TestCase):
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
+			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
@@ -1030,6 +1038,7 @@ class AddContract(unittest.TestCase):
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
+			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
