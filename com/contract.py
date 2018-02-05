@@ -6,7 +6,7 @@ from com.common import _task_search
 from selenium.common import exceptions as EC
 # import common.getIdNumber as GT
 from com.idCardNumber import IdCardNumber as IDCN
-from config import getBank
+from common import getBankCard
 
 
 class Contract():
@@ -64,7 +64,7 @@ class Contract():
 		# self.page.driver.find_element_by_xpath(bank_str + '/section[1]/div[2]/div[6]/input').send_keys(
 		# 		self.rec_bank_info['recBankNum']) # 收款银行账号
 		self.page.driver.find_element_by_xpath(bank_str + '/section[1]/div[2]/div[6]/input').send_keys(
-				getBank.getBankCardNumber())  # 收款银行账号
+				getBankCard.getBankCardNumber())  # 收款银行账号
 		self.page.driver.find_element_by_xpath(bank_str + '/section[1]/div[2]/div[8]/input').send_keys(
 				self.rec_bank_info['recPhone'])  # 银行预留电话
 		
@@ -158,7 +158,7 @@ class Contract():
 		# self.page.driver.find_element_by_id('loanApartBankForm0').click()
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(bankform) + '"]/section[1]/div[2]/div[6]/input').send_keys(
-				getBank.getBankCardNumber())
+				getBankCard.getBankCardNumber())
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(bankform) + '"]/section[1]/div[2]/div[8]/input').send_keys(
 				IDCN.createPhone())
@@ -230,7 +230,7 @@ class Contract():
 		# 收扣款银行信息录入
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(bankform) + '"]/section[1]/div[2]/div[6]/input').send_keys(
-				getBank.getBankCardNumber())
+				getBankCard.getBankCardNumber())
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(bankform) + '"]/section[1]/div[2]/div[8]/input').send_keys(
 				IDCN.createPhone())
@@ -360,7 +360,7 @@ def make_signing(page, condition, rec_bank_info, number=1):
 					u'北京')
 			# 切换选定银行from
 			page.driver.find_element_by_xpath(bank_str + '/section[1]/div[2]/div[6]/input').send_keys(
-					getBank.getBankCardNumber())  # 收款银行账号
+					getBankCard.getBankCardNumber())  # 收款银行账号
 			page.driver.find_element_by_xpath(bank_str + '/section[1]/div[2]/div[8]/input').send_keys(
 					rec_bank_info['recPhone'])  # 银行预留电话
 			

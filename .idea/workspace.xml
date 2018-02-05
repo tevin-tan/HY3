@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a993a30-e9f0-4783-a9dc-701479eafc78" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/bankNum" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/getBank.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config/getBank.py" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cases/contract_sigining/test_add_contract.py" afterPath="$PROJECT_DIR$/cases/contract_sigining/test_add_contract.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/com/common.py" afterPath="$PROJECT_DIR$/com/common.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/com/contract.py" afterPath="$PROJECT_DIR$/com/contract.py" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -36,6 +32,7 @@
     <SUITE FILE_PATH="coverage/HouseLoanAutoPy3$Unittests_for_test_eyt_input_data_EYT_test_eyt_21_funds_raise.coverage" NAME="Unittests for test_eyt_input_data.EYT.test_eyt_21_funds_raise Coverage Results" MODIFIED="1517820352800" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cases/baseProcess" />
     <SUITE FILE_PATH="coverage/HouseLoanAutoPy3$Unittests_for_test_eyt_input_data_EYT_test_eyt_01_base_info.coverage" NAME="Unittests for test_eyt_input_data.EYT.test_eyt_01_base_info Coverage Results" MODIFIED="1517383137322" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cases/baseProcess" />
     <SUITE FILE_PATH="coverage/HouseLoanAutoPy3$Unittests_for_test_fallback_fallback_test_01_branch_director_fallback.coverage" NAME="Unittests for test_fallback.fallback.test_01_branch_director_fallback Coverage Results" MODIFIED="1517450200307" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cases/IntoCases" />
+    <SUITE FILE_PATH="coverage/HouseLoanAutoPy3$getBankCard.coverage" NAME="getBankCard Coverage Results" MODIFIED="1517830878268" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/common" />
     <SUITE FILE_PATH="coverage/HouseLoanAutoPy3$Unittests_for_add_contract_AddContract_test_01_5Person_contract.coverage" NAME="Unittests for add_contract.AddContract.test_01_5Person_contract Coverage Results" MODIFIED="1517546428870" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cases/contract_sigining" />
     <SUITE FILE_PATH="coverage/HouseLoanAutoPy3$Unittests_for_test_special_approval_SPA_test_03_risk_director_special_approval.coverage" NAME="Unittests for test_special_approval.SPA.test_03_risk_director_special_approval Coverage Results" MODIFIED="1517458031526" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cases/IntoCases" />
     <SUITE FILE_PATH="coverage/HouseLoanAutoPy3$filepath.coverage" NAME="filepath Coverage Results" MODIFIED="1517404472726" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
@@ -43,7 +40,7 @@
     <SUITE FILE_PATH="coverage/HouseLoanAutoPy3$Unittests_for_test_suite_cwd_CWD_test_cwd_04_applydata.coverage" NAME="Unittests for test_suite_cwd.CWD.test_cwd_04_applydata Coverage Results" MODIFIED="1517566373873" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cases/baseProcess" />
     <SUITE FILE_PATH="coverage/HouseLoanAutoPy3$contract.coverage" NAME="contract Coverage Results" MODIFIED="1517640566209" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/com" />
     <SUITE FILE_PATH="coverage/HouseLoanAutoPy3$Unittests_for_test_add_contract_AddContract_test_01_6Person_contract.coverage" NAME="Unittests for test_add_contract.AddContract.test_01_6Person_contract Coverage Results" MODIFIED="1517800292699" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cases/contract_sigining" />
-    <SUITE FILE_PATH="coverage/HouseLoanAutoPy3$Unittests_for_test_suite_cwd_CWD_test_cwd_02_borrowr_info.coverage" NAME="Unittests for test_suite_cwd.CWD.test_cwd_02_borrowr_info Coverage Results" MODIFIED="1517651921730" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cases/baseProcess" />
+    <SUITE FILE_PATH="coverage/HouseLoanAutoPy3$Unittests_for_test_suite_cwd_CWD_test_cwd_02_borrowr_info.coverage" NAME="Unittests for test_suite_cwd.CWD.test_cwd_02_borrowr_info Coverage Results" MODIFIED="1517830814034" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cases/baseProcess" />
     <SUITE FILE_PATH="coverage/HouseLoanAutoPy3$Unittests_for_test_warrantManage_warrantManage_test_warrantManage_original.coverage" NAME="Unittests for test_warrantManage.warrantManage.test_warrantManage_original Coverage Results" MODIFIED="1517477789166" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cases/warrantManage" />
     <SUITE FILE_PATH="coverage/HouseLoanAutoPy3$Unittests_for_test_add_contract_AddContract_test_08_10Person_contract.coverage" NAME="Unittests for test_add_contract.AddContract.test_08_10Person_contract Coverage Results" MODIFIED="1517811457757" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cases/contract_sigining" />
     <SUITE FILE_PATH="coverage/HouseLoanAutoPy3$start.coverage" NAME="start Coverage Results" MODIFIED="1517393382506" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -95,18 +92,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="common.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/com/common.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1968">
-              <caret line="93" column="7" lean-forward="false" selection-start-line="93" selection-start-column="7" selection-end-line="93" selection-end-column="7" />
-              <folding>
-                <element signature="e#34#45#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="caseNumber.yaml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config/caseNumber.yaml">
           <provider selected="true" editor-type-id="text-editor">
@@ -117,11 +102,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="getBank.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/getBank.py">
+      <file leaf-file-name="test_add_contract.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cases/contract_sigining/test_add_contract.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="21" column="17" lean-forward="true" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
+            <state relative-caret-position="-360">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_suite_cwd.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cases/baseProcess/test_suite_cwd.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="168">
+              <caret line="89" column="39" lean-forward="true" selection-start-line="89" selection-start-column="39" selection-end-line="89" selection-end-column="39" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="getBankCard.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/common/getBankCard.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="480">
+              <caret line="20" column="20" lean-forward="true" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -129,34 +134,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test_add_contract.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cases/contract_sigining/test_add_contract.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="291">
-              <caret line="1013" column="35" lean-forward="true" selection-start-line="1013" selection-start-column="35" selection-end-line="1013" selection-end-column="35" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="console.sql" pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/3eeecd47-557e-416d-8cf0-a35b1f01ff99/console.sql">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="614">
-              <caret line="217" column="70" lean-forward="true" selection-start-line="217" selection-start-column="70" selection-end-line="217" selection-end-column="70" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="contract.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/com/contract.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="226">
-              <caret line="309" column="8" lean-forward="true" selection-start-line="309" selection-start-column="8" selection-end-line="309" selection-end-column="8" />
+            <state relative-caret-position="241">
+              <caret line="64" column="58" lean-forward="true" selection-start-line="64" selection-start-column="58" selection-end-line="64" selection-end-column="58" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
-                <element signature="e#13913#26073#0" expanded="false" />
+                <element signature="e#13929#26093#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -192,16 +177,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="bankNum" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/config/bankNum">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="12" column="22" lean-forward="true" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -213,7 +188,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>你选择的环境是</find>
       <find>with open(config_env, 'r')</find>
       <find>with</find>
       <find>link</find>
@@ -242,6 +216,8 @@
       <find>urllib2</find>
       <find>content</find>
       <find>'''</find>
+      <find>getBank</find>
+      <find>getBankCard</find>
     </findStrings>
     <replaceStrings>
       <replace>self.rec_bank_info</replace>
@@ -249,6 +225,7 @@
       <replace>self.number</replace>
       <replace>分公司经理审批通过</replace>
       <replace>urllib</replace>
+      <replace>getBankCard</replace>
       <replace>&quot;&quot;&quot;</replace>
     </replaceStrings>
   </component>
@@ -313,8 +290,8 @@
         <option value="$PROJECT_DIR$/com/common.py" />
         <option value="$PROJECT_DIR$/config/getBank.py" />
         <option value="$PROJECT_DIR$/cases/contract_sigining/test_add_contract.py" />
-        <option value="$PROJECT_DIR$/com/contract.py" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/3eeecd47-557e-416d-8cf0-a35b1f01ff99/console.sql" />
+        <option value="$PROJECT_DIR$/com/contract.py" />
       </list>
     </option>
   </component>
@@ -459,6 +436,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="common" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HouseLoanAutoPy3" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HouseLoanAutoPy3" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="com" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -492,6 +483,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="contract_sigining" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HouseLoanAutoPy3" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HouseLoanAutoPy3" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cases" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="baseProcess" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -534,42 +543,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.Unittests for test_add_contract.AddContract.test_08_20Person_contract">
-    <configuration default="false" name="Unittests for test_eyt_input_data.EYT.test_eyt_21_funds_raise" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/cases/baseProcess" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="HouseLoanAutoPy3" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_eyt_input_data.EYT.test_eyt_21_funds_raise&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method />
-    </configuration>
-    <configuration default="false" name="single_run" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="HouseLoanAutoPy3" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/single_run.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python.getBankCard">
     <configuration default="false" name="Unittests for test_add_contract.AddContract.test_01_1person_contract" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -616,6 +590,41 @@
       <module name="HouseLoanAutoPy3" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/config/getBank.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Unittests for test_suite_cwd.CWD.test_cwd_02_borrowr_info" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/cases/baseProcess" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="HouseLoanAutoPy3" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_suite_cwd.CWD.test_cwd_02_borrowr_info&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method />
+    </configuration>
+    <configuration default="false" name="getBankCard" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/common" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="HouseLoanAutoPy3" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/common/getBankCard.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -1154,19 +1163,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests for test_eyt_input_data.EYT.test_eyt_21_funds_raise" />
-      <item index="1" class="java.lang.String" itemvalue="Python.single_run" />
-      <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests for test_add_contract.AddContract.test_01_1person_contract" />
-      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests for test_add_contract.AddContract.test_08_20Person_contract" />
-      <item index="4" class="java.lang.String" itemvalue="Python.getBank" />
+      <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests for test_add_contract.AddContract.test_01_1person_contract" />
+      <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests for test_add_contract.AddContract.test_08_20Person_contract" />
+      <item index="2" class="java.lang.String" itemvalue="Python.getBank" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests for test_suite_cwd.CWD.test_cwd_02_borrowr_info" />
+      <item index="4" class="java.lang.String" itemvalue="Python.getBankCard" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests for test_add_contract.AddContract.test_08_20Person_contract" />
-        <item index="1" class="java.lang.String" itemvalue="Python.getBank" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests for test_add_contract.AddContract.test_01_1person_contract" />
-        <item index="3" class="java.lang.String" itemvalue="Python.single_run" />
-        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests for test_eyt_input_data.EYT.test_eyt_21_funds_raise" />
+        <item index="0" class="java.lang.String" itemvalue="Python.getBankCard" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests for test_suite_cwd.CWD.test_cwd_02_borrowr_info" />
+        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests for test_add_contract.AddContract.test_08_20Person_contract" />
+        <item index="3" class="java.lang.String" itemvalue="Python.getBank" />
+        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests for test_add_contract.AddContract.test_01_1person_contract" />
       </list>
     </recent_temporary>
   </component>
@@ -1189,7 +1198,7 @@
       <workItem from="1517621079991" duration="20252000" />
       <workItem from="1517667470376" duration="2256000" />
       <workItem from="1517795520465" duration="30782000" />
-      <workItem from="1517829126031" duration="1384000" />
+      <workItem from="1517829126031" duration="1857000" />
     </task>
     <task id="LOCAL-00001" summary="优化py3代码，调试ok">
       <created>1517399445514</created>
@@ -1282,18 +1291,19 @@
       <option name="project" value="LOCAL" />
       <updated>1517822712410</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="增加真实银行卡号随机获取">
+      <created>1517830557826</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1517830557826</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_for_test_add_contract_AddContract_test_08_20Person_contract - 2018.02.05 at 17h 28m 00s.xml">
-      <configuration name="Unittests for test_add_contract.AddContract.test_08_20Person_contract" configurationId="tests" />
-    </history-entry>
     <history-entry file="Unittests_for_test_add_contract_AddContract_test_08_20Person_contract - 2018.02.05 at 19h 30m 12s.xml">
       <configuration name="Unittests for test_add_contract.AddContract.test_08_20Person_contract" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_for_test_eyt_input_data_EYT_test_eyt_21_funds_raise - 2018.02.05 at 16h 56m 54s.xml">
-      <configuration name="Unittests for test_eyt_input_data.EYT.test_eyt_21_funds_raise" configurationId="tests" />
     </history-entry>
     <history-entry file="Unittests_for_test_into_case_IntoCase_test_03_two_borrower - 2018.02.05 at 15h 33m 19s.xml">
       <configuration name="Unittests for test_into_case.IntoCase.test_03_two_borrower" configurationId="tests" />
@@ -1316,9 +1326,15 @@
     <history-entry file="Unittests_for_test_into_case_IntoCase_test_gqt_04_applydata - 2018.02.05 at 15h 57m 04s.xml">
       <configuration name="Unittests for test_into_case.IntoCase.test_gqt_04_applydata" configurationId="tests" />
     </history-entry>
+    <history-entry file="Unittests_for_test_suite_cwd_CWD_test_cwd_02_borrowr_info - 2018.02.05 at 19h 40m 12s.xml">
+      <configuration name="Unittests for test_suite_cwd.CWD.test_cwd_02_borrowr_info" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_suite_cwd_CWD_test_cwd_02_borrowr_info - 2018.02.05 at 19h 41m 15s.xml">
+      <configuration name="Unittests for test_suite_cwd.CWD.test_cwd_02_borrowr_info" configurationId="tests" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="122449000" />
+    <option name="totallyTimeSpent" value="122922000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1331,6 +1347,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1341,7 +1358,7 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="JSON Utils" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19474249" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19474249" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1356,7 +1373,8 @@
       <window_info id="BeanShell Box" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="1.0" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2360515" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="-7" y="146" width="494" height="571" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2360515" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="-7" y="146" width="494" height="571" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32941177" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1366,7 +1384,6 @@
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32941177" sideWeight="0.49356222" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1420,7 +1437,8 @@
     <MESSAGE value="代码优化" />
     <MESSAGE value="优化代码,common.py增加异常处理" />
     <MESSAGE value="优化代码关闭浏览器" />
-    <option name="LAST_COMMIT_MESSAGE" value="优化代码关闭浏览器" />
+    <MESSAGE value="增加真实银行卡号随机获取" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加真实银行卡号随机获取" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1441,20 +1459,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/cases/baseProcess/test_suite_cwd.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2325">
-          <caret line="100" column="39" lean-forward="false" selection-start-line="100" selection-start-column="39" selection-end-line="100" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/getIdNumber.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1075">
-          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/common/IdNumber.py" />
     <entry file="file://$PROJECT_DIR$/config/data_gqt.json">
       <provider selected="true" editor-type-id="text-editor">
@@ -1491,13 +1495,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="463">
           <caret line="320" column="0" lean-forward="false" selection-start-line="320" selection-start-column="0" selection-end-line="320" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/getBankCard.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1758,14 +1755,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/com/login.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://D:/Programs/Python/Python36/Lib/site-packages/python_stdnum-1.8.1-py3.6.egg/stdnum/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1785,28 +1774,31 @@
     <entry file="file://$PROJECT_DIR$/config/getBank.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
-          <caret line="21" column="17" lean-forward="true" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
+          <caret line="21" column="17" lean-forward="false" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/com/contract.py">
+    <entry file="file://$PROJECT_DIR$/common/getBankCard.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="309" column="8" lean-forward="true" selection-start-line="309" selection-start-column="8" selection-end-line="309" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-            <element signature="e#13913#26073#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cases/contract_sigining/test_add_contract.py">
+    <entry file="file://$PROJECT_DIR$/config/bankNum">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="291">
-          <caret line="1013" column="35" lean-forward="true" selection-start-line="1013" selection-start-column="35" selection-end-line="1013" selection-end-column="35" />
+        <state relative-caret-position="240">
+          <caret line="10" column="22" lean-forward="true" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/com/login.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1819,11 +1811,40 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/bankNum">
+    <entry file="file://$PROJECT_DIR$/com/contract.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="12" column="22" lean-forward="true" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
+        <state relative-caret-position="241">
+          <caret line="64" column="58" lean-forward="true" selection-start-line="64" selection-start-column="58" selection-end-line="64" selection-end-column="58" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#13929#26093#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cases/contract_sigining/test_add_contract.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-360">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cases/baseProcess/test_suite_cwd.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="89" column="39" lean-forward="true" selection-start-line="89" selection-start-column="39" selection-end-line="89" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/getBankCard.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="20" column="20" lean-forward="true" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
