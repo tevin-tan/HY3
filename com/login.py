@@ -12,6 +12,7 @@
 '''
 import time
 import json
+import os
 from selenium.common import exceptions as EC
 from com import common
 
@@ -28,7 +29,9 @@ class Login(object):
 		:param env: 环境选择 SIT/UAT
 		'''
 		
-		self.conf_path = "E:/HouseLoanAutoPy3/config/env.json"
+		BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+		self.conf_path = BASE_DIR + "/config/env.json"
+		# print(self.conf_path)
 		with open(self.conf_path, 'r', encoding='utf-8') as f:
 			self.data = json.load(f)
 			self.number = self.data["number"]
@@ -144,7 +147,6 @@ class Login(object):
 				driver.find_element(how, locate).click()
 				time.sleep(1)
 		except EC.NoSuchElementException as e:
-			print(e)
 			raise e
 	
 	def _send_data(self, driver, how, locate="xpath", value=None):
@@ -156,7 +158,6 @@ class Login(object):
 				element.send_keys(value)
 				time.sleep(1)
 		except EC.NoSuchElementException as e:
-			print(e)
 			raise e
 
 

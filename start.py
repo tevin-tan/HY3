@@ -18,7 +18,10 @@ from cases.IntoCases import (
 	test_special_approval
 	)
 
-from cases.contract_sigining import test_more_person_sign
+from cases.contract_sigining import (
+	test_more_person_sign,
+	test_add_contract
+	)
 
 if __name__ == "__main__":
 	
@@ -69,6 +72,8 @@ if __name__ == "__main__":
 			# 签约
 			for i in temp['contract']:
 				suite.addTest(test_more_person_sign.contractSign(i))
+			for i in temp['AddContract']:
+				suite.addTest(test_add_contract.AddContract(i))
 			# 特批
 			for i in temp['SPA']:
 				suite.addTest(test_special_approval.SPA(i))
@@ -76,7 +81,7 @@ if __name__ == "__main__":
 		f.close()
 	except Exception as e:
 		print("Error: can't load file")
-		raise
+		raise e
 	
 	# suite_list = ['cwd', 'eyt', 'xhd', 'gqt', 'IntoCase', 'fallback', 'contract']
 	# 	def run_case(element, case):

@@ -158,7 +158,7 @@ class Contract():
 				"6217582600007330589")
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(bankform) + '"]/section[1]/div[2]/div[8]/input').send_keys(
-				'13891213212')
+				IDCN.createPhone())
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(bankform) + '"]/section[1]/div[3]/div[2]/input[3]').send_keys(u'深圳支行')
 		self.page.driver.find_element_by_xpath(
@@ -261,33 +261,50 @@ class Contract():
 		self.page.driver.find_element_by_xpath('/html/body/div[5]/div[3]/a').click()  # 确认
 	
 	def execute_sign(self):
-		if self.number == 1:
+		# if self.number == 1:
+		# 	self.personal_information()
+		# elif self.number == 2:
+		# 	self.personal_information()
+		# 	self.add_first_person("loanApartPersonForm0", "loanApartBankForm0")
+		# elif self.number == 3:
+		# 	self.personal_information()
+		# 	self.add_first_person("loanApartPersonForm0", "loanApartBankForm0")
+		# 	self.add_other_person("loanApartPersonForm1", "loanApartBankForm1")
+		# elif self.number == 4:
+		# 	self.personal_information()
+		# 	self.add_first_person("loanApartPersonForm0", "loanApartBankForm0")
+		# 	self.add_other_person("loanApartPersonForm1", "loanApartBankForm1")
+		# 	self.add_other_person("loanApartPersonForm2", "loanApartBankForm2")
+		# elif self.number == 5:
+		# 	self.personal_information()
+		# 	self.add_first_person("loanApartPersonForm0", "loanApartBankForm0")
+		# 	self.add_other_person("loanApartPersonForm1", "loanApartBankForm1")
+		# 	self.add_other_person("loanApartPersonForm2", "loanApartBankForm2")
+		# 	self.add_other_person("loanApartPersonForm3", "loanApartBankForm3")
+		# elif self.number == 6:
+		# 	self.personal_information()
+		# 	self.add_first_person("loanApartPersonForm0", "loanApartBankForm0")
+		# 	self.add_other_person("loanApartPersonForm1", "loanApartBankForm1")
+		# 	self.add_other_person("loanApartPersonForm2", "loanApartBankForm2")
+		# 	self.add_other_person("loanApartPersonForm3", "loanApartBankForm3")
+		# 	self.add_other_person("loanApartPersonForm4", "loanApartBankForm4")
+		
+		
+		lf = "loanApartPersonForm"
+		bf = "loanApartBankForm"
+		if self.number == 0 or self.number == 1:
 			self.personal_information()
 		elif self.number == 2:
 			self.personal_information()
-			self.add_first_person("loanApartPersonForm0", "loanApartBankForm0")
-		elif self.number == 3:
+			self.add_first_person(lf + "0", bf + "0")
+		else:
 			self.personal_information()
-			self.add_first_person("loanApartPersonForm0", "loanApartBankForm0")
-			self.add_other_person("loanApartPersonForm1", "loanApartBankForm1")
-		elif self.number == 4:
-			self.personal_information()
-			self.add_first_person("loanApartPersonForm0", "loanApartBankForm0")
-			self.add_other_person("loanApartPersonForm1", "loanApartBankForm1")
-			self.add_other_person("loanApartPersonForm2", "loanApartBankForm2")
-		elif self.number == 5:
-			self.personal_information()
-			self.add_first_person("loanApartPersonForm0", "loanApartBankForm0")
-			self.add_first_person("loanApartPersonForm1", "loanApartBankForm1")
-			self.add_other_person("loanApartPersonForm2", "loanApartBankForm2")
-			self.add_other_person("loanApartPersonForm3", "loanApartBankForm3")
-		elif self.number == 6:
-			self.personal_information()
-			self.add_first_person("loanApartPersonForm0", "loanApartBankForm0")
-			self.add_first_person("loanApartPersonForm1", "loanApartBankForm1")
-			self.add_other_person("loanApartPersonForm2", "loanApartBankForm2")
-			self.add_other_person("loanApartPersonForm3", "loanApartBankForm3")
-			self.add_other_person("loanApartPersonForm4", "loanApartBankForm4")
+			self.add_first_person(lf + "0", bf + "0")
+			count = 1
+			for j in range(self.number, 2, -1):
+				self.add_other_person(lf + str(count), bf + str(count))
+				count = count + 1
+	
 		self.contract_save()
 		self.contract_submit()
 

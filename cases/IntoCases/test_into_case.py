@@ -10,7 +10,7 @@ from com.custom import Log, print_env
 
 
 class IntoCase(unittest.TestCase):
-	'''进件场景'''
+	'''申请录入进件场景'''
 	
 	def setUp(self):
 		try:
@@ -184,8 +184,11 @@ class IntoCase(unittest.TestCase):
 		common.input_customer_borrow_info(self.page, self.evt['data']['custInfoVo'][0])
 		common.input_more_borrower(self.page)
 		# 录入业务基本信息
-		common.input_cwd_bbi_Property_info(self.page, self.evt['data']['applyPropertyInfoVo'][0],
-		                                   self.evt['data']['applyCustCreditInfoVo'][0])
+		common.input_cwd_bbi_Property_info(
+				self.page,
+				self.evt['data']['applyPropertyInfoVo'][0],
+				self.evt['data']['applyCustCreditInfoVo'][0]
+				)
 		
 		# 提交
 		common.submit(self.page)
@@ -204,6 +207,7 @@ class IntoCase(unittest.TestCase):
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
 		common.input_customer_borrow_info(self.page, self.evt['data']['custInfoVo'][0])
+		common.input_more_borrower(self.page)
 		
 		# 3 物业信息
 		common.input_cwd_bbi_Property_info(self.page, self.evt['data']['applyPropertyInfoVo'][0],

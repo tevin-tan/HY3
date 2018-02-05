@@ -132,3 +132,14 @@ SPA:
  - test_01_region_special_approval
  - test_02_manage_special_approval
  - test_03_risk_director_special_approval
+
+AddContract:
+ - test_01_1person_contract
+ - test_02_2Person_contract
+ - test_03_3Person_contract
+ - test_04_4Person_contract
+ - test_05_5Person_contract
+ - test_06_6Person_contract
+ - test_07_7Person_contract
+ - test_08_10Person_contract
+ - test_08_20Person_contract

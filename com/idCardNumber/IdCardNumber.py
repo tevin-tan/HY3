@@ -52,7 +52,7 @@ def getRandomIdNumber(sex=1):
 	idNumber = str(addrId)
 	
 	# 出生日期码
-	start, end = "1960-01-01", "2017-12-30"  # 生日起止日期
+	start, end = "1960-01-01", "2003-12-30"  # 生日起止日期
 	days = (datetime.datetime.strptime(end, "%Y-%m-%d") - datetime.datetime.strptime(start, "%Y-%m-%d")).days + 1
 	birthDays = datetime.datetime.strftime(
 			datetime.datetime.strptime(start, "%Y-%m-%d") + datetime.timedelta(random.randint(0, days)), "%Y%m%d")
