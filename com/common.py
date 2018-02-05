@@ -1,8 +1,8 @@
 # coding:utf-8
 
-'''
+"""
     通用方法
-'''
+"""
 
 import time
 import logging
@@ -19,11 +19,11 @@ import datetime
 
 
 def browser(arg="chrome"):
-	'''
+	"""
 		选择浏览器类型
 	:param arg:
 	:return:
-	'''
+	"""
 	if arg == "ie":
 		driver = webdriver.Firefox()
 	elif arg == "chrome":
@@ -37,12 +37,12 @@ def browser(arg="chrome"):
 
 
 def input_customer_base_info(page, data):
-	'''
+	"""
 		客户基本信息录入
 	:param page: 浏览器对象
 	:param data: 数据字典，录入的基本数据
 	:return:
-	'''
+	"""
 	
 	# 案件录入
 	time.sleep(2)
@@ -86,12 +86,12 @@ def input_customer_base_info(page, data):
 
 
 def input_customer_borrow_info(page, data):
-	'''
+	"""
 		客户基本信息 - 借款人/共贷人/担保人信息
 	:param page 页面
 	:param data 传入的数据
 	:return:
-	'''
+	"""
 	custName = getName()
 	try:
 		page._click_control(page.driver, "xpath", ".//*[@id='tb']/a[1]/span[2]")
@@ -146,12 +146,11 @@ def input_customer_borrow_info(page, data):
 
 # 输入多个借款人（待完善）
 def input_more_borrower(page):
-	'''
+	"""
 		客户基本信息 - 借款人/共贷人/担保人信息
 	:param page 页面
 	:param data 传入的数据
-	:return:
-	'''
+	"""
 	
 	try:
 		page.driver.find_element_by_xpath('//*[@id="tb"]/a[1]/span[2]').click()
@@ -232,11 +231,11 @@ def input_more_borrower(page):
 
 # 业务基本信息- 输入物业信息(Basic business information-Property information)
 def input_bbi_Property_info(page):
-	'''
+	"""
 		输入物业基本信息
 	:param page: 页面对象
 	:return:
-	'''
+	"""
 	# 这步骤很关键，没有选中，则定位不到下面的元素
 	try:
 		t1 = page.driver.find_element_by_class_name("house-head-line")
@@ -343,7 +342,7 @@ def input_bbi_Property_info(page):
 
 
 def input_cwd_bbi_Property_info(page, data, applyCustCreditInfoVo, associated=False, productName=None):
-	'''
+	"""
 		车位贷物业信息录入
 	:param page: 页面对象
 	:param data: 传入的数据对象
@@ -351,7 +350,7 @@ def input_cwd_bbi_Property_info(page, data, applyCustCreditInfoVo, associated=Fa
 	:param associated  关联世联
 	:param productName 过桥通 / 非过桥通
 	:return:
-	'''
+	"""
 	
 	# 这步骤很关键，没有选中，则定位不到下面的元素
 	try:
@@ -506,12 +505,12 @@ def input_cwd_bbi_Property_info(page, data, applyCustCreditInfoVo, associated=Fa
 
 # 申请件查询，获取applyCode
 def get_applycode(page, condition):
-	'''
+	"""
 		获取APPLYCODE
 	:param page:    页面对象
 	:param condition:   录入客户姓名
 	:return:    applyCode
-	'''
+	"""
 	try:
 		# 打开任务中心
 		page._click_control(page.driver, "id", "1DBCBC52791800014989140019301189")
@@ -553,12 +552,12 @@ def get_applycode(page, condition):
 
 # 待处理任务查询
 def query_task(page, condition):
-	'''
+	"""
 		查询待处理任务
 	:param page: 页面对象
 	:param condition: applyCode
 	:return: True/False
-	'''
+	"""
 	
 	try:
 		page.driver.switch_to.default_content()
@@ -596,13 +595,13 @@ def query_task(page, condition):
 
 # 流程监控
 def process_monitor(page, condition, stage=0):
-	'''
+	"""
 		流程监控
 	:param page: 页面
 	:param condition: applyCode
 	:param stage  0,1,2  对应风控、财务、募资
 	:return: 下一个处理人登录 ID
-	'''
+	"""
 	
 	time.sleep(1)
 	page.driver.switch_to.default_content()
@@ -685,14 +684,14 @@ def submit(page):
 
 # 审批审核
 def approval_to_review(page, condition, remark, action=0):
-	'''
+	"""
 		审批审核
 	:param page:    页面对象
 	:param condition:   applyCode
 	:param remark:  审批审核意见
 	:param action   0 通过， 1 回退， 2 取消， 3 拒绝
 	:return:
-	'''
+	"""
 	# 打开任务中心
 	page._click_control(page.driver, "id", "1DBCBC52791800014989140019301189")
 	time.sleep(2)
@@ -770,13 +769,13 @@ def approval_to_review(page, condition, remark, action=0):
 
 # 特批
 def special_approval(page, condition, remark):
-	'''
+	"""
 		审批审核（特批）
 	:param page:    页面对象
 	:param condition:   applyCode
 	:param remark:  审批审核意见
 	:return:
-	'''
+	"""
 	# 打开任务中心
 	page._click_control(page.driver, "id", "1DBCBC52791800014989140019301189")
 	time.sleep(2)
@@ -834,13 +833,13 @@ def special_approval(page, condition, remark):
 
 # 风控审批回退
 def risk_approval_fallback(page, condition, option, remark):
-	'''
+	"""
 		审批审核
 	:param page:    页面对象
 	:param condition:   applyCode
 	:param remark:  审批审核意见
 	:return:
-	'''
+	"""
 	
 	try:
 		# 打开任务中心
@@ -900,14 +899,14 @@ def risk_approval_fallback(page, condition, option, remark):
 
 
 def make_signing(page, condition, rec_bank_info, number=1):
-	'''
+	"""
 		合同打印
 	:param page:    页面对象
 	:param condition:   applyCode
 	:param rec_bank_info:   收款银行
 	:param number：  签约人个数
 	:return:
-	'''
+	"""
 	
 	# 查询待处理任务
 	t1 = _task_search(page, condition)
@@ -1171,12 +1170,12 @@ def make_signing(page, condition, rec_bank_info, number=1):
 
 
 def compliance_audit(page, condition):
-	'''
+	"""
 		合规审查
 	:param page: 页面对象
 	:param condition: applyCode
 	:return:
-	'''
+	"""
 	
 	# 查询待处理任务
 	t1 = _task_search(page, condition)
@@ -1223,12 +1222,12 @@ def compliance_audit(page, condition):
 
 
 def _task_search(page, condition):
-	'''
+	"""
 		待处理任务查询
 	:param page: 页面
 	:param condition:  applyCode
 	:return: 查询表格数据
-	'''
+	"""
 	
 	try:
 		# 打开任务中心
@@ -1264,13 +1263,13 @@ def _task_search(page, condition):
 
 
 def authority_card_transact(page, condition, env="SIT"):
-	'''
+	"""
 		权证办理
 	:param page: 页面
 	:param condition: applyCode
 	:param env 环境选择
 	:return:
-	'''
+	"""
 	
 	# 权证管理
 	try:
@@ -1342,12 +1341,12 @@ def authority_card_transact(page, condition, env="SIT"):
 
 
 def warrant_apply(page, condition):
-	'''
+	"""
 		权证请款
 	:param page: 页面对象
 	:param condition:   applyCode
 	:return:
-	'''
+	"""
 	
 	# 打开任务中心
 	t1 = _task_search(page, condition)
@@ -1396,12 +1395,12 @@ def warrant_apply(page, condition):
 
 
 def finace_transact(page, condition):
-	'''
+	"""
 		财务办理
 	:param page: 页面对象
 	:param condition:   applyCode
 	:return:
-	'''
+	"""
 	
 	# 打开任务中心
 	# 财务放款申请列表
@@ -1446,12 +1445,12 @@ def finace_transact(page, condition):
 
 
 def finace_approve(page, condition, remark):
-	'''
+	"""
 		财务审批
 	:param page: 页面对象
 	:param condition: applyCode
 	:return:
-	'''
+	"""
 	
 	# 财务待处理任务
 	try:
@@ -1499,13 +1498,13 @@ def finace_approve(page, condition, remark):
 
 
 def funds_raise(page, condition, remark):
-	'''
+	"""
 		募资
 	:param page:
 	:param condition:
 	:param remark:
 	:return:
-	'''
+	"""
 	page._click_control(page.driver, "id", "1DBCBC52791800014989140019301189")
 	page.driver.find_element_by_name('/house/commonIndex/financial/toDoList').click()
 	page.driver.switch_to.frame('bTabs_tab_house_commonIndex_financial_toDoList')
@@ -1544,13 +1543,13 @@ def funds_raise(page, condition, remark):
 
 
 def reconsideration(page, applyCode, action=0):
-	'''
+	"""
 		高级经理复议拒绝的单
 	:param page: 页面对象
 	:param applyCode: 申请code
 	:param action: 0 拒绝; 1 复议通过; 2 复议拒绝
 	:return:
-	'''
+	"""
 	
 	page.driver.find_element_by_id('1DCDFBEA96010001A2941A801EA02310').click()
 	# 拒绝队列

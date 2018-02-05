@@ -6,10 +6,11 @@ from com.common import _task_search
 from selenium.common import exceptions as EC
 # import common.getIdNumber as GT
 from com.idCardNumber import IdCardNumber as IDCN
+from config import getBank
 
 
 class Contract():
-	'''合同签约'''
+	"""合同签约"""
 	
 	def __init__(self, page, condition, rec_bank_info, number=1):
 		self.number = number
@@ -50,7 +51,7 @@ class Contract():
 				raise e.msg
 	
 	def personal_information(self):
-		'''主借人基本信息'''
+		"""主借人基本信息"""
 		self.page.driver.find_element_by_class_name("signBaseAndInfo").click()
 		match_str = '//*[starts-with(@id, "signPersonForm")]/'
 		bank_str = '//*[starts-with(@id, "signBankFormperson")]/'
@@ -60,8 +61,10 @@ class Contract():
 		self.page.driver.find_element_by_xpath(match_str + '/table/tbody/tr[2]/td[8]/input').send_keys(
 				u'北京')
 		# 切换选定银行from
+		# self.page.driver.find_element_by_xpath(bank_str + '/section[1]/div[2]/div[6]/input').send_keys(
+		# 		self.rec_bank_info['recBankNum']) # 收款银行账号
 		self.page.driver.find_element_by_xpath(bank_str + '/section[1]/div[2]/div[6]/input').send_keys(
-				self.rec_bank_info['recBankNum'])  # 收款银行账号
+				getBank.getBankCardNumber())  # 收款银行账号
 		self.page.driver.find_element_by_xpath(bank_str + '/section[1]/div[2]/div[8]/input').send_keys(
 				self.rec_bank_info['recPhone'])  # 银行预留电话
 		
@@ -155,7 +158,7 @@ class Contract():
 		# self.page.driver.find_element_by_id('loanApartBankForm0').click()
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(bankform) + '"]/section[1]/div[2]/div[6]/input').send_keys(
-				"6217582600007330589")
+				getBank.getBankCardNumber())
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(bankform) + '"]/section[1]/div[2]/div[8]/input').send_keys(
 				IDCN.createPhone())
@@ -227,7 +230,7 @@ class Contract():
 		# 收扣款银行信息录入
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(bankform) + '"]/section[1]/div[2]/div[6]/input').send_keys(
-				"6217582600007330589")
+				getBank.getBankCardNumber())
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(bankform) + '"]/section[1]/div[2]/div[8]/input').send_keys(
 				IDCN.createPhone())
@@ -304,21 +307,20 @@ class Contract():
 			for j in range(self.number, 2, -1):
 				self.add_other_person(lf + str(count), bf + str(count))
 				count = count + 1
-	
+		
 		self.contract_save()
 		self.contract_submit()
 
 
 def make_signing(page, condition, rec_bank_info, number=1):
-	'''
+	"""
 		合同打印
 	:param page:    页面对象
-	:param frame:   页面iframe
 	:param condition:   applyCode
 	:param rec_bank_info:   收款银行
 	:param number：  签约人个数
 	:return:
-	'''
+	"""
 	
 	# 查询待处理任务
 	t1 = _task_search(page, condition)
@@ -358,7 +360,7 @@ def make_signing(page, condition, rec_bank_info, number=1):
 					u'北京')
 			# 切换选定银行from
 			page.driver.find_element_by_xpath(bank_str + '/section[1]/div[2]/div[6]/input').send_keys(
-					rec_bank_info['recBankNum'])  # 收款银行账号
+					getBank.getBankCardNumber())  # 收款银行账号
 			page.driver.find_element_by_xpath(bank_str + '/section[1]/div[2]/div[8]/input').send_keys(
 					rec_bank_info['recPhone'])  # 银行预留电话
 			
