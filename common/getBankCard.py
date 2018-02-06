@@ -16,6 +16,7 @@ def getBankCardNumber():
 		
 		while True:
 			res = random.choice(temp['Number'])
+			# 判断银行卡号是否有效
 			if luhn.is_valid(res):
 				break
 		# print(res)

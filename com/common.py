@@ -10,20 +10,21 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.action_chains import ActionChains
 from config.locator import loc_cust_info, loc_borrower
-from selenium.common import exceptions as EC
+from selenium.common import exceptions as ec
 from com.custom import getName, Log
 # import common.getIdNumber as GT
-from com.idCardNumber import IdCardNumber as IDCN
+from com.idCardNumber import IdCardNumber as IDCard
 
 import datetime
 
 
 def browser(arg="chrome"):
 	"""
-		选择浏览器类型
-	:param arg:
+         浏览器选择
+	:param 默认chrome
 	:return:
 	"""
+	
 	if arg == "ie":
 		driver = webdriver.Firefox()
 	elif arg == "chrome":
@@ -57,12 +58,12 @@ def input_customer_base_info(page, data):
 		# 切换表单(id="myIframe")或者(name="framing")
 		# page.driver.switch_to.frame("myIframe") #切换到第一个frame
 		page.driver.switch_to.frame("bTabs_tab_house_commonIndex_applyIndex_index")  # 切换到房贷申请录入iframe
-	except EC.NoSuchFrameException as e:
+	except ec.NoSuchFrameException as e:
 		raise e.msg
 	try:
 		Select(page.driver.find_element_by_xpath(".//*[@id='apply_module_product_id']")).select_by_visible_text(
 				data["productName"])  # 产品
-	except EC.ElementNotVisibleException as e:
+	except ec.ElementNotVisibleException as e:
 		raise e.msg
 	
 	try:
@@ -77,7 +78,7 @@ def input_customer_base_info(page, data):
 		page._send_data(page.driver, "id", loc_cust_info['khjlgh_id'], data["saleCode"])  # 客户经理工号
 		page._send_data(page.driver, "id", loc_cust_info['lsyjsr_id'], data["monthIncome"])  # 流水月均收入
 		page._send_data(page.driver, "name", loc_cust_info['zyyjbz_name'], data["checkApprove"])  # 专员意见备注
-	except EC.NoSuchElementException as e:
+	except ec.NoSuchElementException as e:
 		raise e.msg
 	
 	# 保存
@@ -100,7 +101,7 @@ def input_customer_borrow_info(page, data):
 		page.driver.find_element_by_xpath(loc_borrower['jkrxm']).send_keys(custName)  # 借款人姓名
 		time.sleep(1)
 		# page._send_data(page.driver, "xpath", loc_borrower['sfzhm'], data["idNum"])  # 身份证号码
-		page._send_data(page.driver, "xpath", loc_borrower['sfzhm'], IDCN.getRandomIdNumber()[0])  # 身份证号码
+		page._send_data(page.driver, "xpath", loc_borrower['sfzhm'], IDCard.getRandomIdNumber()[0])  # 身份证号码
 		# 受教育程度
 		page._click_control(page.driver, "id", loc_borrower['sjycd']['locate'])
 		page._click_control(page.driver, "id", loc_borrower['sjycd']['value'])
@@ -111,9 +112,9 @@ def input_customer_borrow_info(page, data):
 		page._click_control(page.driver, "id", loc_borrower['hyzk']['value'])
 		
 		# page._send_data(page.driver, "id", loc_borrower['jtdzxx'], data['address'])  # 家庭地址信息
-		page._send_data(page.driver, "id", loc_borrower['jtdzxx'], IDCN.getRandomIdNumber()[1])  # 家庭地址信息
+		page._send_data(page.driver, "id", loc_borrower['jtdzxx'], IDCard.getRandomIdNumber()[1])  # 家庭地址信息
 		# page._send_data(page.driver, "xpath", loc_borrower['xxfs'], data["phone"])  # 联系方式
-		page._send_data(page.driver, "xpath", loc_borrower['xxfs'], IDCN.createPhone())  # 联系方式
+		page._send_data(page.driver, "xpath", loc_borrower['xxfs'], IDCard.createPhone())  # 联系方式
 		page._send_data(page.driver, "xpath", loc_borrower['dwmc'], data["companyName"])  # 单位名称
 		
 		# 公司规模
@@ -139,7 +140,7 @@ def input_customer_borrow_info(page, data):
 		# 临时保存
 		save(page)
 		return True, custName
-	except EC.NoSuchElementException as e:
+	except ec.NoSuchElementException as e:
 		Log().error(e)
 		raise e.msg
 
@@ -161,7 +162,7 @@ def input_more_borrower(page):
 		# IDNUMBER
 		page.driver.find_element_by_xpath(
 				'//*[@id="datagrid-row-r1-2-1"]/td[6]/div/table/tbody/tr/td/input').send_keys(
-				IDCN.getRandomIdNumber()[0])
+				IDCard.getRandomIdNumber()[0])
 		time.sleep(1)
 		# 受教育程度
 		page.driver.find_element_by_id('_easyui_textbox_input14').click()
@@ -170,10 +171,10 @@ def input_more_borrower(page):
 		page.driver.find_element_by_id('_easyui_textbox_input15').click()
 		page.driver.find_element_by_id('_easyui_combobox_i9_0').click()
 		# 家庭住址信息
-		page.driver.find_element_by_id('_easyui_textbox_input16').send_keys(IDCN.getRandomIdNumber()[1])
+		page.driver.find_element_by_id('_easyui_textbox_input16').send_keys(IDCard.getRandomIdNumber()[1])
 		# 联系方式
 		page.driver.find_element_by_xpath(
-				'//*[@id="datagrid-row-r1-2-1"]/td[11]/div/table/tbody/tr/td/input').send_keys(IDCN.createPhone())
+				'//*[@id="datagrid-row-r1-2-1"]/td[11]/div/table/tbody/tr/td/input').send_keys(IDCard.createPhone())
 		time.sleep(1)
 		# 单位名称
 		page.driver.find_element_by_xpath(
@@ -201,7 +202,7 @@ def input_more_borrower(page):
 		
 		# 确认
 		page.driver.find_element_by_xpath('//*[@id="tb"]/a[3]/span[2]').click()
-	except EC.NoSuchElementException as e:
+	except ec.NoSuchElementException as e:
 		raise e.msg
 	
 	# ----------------------------------------------------------------------
@@ -225,7 +226,7 @@ def input_more_borrower(page):
 		# 保存
 		page.driver.find_element_by_id('apply_module_apply_save').click()
 		page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a').click()
-	except EC.NoSuchElementException as e:
+	except ec.NoSuchElementException as e:
 		raise e.msg
 
 
@@ -242,7 +243,7 @@ def input_bbi_Property_info(page):
 		t1.click()
 		page.driver.execute_script("window.scrollTo(1600, 0)")  # 页面滑动到顶部
 		page.driver.find_element_by_link_text(u"业务基本信息").click()
-	except EC.ElementNotVisibleException as e:
+	except ec.ElementNotVisibleException as e:
 		Log().error(e.msg)
 		raise e
 	
@@ -273,7 +274,7 @@ def input_bbi_Property_info(page):
 			Select(page.driver.find_element_by_name("propertyAddressDistinct")).select_by_visible_text(u"山海关区")
 			page.driver.find_element_by_id("propertyAddressDetail").clear()
 			page.driver.find_element_by_id("propertyAddressDetail").send_keys(u"不知道在哪个地方")
-		except EC.ElementNotVisibleException as e:
+		except ec.ElementNotVisibleException as e:
 			raise e.msg
 		
 		page.driver.find_element_by_name("evaluationSumAmount").clear()
@@ -337,7 +338,7 @@ def input_bbi_Property_info(page):
 		page.driver.find_element_by_name("riskRemark").send_keys(u"无异常")
 		# 保存
 		save(page)
-	except EC.NoSuchElementException as e:
+	except ec.NoSuchElementException as e:
 		raise e.msg
 
 
@@ -358,7 +359,7 @@ def input_cwd_bbi_Property_info(page, data, applyCustCreditInfoVo, associated=Fa
 		t1.click()
 		page.driver.execute_script("window.scrollTo(1600, 0)")  # 页面滑动到顶部
 		page.driver.find_element_by_link_text(u"业务基本信息").click()
-	except EC.ElementNotVisibleException as e:
+	except ec.ElementNotVisibleException as e:
 		Log().error(e.msg)
 		return False
 	
@@ -498,7 +499,7 @@ def input_cwd_bbi_Property_info(page, data, applyCustCreditInfoVo, associated=Fa
 		# 保存
 		save(page)
 		return True
-	except EC.NoSuchElementException as e:
+	except ec.NoSuchElementException as e:
 		Log().error(e.msg)
 		return False
 
@@ -519,12 +520,12 @@ def get_applycode(page, condition):
 		# page.driver.find_element_by_xpath("/html/body/header/ul/li[2]/ul/li[4]").click()
 		page.driver.find_element_by_name('/house/commonIndex/applySearch/index').click()
 		time.sleep(2)
-	except EC.ElementNotVisibleException as e:
+	except ec.ElementNotVisibleException as e:
 		raise e
 	try:
 		# 切换iframe 申请件查询
 		page.driver.switch_to.frame("bTabs_tab_house_commonIndex_applySearch_index")
-	except EC.NoSuchFrameException as e:
+	except ec.NoSuchFrameException as e:
 		raise e.msg
 	
 	try:
@@ -539,7 +540,7 @@ def get_applycode(page, condition):
 		time.sleep(1)
 		# 第一个申请编号
 		t1 = page.driver.find_element_by_xpath("//*[@id='datagrid-row-r2-2-0']/td[9]")
-	except EC.NoSuchFrameException as e:
+	except ec.NoSuchFrameException as e:
 		raise e.msg
 	
 	if t1:
@@ -571,7 +572,7 @@ def query_task(page, condition):
 		try:
 			# 切换iframe 待处理任务
 			page.driver.switch_to.frame("bTabs_tab_house_commonIndex_todoList")
-		except EC.NoSuchFrameException as e:
+		except ec.NoSuchFrameException as e:
 			raise e.msg
 		# 打开表单
 		time.sleep(2)
@@ -584,7 +585,7 @@ def query_task(page, condition):
 		page.driver.find_element_by_xpath("/html/body/div[1]/div[1]/div[2]/a[1]/span").click()
 		time.sleep(2)
 		t1 = page.driver.find_element_by_xpath("//*[@id='datagrid-row-r2-2-0']/td[9]")
-	except EC.NoSuchFrameException as e:
+	except ec.NoSuchFrameException as e:
 		raise e.msg
 	
 	if not t1.text:
@@ -863,7 +864,7 @@ def risk_approval_fallback(page, condition, option, remark):
 		time.sleep(1)
 		t1 = page.driver.find_element_by_xpath("//*[@id='datagrid-row-r2-2-0']/td[3]")
 		time.sleep(2)
-	except EC.NoSuchElementException as e:
+	except ec.NoSuchElementException as e:
 		raise e.msg
 	if not t1.text:
 		return False
@@ -894,7 +895,7 @@ def risk_approval_fallback(page, condition, option, remark):
 			time.sleep(2)
 			page.driver.find_element_by_xpath("/html/body/div[5]/div[3]/a").click()
 			return True
-		except EC.NoSuchElementException as e:
+		except ec.NoSuchElementException as e:
 			raise e.msg
 
 
@@ -909,7 +910,7 @@ def make_signing(page, condition, rec_bank_info, number=1):
 	"""
 	
 	# 查询待处理任务
-	t1 = _task_search(page, condition)
+	t1 = task_search(page, condition)
 	time.sleep(1)
 	if not t1.text:
 		return False
@@ -1178,7 +1179,7 @@ def compliance_audit(page, condition):
 	"""
 	
 	# 查询待处理任务
-	t1 = _task_search(page, condition)
+	t1 = task_search(page, condition)
 	if not t1.text:
 		Log().error("can't found the task in the taskList")
 		return False
@@ -1221,7 +1222,7 @@ def compliance_audit(page, condition):
 	return True
 
 
-def _task_search(page, condition):
+def task_search(page, condition):
 	"""
 		待处理任务查询
 	:param page: 页面
@@ -1236,13 +1237,13 @@ def _task_search(page, condition):
 		# 待处理任务
 		page.driver.find_element_by_name("/house/commonIndex/todoList").click()
 		time.sleep(2)
-	except EC.NoSuchElementException as e:
+	except ec.NoSuchElementException as e:
 		raise e.msg
 	try:
 		# 切换iframe
 		page.driver.switch_to.frame('bTabs_tab_house_commonIndex_todoList')
 	# page.driver.switch_to.frame(frame)
-	except EC.NoSuchFrameException as e:
+	except ec.NoSuchFrameException as e:
 		raise e.msg
 	try:
 		page.driver.find_element_by_id("frmQuery").click()
@@ -1258,7 +1259,7 @@ def _task_search(page, condition):
 		time.sleep(1)
 		res = page.driver.find_element_by_xpath("//*[@id='datagrid-row-r2-2-0']/td[3]")
 		return res
-	except EC.NoSuchElementException as e:
+	except ec.NoSuchElementException as e:
 		raise e.msg
 
 
@@ -1281,12 +1282,12 @@ def authority_card_transact(page, condition, env="SIT"):
 		time.sleep(1)
 		page.driver.find_element_by_name("/house/commonIndex/warrantManageList").click()
 		time.sleep(2)
-	except EC.NoSuchElementException as e:
+	except ec.NoSuchElementException as e:
 		raise e
 	try:
 		# 切换iframe
 		page.driver.switch_to.frame('bTabs_tab_house_commonIndex_warrantManageList')
-	except EC.NoSuchFrameException as e:
+	except ec.NoSuchFrameException as e:
 		raise e.msg
 	try:
 		# 点击查询按钮
@@ -1301,7 +1302,7 @@ def authority_card_transact(page, condition, env="SIT"):
 		time.sleep(2)
 		res = page.driver.find_element_by_xpath('//*[@id="datagrid-row-r1-2-0"]/td[6]/div')
 		time.sleep(1)
-	except EC.ElementNotVisibleException as e:
+	except ec.ElementNotVisibleException as e:
 		raise e.msg
 	if res.text:
 		res.click()
@@ -1334,7 +1335,7 @@ def authority_card_transact(page, condition, env="SIT"):
 			time.sleep(1)
 			page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a').click()
 			return True
-		except EC.NoSuchElementException as e:
+		except ec.NoSuchElementException as e:
 			raise e.msg
 	else:
 		return False
@@ -1349,7 +1350,7 @@ def warrant_apply(page, condition):
 	"""
 	
 	# 打开任务中心
-	t1 = _task_search(page, condition)
+	t1 = task_search(page, condition)
 	if not t1.text:
 		return False
 	else:
@@ -1358,7 +1359,7 @@ def warrant_apply(page, condition):
 		ActionChains(page.driver).double_click(t1).perform()
 		try:
 			page.driver.switch_to.frame("myIframeImage1")  # 切换iframe
-		except EC.NoSuchFrameException  as e:
+		except ec.NoSuchFrameException  as e:
 			raise e.msg
 		
 		try:
@@ -1390,7 +1391,7 @@ def warrant_apply(page, condition):
 			
 			page.driver.quit()
 			return True
-		except EC.NoSuchElementException as e:
+		except ec.NoSuchElementException as e:
 			raise e.msg
 
 
@@ -1420,7 +1421,7 @@ def finace_transact(page, condition):
 		page.driver.find_element_by_xpath("/html/body/div[1]/div[1]/div[2]/a[1]/span").click()
 		time.sleep(1)
 		res = page.driver.find_element_by_xpath('//*[@id="datagrid-row-r1-2-0"]/td[5]/div')
-	except EC.NoSuchElementException as e:
+	except ec.NoSuchElementException as e:
 		raise e.msg
 	if not res.text:
 		return False
@@ -1430,7 +1431,7 @@ def finace_transact(page, condition):
 		time.sleep(2)
 		try:
 			page.driver.switch_to.frame('myIframeImage1')
-		except EC.NoSuchFrameException as  e:
+		except ec.NoSuchFrameException as  e:
 			raise e.msg
 		page.driver.find_element_by_name('preLoaningDate').send_keys(str(datetime.date.today()))
 		time.sleep(1)
@@ -1459,7 +1460,7 @@ def finace_approve(page, condition, remark):
 		page.driver.find_element_by_name('/house/commonIndex/financial/toDoList').click()
 		try:
 			page.driver.switch_to.frame('bTabs_tab_house_commonIndex_financial_toDoList')
-		except EC.NoSuchFrameException as e:
+		except ec.NoSuchFrameException as e:
 			raise e.msg
 		
 		# 选定申请编号搜索框
@@ -1473,7 +1474,7 @@ def finace_approve(page, condition, remark):
 		page.driver.find_element_by_xpath("/html/body/div[1]/div[1]/div[2]/a[1]/span").click()
 		time.sleep(1)
 		res = page.driver.find_element_by_xpath('//*[@id="datagrid-row-r1-2-0"]/td[7]/div')
-	except EC.ElementNotVisibleException as e:
+	except ec.ElementNotVisibleException as e:
 		raise e.msg
 	
 	if res.text == condition:

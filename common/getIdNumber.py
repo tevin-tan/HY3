@@ -1,15 +1,15 @@
-'''
+"""
 	生成身份证号
 	生成手机号
-'''
+"""
 import random
 import datetime
 from datetime import date
 from datetime import timedelta
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-DC_PATH = BASE_DIR + "/common/districtcode.txt"
+base_dir = os.path.dirname(os.path.dirname(__file__))
+DC_PATH = base_dir + "/common/districtcode.txt"
 
 
 # 随机生成手机号码
@@ -41,7 +41,7 @@ def getdistrictcode():
 
 
 def getValidateCheckout(id17):
-	'''获得校验码算法'''
+	"""获得校验码算法"""
 	weight = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2]  # 十七位数字本体码权重
 	validate = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2']  # mod11,对应校验码字符值
 	
@@ -67,7 +67,7 @@ def gennerator():
 	id = id + str(checkOut)
 	return id
 	
-	'''
+	"""
 		count = 0
 		weight = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2]  # 权重项
 		checkcode = {
@@ -76,7 +76,7 @@ def gennerator():
 		for i in range(0, len(id)):
 			count = count + int(id[i]) * weight[i]
 			id = id + checkcode[str(count % 11)]  # 算出校验码
-	'''
+	"""
 	
 	return id
 
@@ -85,7 +85,7 @@ print(createPhone())
 print(gennerator())
 
 # Todo
-'''
+"""
 
 def getRandomIdNumber(sex=1):
 	#产生随机可用身份证号，sex = 1表示男性，sex = 0表示女性
@@ -113,4 +113,4 @@ def getRandomIdNumber(sex=1):
 	idNumber = idNumber + str(checkOut)
 	return idNumber, addrName, addrId, birthDays, sex, checkOut
 
-'''
+"""

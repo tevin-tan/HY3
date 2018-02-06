@@ -13,7 +13,7 @@
 import time
 import json
 import os
-from selenium.common import exceptions as EC
+from selenium.common import exceptions as ec
 from com import common
 
 
@@ -29,8 +29,8 @@ class Login(object):
 		:param env: 环境选择 SIT/UAT
 		"""
 		
-		BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-		self.conf_path = BASE_DIR + "/config/env.json"
+		base_dir = os.path.dirname(os.path.dirname(__file__))
+		self.conf_path = base_dir + "/config/env.json"
 		# print(self.conf_path)
 		with open(self.conf_path, 'r', encoding='utf-8') as f:
 			self.data = json.load(f)
@@ -69,7 +69,7 @@ class Login(object):
 			self.driver.find_element_by_name(loc).clear()
 			self.driver.find_element_by_name(loc).send_keys(name)
 			return True
-		except EC.NoSuchElementException as e:
+		except ec.NoSuchElementException as e:
 			print(e)
 			return False
 	
@@ -87,7 +87,7 @@ class Login(object):
 	def is_element_present(self, how, what):
 		try:
 			self.driver.find_element(by=how, value=what)
-		except EC.NoSuchElementException as e:
+		except ec.NoSuchElementException as e:
 			print(e.msg)
 			return False
 		return True
@@ -95,7 +95,7 @@ class Login(object):
 	def is_alert_present(self):
 		try:
 			self.driver.switch_to_alert()
-		except EC.NoAlertPresentException as e:
+		except ec.NoAlertPresentException as e:
 			print(e.msg)
 			return False
 		return True
@@ -150,7 +150,7 @@ class Login(object):
 			if self.is_element_present(how, locate):
 				driver.find_element(how, locate).click()
 				time.sleep(1)
-		except EC.NoSuchElementException as e:
+		except ec.NoSuchElementException as e:
 			raise e
 	
 	def _send_data(self, driver, how, locate="xpath", value=None):
@@ -161,7 +161,7 @@ class Login(object):
 				element.click()
 				element.send_keys(value)
 				time.sleep(1)
-		except EC.NoSuchElementException as e:
+		except ec.NoSuchElementException as e:
 			raise e
 
 
