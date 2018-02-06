@@ -1,5 +1,5 @@
 # coding:utf-8
-'''
+"""
 	Date： 2017-12-16
 	Author： Tansx
 	
@@ -9,7 +9,7 @@
 	2. 实现SIT/UAT环境切换
 	3. 实现分公司切换
 	*****************************************
-'''
+"""
 import time
 import json
 import os
@@ -18,16 +18,16 @@ from com import common
 
 
 class Login(object):
-	'''
+	"""
 		登录页面
-	'''
+	"""
 	
-	def __init__(self, username='xn018170', env="SIT"):
-		'''
+	def __init__(self, username=None, env="SIT"):
+		"""
 		
 		:param username: 登录用户名
 		:param env: 环境选择 SIT/UAT
-		'''
+		"""
 		
 		BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 		self.conf_path = BASE_DIR + "/config/env.json"
@@ -40,6 +40,7 @@ class Login(object):
 		# 环境SIT/UAT
 		if self.data["enviroment"]:
 			self.env = self.data["enviroment"]
+			self.username = self.data[self.env]['company'][self.number]['Commissioner']['user']
 		else:
 			self.env = env
 		
@@ -49,18 +50,21 @@ class Login(object):
 		self.driver.maximize_window()
 		self.open()
 		# self.type_username(self.user_info['locate']["loc_name"], self.user_info['auth']["username"])
-		self.type_username(self.user_info['locate']["loc_name"], username)
+		if username is None:
+			self.type_username(self.user_info['locate']["loc_name"], self.username)
+		else:
+			self.type_username(self.user_info['locate']["loc_name"], username)
 		self.type_password(self.user_info['locate']["loc_password"], self.user_info['auth']["password"])
 		self.type_submit(self.user_info['locate']["loc_button"])
 		self.driver.implicitly_wait(30)
 		self.accept_next_alert = True
 	
 	def open(self):
-		'''打开特定Url'''
+		"""打开特定Url"""
 		self.driver.get(self.url)
 	
 	def type_username(self, loc, name):
-		'''输入用户名'''
+		"""输入用户名"""
 		try:
 			self.driver.find_element_by_name(loc).clear()
 			self.driver.find_element_by_name(loc).send_keys(name)
@@ -70,7 +74,7 @@ class Login(object):
 			return False
 	
 	def type_password(self, loc, password):
-		'''输入密码'''
+		"""输入密码"""
 		self.driver.find_element_by_name(loc).clear()
 		self.driver.find_element_by_name(loc).send_keys(password)
 	
@@ -97,10 +101,10 @@ class Login(object):
 		return True
 	
 	def close_alert_and_get_its_text(self):
-		'''
+		"""
 			关闭弹框
 		:return:
-		'''
+		"""
 		try:
 			alert = self.driver.switch_to_alert()
 			alert_text = alert.text
@@ -114,12 +118,12 @@ class Login(object):
 	
 	# 登录参数
 	def init_params(self, env="SIT", n=0):
-		'''
+		"""
 		
 		:param env: SIT 或者UAT 环境
 		:param n: 分公司，0： 广州分公司； 1： 长沙分公司
 		:return:
-		'''
+		"""
 		
 		with open(self.conf_path, 'r', encoding='utf-8') as fd:
 			data = json.load(fd)

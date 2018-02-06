@@ -83,27 +83,40 @@ if __name__ == "__main__":
 		print("Error: can't load file")
 		raise e
 	
-	# suite_list = ['cwd', 'eyt', 'xhd', 'gqt', 'IntoCase', 'fallback', 'contract']
-	# 	def run_case(element, case):
-	# 		if element is not None:
-	# 			for i in temp[element]:
-	# 				suite.addTest(case(i))
-	#
-	# 	for e in suite_list:
-	# 		if e == 'cwd':
-	# 			run_case(e, test_suite_cwd.CWD)
-	# 		elif e == 'eyt':
-	# 			run_case(e, test_eyt_input_data.EYT)
-	# 		elif e == 'xhd':
-	# 			run_case(e, test_xhd_input_data.XHD)
-	# 		elif e == 'gqt':
-	# 			run_case(e, test_gqt_input_data.GQT)
-	# 		elif e == 'IntoCase':
-	# 			run_case(e, test_into_case.IntoCase)
-	# 		elif e == 'fallback':
-	# 			run_case(e, test_fallback.fallback)
-	# 		elif e == 'contract':
-	# 			run_case(e, test_more_person_sign.contractSign)
+	suite_list = [
+		'cwd',  # 车位贷
+		'eyt',  # E押通
+		'xhd',  # 循环贷
+		'gqt',  # 过桥通
+		'IntoCase',  # 申请录入进件场景
+		'fallback',  # 回退场景
+		'contract',  # 合同签约
+		'AddContract',  # 添加拆借人签约
+		"SPA",  # 特批
+		]
+	
+	
+	def run_case(element, case):
+		if element is not None:
+			for i in temp[element]:
+				suite.addTest(case(i))
+	
+	
+	for e in suite_list:
+		if e == 'cwd':
+			run_case(e, test_suite_cwd.CWD)
+		elif e == 'eyt':
+			run_case(e, test_eyt_input_data.EYT)
+		elif e == 'xhd':
+			run_case(e, test_xhd_input_data.XHD)
+		elif e == 'gqt':
+			run_case(e, test_gqt_input_data.GQT)
+		elif e == 'IntoCase':
+			run_case(e, test_into_case.IntoCase)
+		elif e == 'fallback':
+			run_case(e, test_fallback.fallback)
+		elif e == 'contract':
+			run_case(e, test_more_person_sign.contractSign)
 	
 	# 定义测试报告
 	runner = HTMLTestRunner(stream=fp, title='测试报告', description='用例执行情况:')
