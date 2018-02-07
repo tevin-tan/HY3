@@ -8,7 +8,7 @@ from com.custom import Log, enviroment_change
 
 
 class AddContract(unittest.TestCase):
-	"""多借款人签约"""
+	'''多借款人签约'''
 	
 	def setUp(self):
 		try:
@@ -48,10 +48,10 @@ class AddContract(unittest.TestCase):
 			self.next_user_id = next_id
 			self.log.info("下一步处理人:" + next_id)
 			# 当前用户退出系统
-			page.driver.quit()
+			self.page.driver.quit()
 	
 	def test_01_1person_contract(self):
-		"""单人签约"""
+		'''单人签约'''
 		
 		# ---------------------------------------------------------------------------------
 		#                   1. 申请录入
@@ -81,7 +81,6 @@ class AddContract(unittest.TestCase):
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
-			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
@@ -170,7 +169,7 @@ class AddContract(unittest.TestCase):
 		contract.Contract(page, self.applyCode, rec_bank_info).execute_sign()
 	
 	def test_02_2Person_contract(self):
-		"""双人签约"""
+		'''双人签约'''
 		self.data['applyVo']['applyAmount'] = 400000
 		# ---------------------------------------------------------------------------------
 		#                   1. 申请录入
@@ -200,7 +199,6 @@ class AddContract(unittest.TestCase):
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
-			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
@@ -289,7 +287,7 @@ class AddContract(unittest.TestCase):
 		contract.Contract(page, self.applyCode, rec_bank_info, 2)
 	
 	def test_03_3Person_contract(self):
-		"""三人签约"""
+		'''三人签约'''
 		self.data['applyVo']['applyAmount'] = 600000
 		
 		# ---------------------------------------------------------------------------------
@@ -320,7 +318,6 @@ class AddContract(unittest.TestCase):
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
-			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
@@ -409,7 +406,7 @@ class AddContract(unittest.TestCase):
 		contract.Contract(page, self.applyCode, rec_bank_info, 3)
 	
 	def test_04_4Person_contract(self):
-		"""四人签约"""
+		'''四人签约'''
 		
 		self.data['applyVo']['applyAmount'] = 800000
 		# ---------------------------------------------------------------------------------
@@ -440,7 +437,6 @@ class AddContract(unittest.TestCase):
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
-			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
@@ -529,7 +525,7 @@ class AddContract(unittest.TestCase):
 		contract.Contract(page, self.applyCode, rec_bank_info, 4).execute_sign()
 	
 	def test_05_5Person_contract(self):
-		"""五人签约"""
+		'''五人签约'''
 		
 		self.data['applyVo']['applyAmount'] = 1000000
 		# ---------------------------------------------------------------------------------
@@ -560,7 +556,6 @@ class AddContract(unittest.TestCase):
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
-			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
@@ -649,7 +644,7 @@ class AddContract(unittest.TestCase):
 		contract.Contract(page, self.applyCode, rec_bank_info, 5).execute_sign()
 	
 	def test_06_6Person_contract(self):
-		"""六人签约"""
+		'''六人签约'''
 		self.data['applyVo']['applyAmount'] = 1200000
 		# ---------------------------------------------------------------------------------
 		#                   1. 申请录入
@@ -679,7 +674,6 @@ class AddContract(unittest.TestCase):
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
-			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
@@ -768,7 +762,7 @@ class AddContract(unittest.TestCase):
 		contract.Contract(page, self.applyCode, rec_bank_info, 6).execute_sign()
 	
 	def test_07_7Person_contract(self):
-		"""七人签约"""
+		'''七人签约'''
 		self.data['applyVo']['applyAmount'] = 1400000
 		# ---------------------------------------------------------------------------------
 		#                   1. 申请录入
@@ -798,7 +792,6 @@ class AddContract(unittest.TestCase):
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
-			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
@@ -887,7 +880,7 @@ class AddContract(unittest.TestCase):
 		contract.Contract(page, self.applyCode, rec_bank_info, 7).execute_sign()
 	
 	def test_08_10Person_contract(self):
-		"""10人签约"""
+		'''10人签约'''
 		
 		self.data['applyVo']['applyAmount'] = 2000000
 		# ---------------------------------------------------------------------------------
@@ -918,7 +911,6 @@ class AddContract(unittest.TestCase):
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
-			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
@@ -1006,8 +998,8 @@ class AddContract(unittest.TestCase):
 		res = contract.Contract(page, self.applyCode, rec_bank_info, 10)
 		res.execute_sign()
 	
-	def test_08_20Person_contract(self):
-		"""20人签约"""
+	def test_09_20Person_contract(self):
+		'''20人签约'''
 		
 		self.data['applyVo']['applyAmount'] = 4000000
 		# ---------------------------------------------------------------------------------
@@ -1038,7 +1030,6 @@ class AddContract(unittest.TestCase):
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
-			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
