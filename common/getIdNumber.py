@@ -65,7 +65,6 @@ def gennerator():
 	
 	checkOut = getValidateCheckout(id)
 	id = id + str(checkOut)
-	return id
 	
 	"""
 		count = 0
@@ -79,7 +78,6 @@ def gennerator():
 	"""
 	
 	return id
-
 
 print(createPhone())
 print(gennerator())

@@ -999,7 +999,8 @@ class AddContract(unittest.TestCase):
 		res.execute_sign()
 	
 	def test_09_20Person_contract(self):
-		'''20人签约'''
+		'''20人签约
+		'''
 		
 		self.data['applyVo']['applyAmount'] = 4000000
 		# ---------------------------------------------------------------------------------

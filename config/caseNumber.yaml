@@ -1,25 +1,25 @@
 cwd:
  - test_cwd_01_base_info
-# - test_cwd_02_borrowr_info
-# - test_cwd_03_Property_info
-# - test_cwd_04_applydata
-# - test_cwd_05_get_applyCode
-# - test_cwd_06_show_task
-# - test_cwd_07_process_monitor
-# - test_cwd_08_branch_supervisor_approval
-# - test_cwd_09_branch_manager_approval
-# - test_cwd_10_regional_prereview
-# - test_cwd_11_manager_approval
-# - test_cwd_12_contract_signing
-# - test_cwd_13_compliance_audit
-# - test_cwd_14_authority_card_member_transact
-# - test_cwd_15_warrant_apply
-# - test_cwd_16_finace_transact
-# - test_cwd_17_finace_approve_branch_manager
-# - test_cwd_18_finace_approve_risk_control_manager
-# - test_cwd_19_finace_approve_financial_accounting
-# - test_cwd_20_finace_approve_financial_manager
-# - test_cwd_21_funds_raise
+ - test_cwd_02_borrowr_info
+ - test_cwd_03_Property_info
+ - test_cwd_04_applydata
+ - test_cwd_05_get_applyCode
+ - test_cwd_06_show_task
+ - test_cwd_07_process_monitor
+ - test_cwd_08_branch_supervisor_approval
+ - test_cwd_09_branch_manager_approval
+ - test_cwd_10_regional_prereview
+ - test_cwd_11_manager_approval
+ - test_cwd_12_contract_signing
+ - test_cwd_13_compliance_audit
+ - test_cwd_14_authority_card_member_transact
+ - test_cwd_15_warrant_apply
+ - test_cwd_16_finace_transact
+ - test_cwd_17_finace_approve_branch_manager
+ - test_cwd_18_finace_approve_risk_control_manager
+ - test_cwd_19_finace_approve_financial_accounting
+ - test_cwd_20_finace_approve_financial_manager
+ - test_cwd_21_funds_raise
 
 eyt:
  - test_eyt_01_base_info
