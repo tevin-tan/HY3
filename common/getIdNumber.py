@@ -65,7 +65,6 @@ def gennerator():
 	
 	checkOut = getValidateCheckout(id)
 	id = id + str(checkOut)
-	return id
 	
 	"""
 		count = 0
