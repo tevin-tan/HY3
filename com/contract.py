@@ -1,7 +1,7 @@
 import time
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.action_chains import ActionChains
-from com.custom import getName
+from com.custom import get_name
 from com.common import task_search
 from selenium.common import exceptions as EC
 # import common.getIdNumber as GT
@@ -101,14 +101,14 @@ class Contract():
 	# 拆借人银行信息录入
 	def add_first_person(self, personform, bankform):
 		
-		custName = getName()
+		cust_name = get_name()
 		self.page.driver.find_element_by_link_text(u"拆借人信息").click()
 		self.page.driver.find_element_by_id('addLoanApartPerson').click()
 		self.page.driver.find_element_by_id('apply_loanApart_info').click()
 		self.page.driver.find_element_by_id("loanApartPersonForm0").click()
 		# name
 		self.page.driver.find_element_by_xpath(
-				'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[2]/input').send_keys(custName)
+				'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[2]/input').send_keys(cust_name)
 		# phone
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[4]/input').send_keys(
@@ -176,13 +176,13 @@ class Contract():
 	
 	# 添加其他拆借人
 	def add_other_person(self, personform, bankform):
-		custName = getName()
+		cust_name = get_name()
 		self.page.driver.find_element_by_id('addLoanApartPerson').click()
 		self.page.driver.find_element_by_id(str(personform)).click()
 		
 		# name
 		self.page.driver.find_element_by_xpath(
-				'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[2]/input').send_keys(custName)
+				'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[2]/input').send_keys(cust_name)
 		# phone
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[4]/input').send_keys(IDCN.createPhone())

@@ -54,7 +54,7 @@ class IntoCase(unittest.TestCase):
 		common.input_customer_borrow_info(self.page, self.evt['data']['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_Property_info(self.page, self.evt['data']['applyPropertyInfoVo'][0],
+		common.input_cwd_bbi_property_info(self.page, self.evt['data']['applyPropertyInfoVo'][0],
 		                                   self.evt['data']['applyCustCreditInfoVo'][0])
 		
 		# 提交
@@ -64,7 +64,6 @@ class IntoCase(unittest.TestCase):
 	def test_02_two_borrower(self, n=2):
 		# 录入两个借款人
 		self.skipTest("xxxxx")
-		# n = 2
 		common.input_customer_base_info(self.page, self.evt['data']['applyVo'])
 		
 		if n == 1:
@@ -184,7 +183,7 @@ class IntoCase(unittest.TestCase):
 		common.input_customer_borrow_info(self.page, self.evt['data']['custInfoVo'][0])
 		common.input_more_borrower(self.page)
 		# 录入业务基本信息
-		common.input_cwd_bbi_Property_info(
+		common.input_cwd_bbi_property_info(
 				self.page,
 				self.evt['data']['applyPropertyInfoVo'][0],
 				self.evt['data']['applyCustCreditInfoVo'][0]
@@ -200,7 +199,6 @@ class IntoCase(unittest.TestCase):
 		data, _ = custom.enviroment_change("data_gqt.json", self.number, self.env)
 		
 		self.evt['data'].update(data)
-		# self.page = Login()
 		
 		# 1 客户信息-业务基本信息
 		common.input_customer_base_info(self.page, self.evt['data']['applyVo'])
@@ -210,7 +208,7 @@ class IntoCase(unittest.TestCase):
 		common.input_more_borrower(self.page)
 		
 		# 3 物业信息
-		common.input_cwd_bbi_Property_info(self.page, self.evt['data']['applyPropertyInfoVo'][0],
+		common.input_cwd_bbi_property_info(self.page, self.evt['data']['applyPropertyInfoVo'][0],
 		                                   self.evt['data']['applyCustCreditInfoVo'][0], True, 'gqt')
 		
 		# 提交
@@ -221,7 +219,3 @@ class IntoCase(unittest.TestCase):
 if __name__ == '__main__':
 	
 	ic = IntoCase()
-# suite = unittest.TestSuite()
-# suite.addTest(IntoCase('test_01_one_borrower'))
-# runner = unittest.TextTestRunner()
-# runner.run(suite)

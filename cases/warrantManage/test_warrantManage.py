@@ -37,8 +37,8 @@ class WarrantManage(unittest.TestCase):
 			self.log.error('load config error:', str(e))
 			raise e
 	
-	def get_next_user(self, page, applyCode):
-		next_id = common.process_monitor(page, applyCode)
+	def get_next_user(self, page, apply_code):
+		next_id = common.process_monitor(page, apply_code)
 		if next_id is None:
 			self.log.error("没有找到下一步处理人！")
 			raise AssertionError('没有找到下一步处理人！')
@@ -66,19 +66,19 @@ class WarrantManage(unittest.TestCase):
 		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
 		
 		# 3 物业信息
-		common.input_cwd_bbi_Property_info(self.page, self.data['applyPropertyInfoVo'][0],
+		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
 		                                   self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applyCode = common.get_applycode(self.page, self.custName)
-		if applyCode:
-			self.applyCode = applyCode
+		apply_code = common.get_applycode(self.page, self.custName)
+		if apply_code:
+			self.apply_code = apply_code
 			self.log.info("申请件查询完成")
-			print("applyCode:" + self.applyCode)
+			print("apply_code:" + self.apply_code)
 		# 流程监控
-		result = common.process_monitor(self.page, applyCode)
+		result = common.process_monitor(self.page, apply_code)
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
@@ -94,61 +94,61 @@ class WarrantManage(unittest.TestCase):
 		page = Login(result)
 		
 		# 分公司主管审批
-		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
+		res = common.approval_to_review(page, apply_code, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
 		else:
 			self.log.info("分公司主管审批通过！")
-			self.get_next_user(page, applyCode)
+			self.get_next_user(page, apply_code)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
 		# 分公司经理审批
-		res = common.approval_to_review(page, applyCode, u'分公司经理审批通过', 0)
+		res = common.approval_to_review(page, apply_code, u'分公司经理审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
 		else:
 			self.log.info("分公司经理审批通过！")
-			self.get_next_user(page, applyCode)
+			self.get_next_user(page, apply_code)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
 		# 区域预复核审批
-		res = common.approval_to_review(page, applyCode, u'区域预复核审批通过', 0)
+		res = common.approval_to_review(page, apply_code, u'区域预复核审批通过', 0)
 		if not res:
 			self.log.error("区域预复核审批失败！")
 			raise AssertionError('区域预复核审批失败！')
 		else:
 			self.log.info("区域预复核审批通过")
-			self.get_next_user(page, applyCode)
+			self.get_next_user(page, apply_code)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
 		# 高级审批经理审批通过
-		res = common.approval_to_review(page, applyCode, u'审批经理审批通过', 0)
+		res = common.approval_to_review(page, apply_code, u'审批经理审批通过', 0)
 		if not res:
 			self.log.error("审批经理审批失败！")
 			raise AssertionError('审批经理审批失败!')
 		else:
 			self.log.info("审批经理审批通过成功！")
-			self.get_next_user(page, applyCode)
+			self.get_next_user(page, apply_code)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
 		# 风控总监
-		res = common.approval_to_review(page, applyCode, u'风控总监审批通过', 0)
+		res = common.approval_to_review(page, apply_code, u'风控总监审批通过', 0)
 		if not res:
 			self.log.error("审风控总监审批失败！")
 			raise AssertionError('审风控总监审批失败!')
 		else:
 			self.log.info("风控总监审批通过成功！")
-			self.get_next_user(page, applyCode)
+			self.get_next_user(page, apply_code)
 		
 		# -----------------------------------------------------------------------------
 		# 	                        3. 合同打印
@@ -166,19 +166,19 @@ class WarrantManage(unittest.TestCase):
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
-		res = contract.Contract(page, self.applyCode, rec_bank_info, 10)
+		res = contract.Contract(page, self.apply_code, rec_bank_info, 10)
 		res.execute_sign()
 		
 		# 合规审查
-		common.compliance_audit(page, self.applyCode)
-		self.get_next_user(page, self.applyCode)
+		common.compliance_audit(page, self.apply_code)
+		self.get_next_user(page, self.apply_code)
 		
 		# 权证办理
 		# 权证员登录
 		page = Login(self.company["authority_member"]["user"])
 		# 权证员上传权证信息
-		common.authority_card_transact(page, self.applyCode, self.env)
+		common.authority_card_transact(page, self.apply_code, self.env)
 		
 		page = Login(self.next_user_id)
 		# 权证请款
-		res = common.warrant_apply(page, self.applyCode)
+		res = common.warrant_apply(page, self.apply_code)

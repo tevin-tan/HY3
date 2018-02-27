@@ -10,7 +10,7 @@ import json
 from com import common
 from com.login import Login
 from com import custom
-from com.custom import getName, Log, enviroment_change
+from com.custom import get_name, Log, enviroment_change
 
 
 class GQT(unittest.TestCase):
@@ -22,7 +22,7 @@ class GQT(unittest.TestCase):
 		self.next_user_id = ""
 		self.cust_info = dict(
 				_borrow_info=dict(
-						custName=getName(),
+						custName=get_name(),
 						idNum="360101199101011054",
 						phone="13564789215",
 						address=u"湖南长沙",
@@ -104,7 +104,7 @@ class GQT(unittest.TestCase):
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
 		common.input_customer_borrow_info(self.page, self.cust_info['_borrow_info'])
 		
-		common.input_cwd_bbi_Property_info(self.page, self.data['applyPropertyInfoVo'][0],
+		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
 		                                   self.data['applyCustCreditInfoVo'][0])
 		
 		self.log.info("录入物业信息结束")
@@ -119,7 +119,7 @@ class GQT(unittest.TestCase):
 		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
 		
 		# 3 物业信息
-		common.input_cwd_bbi_Property_info(self.page, self.data['applyPropertyInfoVo'][0],
+		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
 		                                   self.data['applyCustCreditInfoVo'][0], True, 'gqt')
 		
 		# 提交
@@ -142,7 +142,7 @@ class GQT(unittest.TestCase):
 	def test_gqt_06_show_task(self):
 		'''查看待处理任务列表'''
 		
-		result = self.test_gqt_05_get_applyCode()[0]
+		self.test_gqt_05_get_applyCode()[0]
 		next_id = common.process_monitor(self.page, self.applyCode)
 		if next_id:
 			self.log.info("下一个处理人:" + next_id)
@@ -293,18 +293,6 @@ class GQT(unittest.TestCase):
 				recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
 				)
 		
-		# 扣款银行信息
-		rep_bank_info = dict(
-				rep_name=u'习近平',
-				rep_id_num='420101198201013526',
-				rep_bank_code='6210302082441017886',
-				rep_phone='13686467482',
-				provice=u'湖南省',
-				district=u'长沙',
-				rep_bank_name=u'中国银行',
-				rep_bank_branch_name=u'北京支行',
-				)
-		
 		# 获取合同打印专员ID
 		next_id = self.test_gqt_11_manager_approval()
 		
@@ -377,8 +365,6 @@ class GQT(unittest.TestCase):
 			raise AssertionError('权证请款失败！')
 		else:
 			self.log.info("完成权证请款")
-		# page = Login('xn052298')
-		# common.warrant_apply(page, "CS20171214X07")
 		self.page.driver.quit()
 	
 	def test_gqt_16_finace_transact(self):
@@ -390,8 +376,6 @@ class GQT(unittest.TestCase):
 		page = Login(self.company["business_assistant"]["user"])
 		common.finace_transact(page, self.applyCode)
 		self.log.info("完成财务办理")
-		# page = Login('xn052298')
-		# common.finace_transact(page, 'CS20171215C02')
 		
 		# 查看下一步处理人
 		res = common.process_monitor(page, self.applyCode, 1)
@@ -416,8 +400,6 @@ class GQT(unittest.TestCase):
 		if not result:
 			return False
 		else:
-			# page = Login('xn028154')
-			# common.finace_approve(page, "CS20171215X14", remark)
 			self.log.info("财务流程-分公司经理审批结束")
 			# 查看下一步处理人
 			res = common.process_monitor(page, self.applyCode, 1)
@@ -469,8 +451,6 @@ class GQT(unittest.TestCase):
 		else:
 			self.log.error("Error-资金主管审批报错！")
 			raise AssertionError('资金主管审批报错!')
-		# page = Login('xn037166')
-		# common.finace_approve(page, "CS20171215X09", remark)
 		
 		# 查看下一步处理人
 		res = common.process_monitor(page, self.applyCode, 1)
@@ -496,8 +476,6 @@ class GQT(unittest.TestCase):
 		else:
 			self.log.error("Error-财务会计审批报错！")
 			raise AssertionError('Error-财务会计审批报错！')
-		# page = Login('xn037166')
-		# common.finace_approve(page, "CS20171215X09", remark)
 		
 		# 查看下一步处理人
 		res = common.process_monitor(page, self.applyCode, 1)

@@ -11,7 +11,7 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.action_chains import ActionChains
 from config.locator import loc_cust_info, loc_borrower
 from selenium.common import exceptions as ec
-from com.custom import getName, Log
+from com.custom import get_name, Log
 # import common.getIdNumber as GT
 from com.idCardNumber import IdCardNumber as IDCard
 
@@ -26,7 +26,7 @@ def browser(arg="chrome"):
 	"""
 	
 	if arg == "ie":
-		driver = webdriver.Firefox()
+		driver = webdriver.Ie()
 	elif arg == "chrome":
 		driver = webdriver.Chrome()
 	elif arg == "firefox":
@@ -93,12 +93,12 @@ def input_customer_borrow_info(page, data):
 	:param data 传入的数据
 	:return:
 	"""
-	custName = getName()
+	custname = get_name()
 	try:
 		page._click_control(page.driver, "xpath", ".//*[@id='tb']/a[1]/span[2]")
 		# Update  2017-12-27
 		# 姓名元素变更，身份证号码变更
-		page.driver.find_element_by_xpath(loc_borrower['jkrxm']).send_keys(custName)  # 借款人姓名
+		page.driver.find_element_by_xpath(loc_borrower['jkrxm']).send_keys(custname)  # 借款人姓名
 		time.sleep(1)
 		# page._send_data(page.driver, "xpath", loc_borrower['sfzhm'], data["idNum"])  # 身份证号码
 		page._send_data(page.driver, "xpath", loc_borrower['sfzhm'], IDCard.getRandomIdNumber()[0])  # 身份证号码
@@ -139,7 +139,7 @@ def input_customer_borrow_info(page, data):
 		page.driver.find_element_by_xpath('//*[@id="tb"]/a[3]/span[2]').click()
 		# 临时保存
 		save(page)
-		return True, custName
+		return True, custname
 	except ec.NoSuchElementException as e:
 		Log().error(e)
 		raise e.msg
@@ -157,7 +157,7 @@ def input_more_borrower(page):
 		page.driver.find_element_by_xpath('//*[@id="tb"]/a[1]/span[2]').click()
 		# NAME
 		page.driver.find_element_by_xpath(
-				'//*[@id="datagrid-row-r1-2-1"]/td[5]/div/table/tbody/tr/td/input').send_keys(getName())
+				'//*[@id="datagrid-row-r1-2-1"]/td[5]/div/table/tbody/tr/td/input').send_keys(get_name())
 		time.sleep(1)
 		# IDNUMBER
 		page.driver.find_element_by_xpath(
@@ -231,7 +231,7 @@ def input_more_borrower(page):
 
 
 # 业务基本信息- 输入物业信息(Basic business information-Property information)
-def input_bbi_Property_info(page):
+def input_bbi_property_info(page):
 	"""
 		输入物业基本信息
 	:param page: 页面对象
@@ -249,7 +249,7 @@ def input_bbi_Property_info(page):
 	
 	try:
 		page.driver.find_element_by_name("propertyOwner").clear()
-		page.driver.find_element_by_name("propertyOwner").send_keys(getName())  # 产权人
+		page.driver.find_element_by_name("propertyOwner").send_keys(get_name())  # 产权人
 		page.driver.find_element_by_name("propertyNo").clear()
 		page.driver.find_element_by_name("propertyNo").send_keys("gqt0132546")  # 房产证号
 		
@@ -313,7 +313,7 @@ def input_bbi_Property_info(page):
 		# 征信信息
 		page.driver.find_element_by_link_text(u"征信信息").click()
 		page.driver.find_element_by_name("loanIdNum").clear()
-		page.driver.find_element_by_name("loanIdNum").send_keys(getName())
+		page.driver.find_element_by_name("loanIdNum").send_keys(get_name())
 		page.driver.find_element_by_name("creditOverdueNum").clear()
 		page.driver.find_element_by_name("creditOverdueNum").send_keys("0")
 		page.driver.find_element_by_name("queryLoanNum").clear()
@@ -342,14 +342,14 @@ def input_bbi_Property_info(page):
 		raise e.msg
 
 
-def input_cwd_bbi_Property_info(page, data, applyCustCreditInfoVo, associated=False, productName=None):
+def input_cwd_bbi_property_info(page, data, apply_cust_credit_info, associated=False, product_name=None):
 	"""
 		车位贷物业信息录入
 	:param page: 页面对象
 	:param data: 传入的数据对象
-	:param applyCustCreditInfoVo: 征信数据
+	:param apply_cust_credit_info: 征信数据
 	:param associated  关联世联
-	:param productName 过桥通 / 非过桥通
+	:param product_name 过桥通 / 非过桥通
 	:return:
 	"""
 	
@@ -366,7 +366,7 @@ def input_cwd_bbi_Property_info(page, data, applyCustCreditInfoVo, associated=Fa
 	try:
 		page.driver.find_element_by_name("propertyOwner").clear()
 		# page.driver.find_element_by_name("propertyOwner").send_keys(data['propertyOwner'])  # 产权人
-		page.driver.find_element_by_name("propertyOwner").send_keys(getName())  # 产权人
+		page.driver.find_element_by_name("propertyOwner").send_keys(get_name())  # 产权人
 		page.driver.find_element_by_name("propertyNo").clear()
 		page.driver.find_element_by_name("propertyNo").send_keys(data['propertyNo'])  # 房产证号
 		
@@ -447,15 +447,15 @@ def input_cwd_bbi_Property_info(page, data, applyCustCreditInfoVo, associated=Fa
 		# 征信信息
 		page.driver.find_element_by_link_text("征信信息").click()
 		page.driver.find_element_by_name("loanIdNum").clear()
-		page.driver.find_element_by_name("loanIdNum").send_keys(applyCustCreditInfoVo['loanIdNum'])
+		page.driver.find_element_by_name("loanIdNum").send_keys(apply_cust_credit_info['loanIdNum'])
 		page.driver.find_element_by_name("creditOverdueNum").clear()
-		page.driver.find_element_by_name("creditOverdueNum").send_keys(applyCustCreditInfoVo['creditOverdueNum'])
+		page.driver.find_element_by_name("creditOverdueNum").send_keys(apply_cust_credit_info['creditOverdueNum'])
 		page.driver.find_element_by_name("queryLoanNum").clear()
-		page.driver.find_element_by_name("queryLoanNum").send_keys(applyCustCreditInfoVo['queryLoanNum'])
+		page.driver.find_element_by_name("queryLoanNum").send_keys(apply_cust_credit_info['queryLoanNum'])
 		page.driver.find_element_by_name("loanOtherAmt").clear()
-		page.driver.find_element_by_name("loanOtherAmt").send_keys(applyCustCreditInfoVo['loanOtherAmt'])
+		page.driver.find_element_by_name("loanOtherAmt").send_keys(apply_cust_credit_info['loanOtherAmt'])
 		
-		if productName == 'gqt':
+		if product_name == 'gqt':
 			page.driver.find_element_by_link_text("垫资情况").click()
 			# 基本情况
 			Select(page.driver.find_element_by_name("loaningType")).select_by_value("DA01")
@@ -986,14 +986,14 @@ def make_signing(page, condition, rec_bank_info, number=1):
 		# 拆借人银行信息录入
 		def add_first_person(page, personform, bankform):
 			
-			custName = getName()
+			custname = get_name()
 			page.driver.find_element_by_link_text(u"拆借人信息").click()
 			page.driver.find_element_by_id('addLoanApartPerson').click()
 			page.driver.find_element_by_id('apply_loanApart_info').click()
 			page.driver.find_element_by_id("loanApartPersonForm0").click()
 			# name
 			page.driver.find_element_by_xpath(
-					'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[2]/input').send_keys(custName)
+					'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[2]/input').send_keys(custname)
 			# phone
 			page.driver.find_element_by_xpath(
 					'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[4]/input').send_keys("13512342341")
@@ -1058,13 +1058,13 @@ def make_signing(page, condition, rec_bank_info, number=1):
 			page.driver.find_element_by_xpath('//*[@id="' + str(bankform) + '"]/section[2]/div[1]/div/button').click()
 		
 		def add_other_person(page, personform, bankform):
-			custName = getName()
+			custname = get_name()
 			page.driver.find_element_by_id('addLoanApartPerson').click()
 			page.driver.find_element_by_id(str(personform)).click()
 			
 			# name
 			page.driver.find_element_by_xpath(
-					'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[2]/input').send_keys(custName)
+					'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[2]/input').send_keys(custname)
 			# phone
 			page.driver.find_element_by_xpath(
 					'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[4]/input').send_keys("13512342341")
@@ -1543,11 +1543,11 @@ def funds_raise(page, condition, remark):
 		return False
 
 
-def reconsideration(page, applyCode, action=0):
+def reconsideration(page, applycode, action=0):
 	"""
 		高级经理复议拒绝的单
 	:param page: 页面对象
-	:param applyCode: 申请code
+	:param applycode: 申请code
 	:param action: 0 拒绝; 1 复议通过; 2 复议拒绝
 	:return:
 	"""
@@ -1557,7 +1557,7 @@ def reconsideration(page, applyCode, action=0):
 	page.driver.find_element_by_name("/house/commonIndex/refuseList").click()
 	# iframe
 	page.driver.switch_to_frame('bTabs_tab_house_commonIndex_refuseList')
-	page.driver.find_element_by_name('applyCode').send_keys(applyCode)
+	page.driver.find_element_by_name('applycode').send_keys(applycode)
 	time.sleep(1)
 	page.driver.find_element_by_xpath('/html/body/div[1]/div[1]/div[2]/a[1]').click()  # 查询
 	time.sleep(1)

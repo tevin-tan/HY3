@@ -11,7 +11,7 @@ import unittest
 from com import common
 from com.login import Login
 from com import custom
-from com.custom import getName, Log, enviroment_change
+from com.custom import get_name, Log, enviroment_change
 
 
 class XHD(unittest.TestCase):
@@ -20,7 +20,7 @@ class XHD(unittest.TestCase):
 	def _init_params(self):
 		self.cust_info = dict(
 				_borrow_info=dict(
-						custName=getName(),
+						custName=get_name(),
 						idNum="360101199101011054",
 						phone="13564789215",
 						address=u"湖南长沙",
@@ -104,7 +104,7 @@ class XHD(unittest.TestCase):
 		'''物业信息录入'''
 		common.input_customer_base_info(self.page, self.cust_info['_cust_base_info'])
 		common.input_customer_borrow_info(self.page, self.cust_info['_borrow_info'])
-		common.input_bbi_Property_info(self.page)
+		common.input_bbi_property_info(self.page)
 	
 	def test_xhd_04_applydata(self):
 		'''申请件录入,提交'''
@@ -119,7 +119,7 @@ class XHD(unittest.TestCase):
 		
 		# 3 物业信息
 		# log_to().info(u"物业基本信息录入")
-		common.input_bbi_Property_info(self.page)
+		common.input_bbi_property_info(self.page)
 		
 		# 提交
 		common.submit(self.page)
@@ -286,18 +286,6 @@ class XHD(unittest.TestCase):
 				recBankDistrict=self.data['houseCommonLoanInfoList'][0]['recBankDistrict'],
 				recBank=self.data['houseCommonLoanInfoList'][0]['recBank'],
 				recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
-				)
-		
-		# 扣款银行信息
-		rep_bank_info = dict(
-				rep_name=u'习近平',
-				rep_id_num='420101198201013526',
-				rep_bank_code='6210302082441017886',
-				rep_phone='13686467482',
-				provice=u'湖南省',
-				district=u'长沙',
-				rep_bank_name=u'中国银行',
-				rep_bank_branch_name=u'北京支行',
 				)
 		
 		# 获取合同打印专员ID

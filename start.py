@@ -87,7 +87,7 @@ if __name__ == "__main__":
 			# 	suite.addTest(test_fallback.fallback(i))
 			# # 签约
 			# for i in temp['contract']:
-			# 	suite.addTest(test_more_person_sign.contractSign(i))
+			# 	suite.addTest(test_more_person_sign.ContractSign(i))
 			# for i in temp['AddContract']:
 			# 	suite.addTest(test_add_contract.AddContract(i))
 			# # 特批
@@ -105,9 +105,9 @@ if __name__ == "__main__":
 				elif e == 'IntoCase':
 					run_case(e, test_into_case.IntoCase)
 				elif e == 'fallback':
-					run_case(e, test_fallback.fallback)
+					run_case(e, test_fallback.FallBack)
 				elif e == 'contract':
-					run_case(e, test_more_person_sign.contractSign)
+					run_case(e, test_more_person_sign.ContractSign)
 				elif e == 'SPA':
 					run_case(e, test_special_approval.SPA)
 				elif e == 'AddContract':

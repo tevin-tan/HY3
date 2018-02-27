@@ -36,8 +36,8 @@ class PartRaise(unittest.TestCase):
 			self.log.error('load config error:', str(e))
 			raise e
 	
-	def get_next_user(self, page, applyCode):
-		next_id = common.process_monitor(page, applyCode)
+	def get_next_user(self, page, applycode):
+		next_id = common.process_monitor(page, applycode)
 		if next_id is None:
 			raise ValueError("没有找到下一步处理人")
 		else:
@@ -65,19 +65,19 @@ class PartRaise(unittest.TestCase):
 		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
 		
 		# 3 物业信息
-		common.input_cwd_bbi_Property_info(self.page, self.data['applyPropertyInfoVo'][0],
+		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
 		                                   self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applyCode = common.get_applycode(self.page, self.custName)
-		if applyCode:
-			self.applyCode = applyCode
+		applycode = common.get_applycode(self.page, self.custName)
+		if applycode:
+			self.applycode = applycode
 			self.log.info("申请件查询完成")
-			print("applyCode:" + self.applyCode)
+			print("applycode:" + self.applycode)
 		# 流程监控
-		result = common.process_monitor(self.page, applyCode)
+		result = common.process_monitor(self.page, applycode)
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
@@ -92,49 +92,49 @@ class PartRaise(unittest.TestCase):
 		page = Login(result)
 		
 		# 分公司主管审批
-		res = common.approval_to_review(page, applyCode, u'分公司主管审批通过', 0)
+		res = common.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise ValueError("审批失败")
 		else:
 			self.log.info("分公司主管审批通过！")
-			self.get_next_user(page, applyCode)
+			self.get_next_user(page, applycode)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
 		# 分公司经理审批
-		res = common.approval_to_review(page, applyCode, u'分公司经理审批通过', 0)
+		res = common.approval_to_review(page, applycode, u'分公司经理审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise ValueError("审批失败")
 		else:
 			self.log.info("分公司经理审批通过！")
-			self.get_next_user(page, applyCode)
+			self.get_next_user(page, applycode)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
 		# 区域预复核审批
-		res = common.approval_to_review(page, applyCode, u'区域预复核审批通过', 0)
+		res = common.approval_to_review(page, applycode, u'区域预复核审批通过', 0)
 		if not res:
 			self.log.error("区域预复核审批失败！")
 			raise ValueError("区域预复核审批失败!")
 		else:
 			self.log.info("区域经理审批通过")
-			self.get_next_user(page, applyCode)
+			self.get_next_user(page, applycode)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
 		# 审批经理审批通过
-		res = common.approval_to_review(page, applyCode, u'审批经理审批通过', 0)
+		res = common.approval_to_review(page, applycode, u'审批经理审批通过', 0)
 		if not res:
 			self.log.error("审批经理审批失败！")
 			raise ValueError("审批经理审批失败！")
 		else:
 			self.log.info("审批经理审批通过成功！")
-			self.get_next_user(page, applyCode)
+			self.get_next_user(page, applycode)
 		
 		# -----------------------------------------------------------------------------
 		# 	                        3. 合同打印
@@ -149,27 +149,16 @@ class PartRaise(unittest.TestCase):
 				recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
 				)
 		
-		# 扣款银行信息
-		rep_bank_info = dict(
-				rep_name=u'习近平',
-				rep_id_num='420101198201013526',
-				rep_bank_code='6210302082441017886',
-				rep_phone='13686467482',
-				provice=u'湖南省',
-				district=u'长沙',
-				rep_bank_name=u'中国银行',
-				rep_bank_branch_name=u'北京支行',
-				)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
 		# 两个人签约
-		res = common.make_signing(page, self.applyCode, rec_bank_info, 2)
+		res = common.make_signing(page, self.applycode, rec_bank_info, 2)
 		if res:
 			self.log.info("合同打印完成！")
 			# 查看下一步处理人
-			self.get_next_user(page, applyCode)
+			self.get_next_user(page, applycode)
 		
 		# -----------------------------------------------------------------------------
 		#                                合规审查
@@ -178,10 +167,10 @@ class PartRaise(unittest.TestCase):
 		page = Login(self.next_user_id)
 		
 		# 合规审查
-		res = common.compliance_audit(page, self.applyCode)
+		res = common.compliance_audit(page, self.applycode)
 		if res:
 			self.log.info("合规审批结束")
-			self.get_next_user(page, self.applyCode)
+			self.get_next_user(page, self.applycode)
 		else:
 			self.log.error("合规审查失败")
 			raise ValueError("合规审查失败")
@@ -191,25 +180,25 @@ class PartRaise(unittest.TestCase):
 		# -----------------------------------------------------------------------------
 		page = Login(self.company["authority_member"]["user"])
 		# 权证员上传权证信息
-		common.authority_card_transact(page, self.applyCode, self.env)
+		common.authority_card_transact(page, self.applycode, self.env)
 		# 查看下一步处理人
-		res = common.process_monitor(page, self.applyCode)
+		res = common.process_monitor(page, self.applycode)
 		if not res:
 			self.log.error("上传权证资料失败")
 			raise ValueError("上传权证资料失败")
 		else:
 			self.log.info("权证办理完成")
 			self.next_user_id = res
-			self.get_next_user(page, self.applyCode)
+			self.get_next_user(page, self.applycode)
 		# -----------------------------------------------------------------------------
 		#                                权证请款
 		# -----------------------------------------------------------------------------
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
-		res = common.warrant_apply(page, self.applyCode)
+		res = common.warrant_apply(page, self.applycode)
 		if not res:
 			self.log.error("权证请款失败！")
 			raise ValueError('权证请款失败！')
 		else:
 			self.log.info("完成权证请款")
-			self.get_next_user(page, self.applyCode)
+			self.get_next_user(page, self.applycode)

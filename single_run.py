@@ -43,9 +43,9 @@ if __name__ == "__main__":
 	suite.addTest(test_suite_cwd.CWD('test_cwd_01_base_info'))
 	
 	# suite.addTest(test_into_case.IntoCase('test_03_two_borrower'))
-	# suite.addTest(test_fallback.fallback('test_02_branch_manager_reject'))
+	# suite.addTest(test_fallback.FallBack('test_02_branch_manager_reject'))
 	
-	# suite.addTest(test_more_person_sign.contractSign('test_03_three_person_sign'))
+	# suite.addTest(test_more_person_sign.ContractSign('test_03_three_person_sign'))
 	
 	runner = unittest.TextTestRunner()
 	

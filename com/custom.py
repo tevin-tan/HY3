@@ -30,12 +30,12 @@ def Log():
 	return logging
 
 
-def getName():
+def get_name():
 	'''
 		获取随机姓名
 	:return: name
 	'''
-	familyNames = [
+	family_names = [
 		"赵", "钱", "孙", "李", "周", "吴", "郑", "王", "冯", "陈",
 		"褚", "卫", "蒋", "沈", "韩", "杨", "朱", "秦", "尤", "许",
 		"何", "吕", "施", "张", "孔", "曹", "严", "华", "金", "魏",
@@ -48,7 +48,7 @@ def getName():
 		"元", "卜", "顾", "孟", "平", "黄", "和", "穆", "萧", "尹"
 		]
 	
-	lastNames = [
+	last_names = [
 		"子璇", "淼", "国栋", "夫子", "瑞堂", "甜", "敏", "尚", "国贤", "贺祥", "晨涛",
 		"昊轩", "易轩", "益辰", "益帆", "益冉", "瑾春", "瑾昆", "春齐", "杨", "文昊",
 		"东东", "雄霖", "浩晨", "熙涵", "溶溶", "冰枫", "欣欣", "宜豪", "欣慧", "建政",
@@ -62,9 +62,9 @@ def getName():
 		]
 	
 	i = random.randint(0, 99)
-	f_name = familyNames[i]
+	f_name = family_names[i]
 	j = random.randint(0, 99)
-	l_name = lastNames[j]
+	l_name = last_names[j]
 	name = f_name + l_name
 	return name
 

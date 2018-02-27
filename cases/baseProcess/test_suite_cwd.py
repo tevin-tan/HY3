@@ -98,7 +98,7 @@ class CWD(unittest.TestCase):
 		data1 = self.data['applyPropertyInfoVo'][0]
 		data2 = self.data['applyCustCreditInfoVo'][0]
 		
-		res = common.input_cwd_bbi_Property_info(self.page, data1, data2, True)
+		res = common.input_cwd_bbi_property_info(self.page, data1, data2, True)
 		if res:
 			self.log.info("录入物业信息结束")
 		else:
@@ -117,7 +117,7 @@ class CWD(unittest.TestCase):
 		
 		# 3 物业信息
 		# log_to().info(u"物业基本信息录入")
-		common.input_cwd_bbi_Property_info(self.page, self.data['applyPropertyInfoVo'][0],
+		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
 		                                   self.data['applyCustCreditInfoVo'][0], True)
 		
 		# 提交
@@ -293,18 +293,6 @@ class CWD(unittest.TestCase):
 				recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
 				)
 		
-		# 扣款银行信息
-		rep_bank_info = dict(
-				rep_name=u'习近平',
-				rep_id_num='420101198201013526',
-				rep_bank_code='6210302082441017886',
-				rep_phone='13686467482',
-				provice=u'湖南省',
-				district=u'长沙',
-				rep_bank_name=u'中国银行',
-				rep_bank_branch_name=u'北京支行',
-				)
-		
 		# 获取合同打印专员ID
 		self.test_cwd_11_manager_approval()
 		
@@ -386,8 +374,6 @@ class CWD(unittest.TestCase):
 		page = Login(self.company["business_assistant"]["user"])
 		common.finace_transact(page, self.applyCode)
 		self.log.info("完成财务办理")
-		# page = Login('xn052298')
-		# common.finace_transact(page, 'CS20171215C02')
 		
 		# 查看下一步处理人
 		res = common.process_monitor(page, self.applyCode, 1)

@@ -10,7 +10,7 @@ import json
 from com import common
 from com.login import Login
 from com import custom
-from com.custom import (getName, logout, enviroment_change, Log, )
+from com.custom import (get_name, logout, enviroment_change, Log, )
 
 
 class EYT(unittest.TestCase):
@@ -34,7 +34,7 @@ class EYT(unittest.TestCase):
 				'checkApprove': u"同意",
 				},
 			'_borrow_info': {
-				'custName': getName(),
+				'custName': get_name(),
 				'idNum': '360101199101011054',
 				'phone': "13564789215",
 				'address': u"湖南长沙",
@@ -124,7 +124,7 @@ class EYT(unittest.TestCase):
 		'''物业信息录入'''
 		common.input_customer_base_info(self.page, self.cust_info['_cust_base_info'])
 		common.input_customer_borrow_info(self.page, self.cust_info['_borrow_info'])
-		common.input_bbi_Property_info(self.page)
+		common.input_bbi_property_info(self.page)
 	
 	def test_eyt_04_applydata(self):
 		'''申请件录入,提交'''
@@ -138,7 +138,7 @@ class EYT(unittest.TestCase):
 		
 		# 3 物业信息
 		# log_to().info(u"物业基本信息录入")
-		common.input_bbi_Property_info(self.page)
+		common.input_bbi_property_info(self.page)
 		
 		# 提交
 		common.submit(self.page)
@@ -295,7 +295,6 @@ class EYT(unittest.TestCase):
 	def test_12_contract_signing(self):
 		'''签约'''
 		
-		i_frame = 'bTabs_tab_house_commonIndex_todoList'
 		# 收款银行信息
 		rec_bank_info = dict(
 				recBankNum='6210302082441017886',
@@ -304,18 +303,6 @@ class EYT(unittest.TestCase):
 				recBankDistrict=u'长沙',
 				recBank=u'中国农业银行',
 				recBankBranch=u'北京支行',
-				)
-		
-		# 扣款银行信息
-		rep_bank_info = dict(
-				rep_name=u'习近平',
-				rep_id_num='420101198201013526',
-				rep_bank_code='6210302082441017886',
-				rep_phone='13686467482',
-				provice=u'湖南省',
-				district=u'长沙',
-				rep_bank_name=u'中国银行',
-				rep_bank_branch_name=u'北京支行',
 				)
 		
 		# 获取合同打印专员ID
@@ -406,9 +393,6 @@ class EYT(unittest.TestCase):
 		if not rs:
 			Log().error("财务办理失败")
 			raise AssertionError('财务办理失败')
-		
-		# page = Login('xn052298')
-		# common.finace_transact(page, 'CS20171215C02')
 		
 		# 查看下一步处理人
 		res = common.process_monitor(page, self.applyCode, 1)
