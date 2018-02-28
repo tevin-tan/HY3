@@ -370,6 +370,7 @@ class XHD(unittest.TestCase):
 			raise AssertionError('权证请款失败')
 		else:
 			Log().info("权证请款成功")
+			page.driver.quit()
 	
 	def test_xhd_16_finace_transact(self):
 		'''财务办理'''

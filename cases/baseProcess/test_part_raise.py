@@ -37,22 +37,6 @@ class PartRaise(unittest.TestCase):
 			self.log.error('load config error:', str(e))
 			raise e
 	
-	# def get_next_user(self, page, applycode):
-	# 	"""
-	# 	获取下一个处理人
-	# 	:param page: 页面对象
-	# 	:param applycode: 申请件code
-	# 	:return:
-	# 	"""
-	# 	next_id = common.process_monitor(page, applycode)
-	# 	if next_id is None:
-	# 		raise ValueError("没有找到下一步处理人")
-	# 	else:
-	# 		self.next_user_id = next_id
-	# 		self.log.info("下一步处理人:" + next_id)
-	# 		# 当前用户退出系统
-	# 		self.page.driver.quit()
-	
 	def risk_approval_result(self, res, mark, page, applycode):
 		"""
 		校验风控审批结果
@@ -72,7 +56,7 @@ class PartRaise(unittest.TestCase):
 		self.page.driver.quit()
 	
 	def test_contract_signing(self):
-		"""两人签约, 两个分别200000万"""
+		"""400000元部分请款，回执分公司主管审批"""
 		
 		# ---------------------------------------------------------------------------------
 		#                   1. 申请录入

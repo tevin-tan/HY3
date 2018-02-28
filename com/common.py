@@ -1400,7 +1400,7 @@ def warrant_apply(page, condition, flag=None):
 			time.sleep(1)
 			page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a').click()
 			
-			page.driver.quit()
+			# page.driver.quit()
 			return True
 		except ec.NoSuchElementException as e:
 			raise e.msg
