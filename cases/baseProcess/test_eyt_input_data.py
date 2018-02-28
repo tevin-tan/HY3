@@ -378,6 +378,7 @@ class EYT(unittest.TestCase):
 		res = common.warrant_apply(page, self.applyCode)
 		if res:
 			Log().info("权证请款成功")
+			page.driver.quit()
 		else:
 			Log().error("权证请款失败")
 			raise AssertionError('权证请款失败')

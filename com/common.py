@@ -1341,7 +1341,7 @@ def authority_card_transact(page, condition, env="SIT"):
 		return False
 
 
-def warrant_apply(page, condition):
+def warrant_apply(page, condition, flag=None):
 	"""
 		权证请款
 	:param page: 页面对象
@@ -1359,21 +1359,32 @@ def warrant_apply(page, condition):
 		ActionChains(page.driver).double_click(t1).perform()
 		try:
 			page.driver.switch_to.frame("myIframeImage1")  # 切换iframe
-		except ec.NoSuchFrameException  as e:
+		except ec.NoSuchFrameException as e:
 			raise e.msg
 		
 		try:
-			# 原件请款-拆分个体
-			page.driver.find_element_by_name('apply').click()
-			page.driver.find_element_by_id('splitLoanMoney').click()
-			time.sleep(1)
-			# 请款拆分明细
-			# import pdb
-			# pdb.set_trace()
-			page.driver.find_element_by_xpath('//*[@id="warrantSplitModel"]/div').click()
-			time.sleep(1)
-			page.driver.find_element_by_xpath('//*[@id="warrantForm"]/div/table/tbody/tr/td[1]/input').click()
-			time.sleep(1)
+			if not flag:
+				# 原件请款-拆分个体
+				# page.driver.find_element_by_name('apply').click()
+				page.driver.find_element_by_xpath('//*[@id="warrantInfo"]/div[2]/div/input[3]').click()
+				page.driver.find_element_by_id('splitLoanMoney').click()
+				time.sleep(1)
+				# 请款拆分明细
+				page.driver.find_element_by_xpath('//*[@id="warrantSplitModel"]/div').click()
+				time.sleep(1)
+				page.driver.find_element_by_xpath('//*[@id="warrantForm"]/div/table/tbody/tr/td[1]/input').click()
+				time.sleep(1)
+			else:
+				# 部分请款
+				page.driver.find_element_by_xpath('//*[@id="warrantInfo"]/div[2]/div/input[4]').click()
+				page.driver.find_element_by_id('splitLoanMoney').click()
+				time.sleep(1)
+				# 请款拆分明细
+				page.driver.find_element_by_xpath('//*[@id="warrantSplitModel"]/div').click()
+				time.sleep(1)
+				page.driver.find_element_by_xpath('//*[@id="warrantForm"]/div/table/tbody/tr[1]/td[1]/input').click()
+				time.sleep(1)
+				
 			# 确定
 			page.driver.find_element_by_id('dialogSplitSure').click()
 			# 保存
@@ -1557,7 +1568,7 @@ def reconsideration(page, applycode, action=0):
 	page.driver.find_element_by_name("/house/commonIndex/refuseList").click()
 	# iframe
 	page.driver.switch_to_frame('bTabs_tab_house_commonIndex_refuseList')
-	page.driver.find_element_by_name('applycode').send_keys(applycode)
+	page.driver.find_element_by_name('applyCode').send_keys(applycode)
 	time.sleep(1)
 	page.driver.find_element_by_xpath('/html/body/div[1]/div[1]/div[2]/a[1]').click()  # 查询
 	time.sleep(1)
@@ -1592,3 +1603,21 @@ def reconsideration(page, applycode, action=0):
 	else:
 		Log().error("param wrong!")
 		return False
+
+
+def get_next_user(page, applycode):
+	"""
+	获取下一个处理人
+	:param page: 页面对象
+	:param applycode: 申请件code
+	:return:
+	"""
+	next_id = process_monitor(page, applycode)
+	if next_id is None:
+		raise ValueError("没有找到下一步处理人")
+	else:
+		next_user_id = next_id
+		Log().info("下一步处理人:" + next_id)
+		# 当前用户退出系统
+		page.driver.quit()
+	return next_user_id
