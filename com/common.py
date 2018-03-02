@@ -3,7 +3,7 @@
 """
     通用方法
 """
-
+import os
 import time
 import logging
 from selenium import webdriver
@@ -20,7 +20,7 @@ import datetime
 
 def browser(arg="chrome"):
 	"""
-         浏览器选择
+		 浏览器选择
 	:param 默认chrome
 	:return:
 	"""
@@ -603,66 +603,85 @@ def process_monitor(page, condition, stage=0):
 	:param stage  0,1,2  对应风控、财务、募资
 	:return: 下一个处理人登录 ID
 	"""
-	
-	time.sleep(1)
-	page.driver.switch_to.default_content()
-	# 打开任务中心
-	page._click_control(page.driver, "id", "1DBCBC52791800014989140019301189")
-	time.sleep(1)
-	# 流程监控
-	page.driver.find_element_by_name("/house/commonIndex/processMonitor").click()
-	time.sleep(2)
-	#  切换frame
-	page.driver.switch_to.frame("bTabs_tab_house_commonIndex_processMonitor")
-	time.sleep(1)
-	# 输入搜索条件
-	page.driver.find_element_by_name("process_search").click()
-	time.sleep(1)
-	page.driver.find_element_by_xpath("//*[@id='applyCode']").click()
-	page.driver.find_element_by_xpath("//*[@id='applyCode']").send_keys(condition)
-	time.sleep(1)
-	# 点击查询
-	page.driver.find_element_by_xpath("/html/body/div[1]/div[1]/div[2]/a[1]/span").click()
-	time.sleep(1)
-	# 校验查询结果
-	res = page.driver.find_element_by_xpath("//*[@id='datagrid-row-r4-2-0']/td[5]/div")
-	time.sleep(2)
-	if not res.text:
-		return False
-	else:
-		res.click()
-		# page.driver.find_element_by_class_name("datagrid-btable").click()
-		page.driver.find_element_by_name('process_search').click()
-		# 双击该笔案件
-		ActionChains(page.driver).double_click(res).perform()
+	try:
 		time.sleep(1)
-		role = ""
-		next_user_id = ""
-		if stage == 0:
-			res = page.driver.find_element_by_class_name("datagrid-btable")
-			rcount = res.find_elements_by_tag_name("tr")  # 取表格的行数
-			for i in range(1, len(rcount)):
-				role = page.driver.find_element_by_xpath('//*[@id="datagrid-row-r1-2-%s"]/td[1]/div' % i).text
-				time.sleep(1)
-			Log().info("下一个处理节点:" + role)  # 返回节点所有值
-			# 下一步处理人ID
-			next_user_id = page.driver.find_element_by_xpath(
-					'//*[@id="datagrid-row-r1-2-%s"]/td[4]/div' % (len(rcount) - 1)).text
-		elif stage == 1:
-			page.driver.find_element_by_id('firstLoanA').click()
-			# page.driver.find_element_by_xpath('//*[@id="profile"]/div/div/div/div/div[2]').click()
-			page.driver.find_element_by_class_name('datagrid-view2')
-			res = page.driver.find_element_by_xpath('//*[@id="profile"]/div/div/div/div/div[2]/div[2]/table/tbody')
-			rcount = res.find_elements_by_tag_name("tr")
-			for i in range(1, len(rcount)):
-				role = page.driver.find_element_by_xpath('//*[@id="datagrid-row-r4-2-%s"]/td[1]/div' % i).text
-				time.sleep(1)
-			Log().info("下一个处理环节:" + role)  # 返回节点所有值
-			next_user_id = page.driver.find_element_by_xpath(
-					'//*[@id="datagrid-row-r4-2-%s"]/td[4]/div' % (len(rcount) - 1)).text
+		page.driver.switch_to.default_content()
+		# 打开任务中心
+		page._click_control(page.driver, "id", "1DBCBC52791800014989140019301189")
+		time.sleep(1)
+		# 流程监控
+		page.driver.find_element_by_name("/house/commonIndex/processMonitor").click()
+		time.sleep(2)
 		
+		#  切换frame
+		try:
+			page.driver.switch_to.frame("bTabs_tab_house_commonIndex_processMonitor")
+			time.sleep(1)
+		except ec.NoSuchFrameException as msg:
+			raise (msg)
+		# 输入搜索条件
+		page.driver.find_element_by_name("process_search").click()
+		time.sleep(1)
+		page.driver.find_element_by_xpath("//*[@id='applyCode']").click()
+		page.driver.find_element_by_xpath("//*[@id='applyCode']").send_keys(condition)
+		time.sleep(1)
+		# 点击查询
+		page.driver.find_element_by_xpath("/html/body/div[1]/div[1]/div[2]/a[1]/span").click()
+		time.sleep(1)
+		# 校验查询结果
+		res = page.driver.find_element_by_xpath("//*[@id='datagrid-row-r4-2-0']/td[5]/div")
+		time.sleep(2)
+		if not res.text:
+			return False
+		else:
+			res.click()
+			# page.driver.find_element_by_class_name("datagrid-btable").click()
+			page.driver.find_element_by_name('process_search').click()
+			# 双击该笔案件
+			ActionChains(page.driver).double_click(res).perform()
+			time.sleep(1)
+			role = ""
+			next_user_id = ""
+			if stage == 0:
+				res = page.driver.find_element_by_class_name("datagrid-btable")
+				rcount = res.find_elements_by_tag_name("tr")  # 取表格的行数
+				for i in range(1, len(rcount)):
+					role = page.driver.find_element_by_xpath('//*[@id="datagrid-row-r1-2-%s"]/td[1]/div' % i).text
+					time.sleep(1)
+				Log().info("下一个处理节点:" + role)  # 返回节点所有值
+				# 下一步处理人ID
+				next_user_id = page.driver.find_element_by_xpath(
+						'//*[@id="datagrid-row-r1-2-%s"]/td[4]/div' % (len(rcount) - 1)).text
+			elif stage == 1:
+				page.driver.find_element_by_id('firstLoanA').click()
+				# page.driver.find_element_by_xpath('//*[@id="profile"]/div/div/div/div/div[2]').click()
+				page.driver.find_element_by_class_name('datagrid-view2')
+				res = page.driver.find_element_by_xpath('//*[@id="profile"]/div/div/div/div/div[2]/div[2]/table/tbody')
+				rcount = res.find_elements_by_tag_name("tr")
+				for i in range(1, len(rcount)):
+					role = page.driver.find_element_by_xpath('//*[@id="datagrid-row-r4-2-%s"]/td[1]/div' % i).text
+					time.sleep(1)
+				Log().info("下一个处理环节:" + role)  # 返回节点所有值
+				next_user_id = page.driver.find_element_by_xpath(
+						'//*[@id="datagrid-row-r4-2-%s"]/td[4]/div' % (len(rcount) - 1)).text
+			elif stage == 2:
+				# 第二次放款
+				page.driver.find_element_by_id('secondLoanLi').click()
+				page.driver.find_element_by_class_name("datagrid-btable")
+				res = page.driver.find_element_by_xpath('//*[@id="settings"]/div/div/div/div/div[2]/div[2]/table')
+				rcount = res.find_elements_by_tag_name("tr")  # 取表格的行数
+				for i in range(1, len(rcount)):
+					role = page.driver.find_element_by_xpath('//*[@id="datagrid-row-r8-2-%s"]/td[1]/div' % i).text
+					time.sleep(1)
+				Log().info("下一个处理节点:" + role)  # 返回节点所有值
+				# 下一步处理人ID
+				next_user_id = page.driver.find_element_by_xpath(
+						'//*[@id="datagrid-row-r8-2-%s"]/td[4]/div' % (len(rcount) - 1)).text
+	except ec.NoSuchElementException as msg:
+		raise (msg)
+	finally:
 		page.driver.quit()
-		return next_user_id
+	return next_user_id
 
 
 # 申请录入保存
@@ -1341,7 +1360,7 @@ def authority_card_transact(page, condition, env="SIT"):
 		return False
 
 
-def warrant_apply(page, condition, flag=None):
+def warrant_apply(page, condition):
 	"""
 		权证请款
 	:param page: 页面对象
@@ -1363,28 +1382,17 @@ def warrant_apply(page, condition, flag=None):
 			raise e.msg
 		
 		try:
-			if not flag:
-				# 原件请款-拆分个体
-				# page.driver.find_element_by_name('apply').click()
-				page.driver.find_element_by_xpath('//*[@id="warrantInfo"]/div[2]/div/input[3]').click()
-				page.driver.find_element_by_id('splitLoanMoney').click()
-				time.sleep(1)
-				# 请款拆分明细
-				page.driver.find_element_by_xpath('//*[@id="warrantSplitModel"]/div').click()
-				time.sleep(1)
-				page.driver.find_element_by_xpath('//*[@id="warrantForm"]/div/table/tbody/tr/td[1]/input').click()
-				time.sleep(1)
-			else:
-				# 部分请款
-				page.driver.find_element_by_xpath('//*[@id="warrantInfo"]/div[2]/div/input[4]').click()
-				page.driver.find_element_by_id('splitLoanMoney').click()
-				time.sleep(1)
-				# 请款拆分明细
-				page.driver.find_element_by_xpath('//*[@id="warrantSplitModel"]/div').click()
-				time.sleep(1)
-				page.driver.find_element_by_xpath('//*[@id="warrantForm"]/div/table/tbody/tr[1]/td[1]/input').click()
-				time.sleep(1)
-				
+			# 原件请款-拆分个体
+			# page.driver.find_element_by_name('apply').click()
+			page.driver.find_element_by_xpath('//*[@id="warrantInfo"]/div[2]/div/input[3]').click()
+			page.driver.find_element_by_id('splitLoanMoney').click()
+			time.sleep(1)
+			# 请款拆分明细
+			page.driver.find_element_by_xpath('//*[@id="warrantSplitModel"]/div').click()
+			time.sleep(1)
+			page.driver.find_element_by_xpath('//*[@id="warrantForm"]/div/table/tbody/tr/td[1]/input').click()
+			time.sleep(1)
+			
 			# 确定
 			page.driver.find_element_by_id('dialogSplitSure').click()
 			# 保存
@@ -1605,14 +1613,14 @@ def reconsideration(page, applycode, action=0):
 		return False
 
 
-def get_next_user(page, applycode):
+def get_next_user(page, applycode, stage=0):
 	"""
 	获取下一个处理人
 	:param page: 页面对象
 	:param applycode: 申请件code
 	:return:
 	"""
-	next_id = process_monitor(page, applycode)
+	next_id = process_monitor(page, applycode, stage)
 	if next_id is None:
 		raise ValueError("没有找到下一步处理人")
 	else:
@@ -1621,3 +1629,131 @@ def get_next_user(page, applycode):
 		# 当前用户退出系统
 		page.driver.quit()
 	return next_user_id
+
+
+def receipt_return(page, apply_code):
+	"""
+	回执提放审批审核
+	:param page:
+	:param apply_code:
+	:return:
+	"""
+	
+	t1 = task_search(page, apply_code)
+	if not t1.text:
+		return False
+	else:
+		t1.click()
+		ActionChains(page.driver).double_click(t1).perform()
+		try:
+			page.driver.switch_to.frame("myIframeImage1")  # 切换iframe
+		except ec.NoSuchFrameException as e:
+			raise e.msg
+	page.driver.find_element_by_xpath('//*[@id="checkOpinion"]/textarea').send_keys("回执提放审批")
+	# save
+	page.driver.switch_to.parent_frame()
+	page.driver.find_element_by_id("warrant_request_save").click()
+	page.driver.find_element_by_xpath("/html/body/div[2]/div[3]/a").click()
+	time.sleep(1)
+	# submit
+	page.driver.find_element_by_id('warrant_request_submit').click()
+	page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a[1]').click()
+	time.sleep(1)
+	return True
+
+
+def part_warrant_apply(page, condition, flag=0):
+	"""
+		部分权证请款
+	:param page: 页面对象
+	:param condition:   applyCode
+	:return:
+	"""
+	
+	# 打开任务中心
+	t1 = task_search(page, condition)
+	if not t1.text:
+		return False
+	else:
+		t1.click()
+		# 双击
+		ActionChains(page.driver).double_click(t1).perform()
+		try:
+			page.driver.switch_to.frame("myIframeImage1")  # 切换iframe
+		except ec.NoSuchFrameException as e:
+			raise e.msg
+		
+		try:
+			if flag == 0:
+				# 第一次权证请款
+				page.driver.find_element_by_xpath('//*[@id="warrantInfo"]/div[2]/div/input[4]').click()
+				page.driver.find_element_by_id('splitLoanMoney').click()
+				time.sleep(1)
+				# 请款拆分明细
+				page.driver.find_element_by_xpath('//*[@id="warrantSplitModel"]/div').click()
+				time.sleep(1)
+				page.driver.find_element_by_xpath('//*[@id="warrantForm"]/div/table/tbody/tr[1]/td[1]/input').click()
+				time.sleep(1)
+				# 确定
+				page.driver.find_element_by_id('dialogSplitSure').click()
+				# 保存
+				page.driver.switch_to.parent_frame()
+				time.sleep(1)
+				page.driver.find_element_by_xpath('//*[@id="first_warrant_save"]/span').click()
+				time.sleep(1)
+				page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a').click()
+				# 提交
+				page.driver.find_element_by_id('first_warrant_apply').click()
+				time.sleep(1)
+				page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a[1]').click()
+				time.sleep(1)
+				page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a').click()
+			else:
+				# save
+				page.driver.switch_to.parent_frame()
+				page.driver.find_element_by_id('second_warrant_save').click()
+				page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a').click()
+				time.sleep(1)
+				# submit
+				page.driver.find_element_by_id('second_warrant_apply').click()
+				time.sleep(1)
+				page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a[1]').click()
+			
+			return True
+		except ec.NoSuchElementException as e:
+			raise e.msg
+
+
+def upload_image_file(page, exe, image, delete=None):
+	"""
+	上传影像资料
+	:param page:
+	:return:
+	"""
+	try:
+		page.driver.find_element_by_link_text("影像资料").click()
+		try:
+			page.driver.switch_to_frame('myIframeImages')
+		except ec.NoSuchFrameException as msg:
+			raise (msg)
+		# upload
+		page.driver.find_element_by_class_name('img_upload_area').click()
+		page.driver.find_element_by_id('browse').click()
+		os.system(exe + " " + image)
+		# os.system('E:\\HouseLoanAutoPy3\\lib\\uploadtool.exe "E:\\HouseLoanAutoPy3\\image\\2.jpg"')
+		
+		# Todo 图片名称随机变动，不好处理
+		if delete:
+			se = page.driver.find_element_by_xpath(
+					'//*[@id="checkhttp://uat-img.xnph66.com/AttachFiles/loanbefore/2018/03/02/17/871940b2f3f8ddeaf342fa33039aab1e.jpg"]')
+			se.click()
+			# delete image
+			page.driver.find_element_by_id('deleteItems').click()
+			# confirm
+			page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a[1]').click()
+	
+	except ec.NoSuchElementException as msg:
+		raise ValueError(msg)
+	finally:
+		time.sleep(1)
+		page.driver.switch_to.parent_frame()

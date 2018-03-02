@@ -10,7 +10,8 @@ from cases.baseProcess import (
 	test_suite_cwd,
 	test_eyt_input_data,
 	test_xhd_input_data,
-	test_gqt_input_data
+	test_gqt_input_data,
+	test_part_raise
 	)
 from cases.IntoCases import (
 	test_into_case,
@@ -22,6 +23,9 @@ from cases.contract_sigining import (
 	test_more_person_sign,
 	test_add_contract
 	)
+
+from cases.warrantManage import test_warrantManage
+from cases.upload_image_data import test_upload_image_file
 
 if __name__ == "__main__":
 	
@@ -40,6 +44,7 @@ if __name__ == "__main__":
 		if element is not None:
 			for i in temp[element]:
 				suite.addTest(case(i))
+	
 	
 	# 按照一定格式获取当前时间
 	now = time.strftime("%Y-%m-%d %H_%M_%S")
@@ -60,6 +65,9 @@ if __name__ == "__main__":
 		'contract',  # 合同签约
 		'AddContract',  # 添加拆借人签约
 		"SPA",  # 特批
+		"PartRaise",  # 部分募资
+		"WarrantManage",  # 权证请款
+		"UploadImageData",  # 上传影像资料
 		]
 	
 	try:
@@ -67,32 +75,6 @@ if __name__ == "__main__":
 		f1 = os.path.join(rdir, 'caseNumber.yaml')
 		with open(f1, 'r', encoding='utf-8') as f:
 			temp = yaml.load(f)
-			# # 车位贷
-			# for i in temp['cwd']:
-			# 	suite.addTest(test_suite_cwd.CWD(i))
-			# # E押通用例
-			# for i in temp['eyt']:
-			# 	suite.addTest(test_eyt_input_data.EYT(i))
-			# # 循环贷用例
-			# for i in temp['xhd']:
-			# 	suite.addTest(test_xhd_input_data.XHD(i))
-			# # 过桥通用例
-			# for i in temp['gqt']:
-			# 	suite.addTest(test_gqt_input_data.GQT(i))
-			# # 进件场景
-			# for i in temp['IntoCase']:
-			# 	suite.addTest(test_into_case.IntoCase(i))
-			# # 回退场景
-			# for i in temp['fallback']:
-			# 	suite.addTest(test_fallback.fallback(i))
-			# # 签约
-			# for i in temp['contract']:
-			# 	suite.addTest(test_more_person_sign.ContractSign(i))
-			# for i in temp['AddContract']:
-			# 	suite.addTest(test_add_contract.AddContract(i))
-			# # 特批
-			# for i in temp['SPA']:
-			# 	suite.addTest(test_special_approval.SPA(i))
 			for e in suite_list:
 				if e == 'cwd':
 					run_case(e, test_suite_cwd.CWD)
@@ -112,6 +94,10 @@ if __name__ == "__main__":
 					run_case(e, test_special_approval.SPA)
 				elif e == 'AddContract':
 					run_case(e, test_add_contract.AddContract)
+				elif e == 'WarrantManage':
+					run_case(e, test_warrantManage.WarrantManage)
+				elif e == 'UploadImageData':
+					run_case(e, test_upload_image_file.UploadImageData)
 		print("f1:", f1)
 		f.close()
 	except Exception as e:
