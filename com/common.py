@@ -1751,7 +1751,7 @@ def upload_image_file(page, exe, image, delete=None):
 			page.driver.find_element_by_id('deleteItems').click()
 			# confirm
 			page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a[1]').click()
-	
+		return True
 	except ec.NoSuchElementException as msg:
 		raise ValueError(msg)
 	finally:

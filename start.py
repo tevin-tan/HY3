@@ -94,6 +94,8 @@ if __name__ == "__main__":
 					run_case(e, test_special_approval.SPA)
 				elif e == 'AddContract':
 					run_case(e, test_add_contract.AddContract)
+				elif e == 'PartRaise':
+					run_case(e, test_part_raise.PartRaise)
 				elif e == 'WarrantManage':
 					run_case(e, test_warrantManage.WarrantManage)
 				elif e == 'UploadImageData':
