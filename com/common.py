@@ -1746,6 +1746,8 @@ def upload_image_file(page, exe, image, delete=None):
 		if delete:
 			se = page.driver.find_element_by_xpath(
 					'//*[@id="checkhttp://uat-img.xnph66.com/AttachFiles/loanbefore/2018/03/02/17/871940b2f3f8ddeaf342fa33039aab1e.jpg"]')
+			page.driver.find_element_by_id(
+				'checkhttp://uat-img.xnph66.com/AttachFiles/loanbefore/2018/03/05/15/97fe8d83f46f0ace0d522dfe838d5a11.jpg')
 			se.click()
 			# delete image
 			page.driver.find_element_by_id('deleteItems').click()

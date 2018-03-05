@@ -10,7 +10,7 @@ import common.getIdNumber as GT
 
 
 class CWD(unittest.TestCase):
-	'''车位贷流程用例'''
+	"""车位贷流程用例"""
 	
 	def setUp(self):
 		self.page = Login()
@@ -46,11 +46,11 @@ class CWD(unittest.TestCase):
 			raise ValueError("load config error")
 	
 	# def _enviroment_change(self, i):
-	# 	'''
+	# 	"""
 	# 		环境切换
 	# 	:param i:   分公司序号  "0" 广州， "1" 长沙
 	# 	:return:
-	# 	'''
+	# 	"""
 	# 	# 导入数据
 	# 	import config
 	# 	rd = config.__path__[0]
@@ -73,13 +73,13 @@ class CWD(unittest.TestCase):
 		pass
 	
 	def test_cwd_01_base_info(self):
-		'''客户基本信息录入'''
+		"""客户基本信息录入"""
 		
 		common.input_customer_base_info(self.page, self.data['applyVo'])
 		self.log.info("客户基本信息录入结束")
 	
 	def test_cwd_02_borrowr_info(self):
-		'''借款人/共贷人/担保人信息'''
+		"""借款人/共贷人/担保人信息"""
 		
 		self.test_cwd_01_base_info()
 		try:
@@ -91,7 +91,7 @@ class CWD(unittest.TestCase):
 			raise e
 	
 	def test_cwd_03_Property_info(self):
-		'''物业信息录入'''
+		"""物业信息录入"""
 		
 		self.test_cwd_02_borrowr_info()
 		
@@ -105,7 +105,7 @@ class CWD(unittest.TestCase):
 			raise AssertionError('录入物业信息出错！')
 	
 	def test_cwd_04_applydata(self):
-		'''申请件录入,提交'''
+		"""申请件录入,提交"""
 		
 		# 1 客户信息-业务基本信息
 		# log_to().info(u"客户基本信息录入")
@@ -125,7 +125,7 @@ class CWD(unittest.TestCase):
 		self.log.info("申请件录入完成提交")
 	
 	def test_cwd_05_get_applyCode(self):
-		'''申请件查询'''
+		"""申请件查询"""
 		
 		self.test_cwd_04_applydata()
 		applycode = common.get_applycode(self.page, self.custName)
@@ -137,7 +137,7 @@ class CWD(unittest.TestCase):
 			raise ValueError("申请件查询失败")
 	
 	def test_cwd_06_show_task(self):
-		'''查看待处理任务列表'''
+		"""查看待处理任务列表"""
 		
 		self.test_cwd_05_get_applyCode()
 		next_id = common.process_monitor(self.page, self.applyCode)
@@ -158,7 +158,7 @@ class CWD(unittest.TestCase):
 			raise ValueError("查询待处理任务失败")
 	
 	def test_cwd_07_process_monitor(self):
-		'''流程监控'''
+		"""流程监控"""
 		
 		self.test_cwd_05_get_applyCode()  # 申请件查询
 		res = common.process_monitor(self.page, self.applyCode)  # l流程监控
@@ -174,7 +174,7 @@ class CWD(unittest.TestCase):
 		self.page.driver.quit()
 	
 	def test_cwd_08_branch_supervisor_approval(self):
-		'''分公司主管审批'''
+		"""分公司主管审批"""
 		
 		# 获取分公司登录ID
 		self.test_cwd_07_process_monitor()
@@ -201,7 +201,7 @@ class CWD(unittest.TestCase):
 			page.driver.quit()
 	
 	def test_cwd_09_branch_manager_approval(self):
-		'''分公司经理审批'''
+		"""分公司经理审批"""
 		
 		# 获取分公司经理登录ID
 		self.test_cwd_08_branch_supervisor_approval()
@@ -227,7 +227,7 @@ class CWD(unittest.TestCase):
 			page.driver.quit()
 	
 	def test_cwd_10_regional_prereview(self):
-		'''区域预复核审批'''
+		"""区域预复核审批"""
 		
 		# 获取区域预复核员ID
 		self.test_cwd_09_branch_manager_approval()
@@ -255,7 +255,7 @@ class CWD(unittest.TestCase):
 			page.driver.quit()
 	
 	def test_cwd_11_manager_approval(self):
-		'''高级审批经理审批'''
+		"""高级审批经理审批"""
 		
 		# 获取审批经理ID
 		self.test_cwd_10_regional_prereview()
@@ -282,7 +282,7 @@ class CWD(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_cwd_12_contract_signing(self):
-		'''签约'''
+		"""签约"""
 		
 		rec_bank_info = dict(
 				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
@@ -314,7 +314,7 @@ class CWD(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_cwd_13_compliance_audit(self):
-		'''合规审查'''
+		"""合规审查"""
 		
 		# 获取下一步合同登录ID
 		self.test_cwd_12_contract_signing()
@@ -331,7 +331,7 @@ class CWD(unittest.TestCase):
 		self.page.driver.quit()
 	
 	def test_cwd_14_authority_card_member_transact(self):
-		'''权证办理'''
+		"""权证办理"""
 		
 		# 合规审查
 		self.test_cwd_13_compliance_audit()
@@ -352,7 +352,7 @@ class CWD(unittest.TestCase):
 			page.driver.quit()
 	
 	def test_cwd_15_warrant_apply(self):
-		'''权证请款-原件请款'''
+		"""权证请款-原件请款"""
 		
 		# 获取合同打印专员ID
 		self.test_cwd_14_authority_card_member_transact()
@@ -366,7 +366,7 @@ class CWD(unittest.TestCase):
 			page.driver.quit()
 	
 	def test_cwd_16_finace_transact(self):
-		'''财务办理'''
+		"""财务办理"""
 		
 		# 权证请款
 		self.test_cwd_15_warrant_apply()
@@ -387,7 +387,7 @@ class CWD(unittest.TestCase):
 		self.page.driver.quit()
 	
 	def test_cwd_17_finace_approve_branch_manager(self):
-		'''财务分公司经理审批'''
+		"""财务分公司经理审批"""
 		
 		remark = u"财务分公司经理审批"
 		
@@ -412,7 +412,7 @@ class CWD(unittest.TestCase):
 				self.page.driver.quit()
 	
 	def test_cwd_18_finace_approve_risk_control_manager(self):
-		'''财务风控经理审批'''
+		"""财务风控经理审批"""
 		
 		remark = u'风控经理审批'
 		
@@ -436,7 +436,7 @@ class CWD(unittest.TestCase):
 		self.page.driver.quit()
 	
 	def test_cwd_19_finace_approve_financial_accounting(self):
-		'''财务会计审批'''
+		"""财务会计审批"""
 		
 		remark = u'财务会计审批'
 		
@@ -456,7 +456,7 @@ class CWD(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_cwd_20_finace_approve_financial_manager(self):
-		'''财务经理审批'''
+		"""财务经理审批"""
 		
 		remark = u'财务经理审批'
 		
@@ -469,7 +469,7 @@ class CWD(unittest.TestCase):
 			raise ValueError("财务经理审批出错")
 	
 	def test_cwd_21_funds_raise(self):
-		'''资金主管募资审批'''
+		"""资金主管募资审批"""
 		
 		remark = u'资金主管审批'
 		

@@ -1,8 +1,8 @@
 # coding:utf-8
 
-'''
+"""
     E押通录单流程
-'''
+"""
 
 import unittest
 import os
@@ -14,7 +14,7 @@ from com.custom import (get_name, logout, enviroment_change, Log, )
 
 
 class EYT(unittest.TestCase):
-	'''E押通-2.0产品测试'''
+	"""E押通-2.0产品测试"""
 	
 	def _init_params(self):
 		self.cust_info = {
@@ -107,27 +107,27 @@ class EYT(unittest.TestCase):
 	def tearDown(self):
 		self.page.quit()
 	
-	'''
+	"""
 		  E押通案件数据录入
-	'''
+	"""
 	
 	def test_eyt_01_base_info(self):
-		'''客户基本信息录入'''
+		"""客户基本信息录入"""
 		common.input_customer_base_info(self.page, self.cust_info['_cust_base_info'])
 	
 	def test_ety_02_borrowr_info(self):
-		'''借款人/共贷人/担保人信息'''
+		"""借款人/共贷人/担保人信息"""
 		common.input_customer_base_info(self.page, self.cust_info['_cust_base_info'])
 		common.input_customer_borrow_info(self.page, self.cust_info['_borrow_info'])
 	
 	def test_eyt_03_Property_info(self):
-		'''物业信息录入'''
+		"""物业信息录入"""
 		common.input_customer_base_info(self.page, self.cust_info['_cust_base_info'])
 		common.input_customer_borrow_info(self.page, self.cust_info['_borrow_info'])
 		common.input_bbi_property_info(self.page)
 	
 	def test_eyt_04_applydata(self):
-		'''申请件录入,提交'''
+		"""申请件录入,提交"""
 		
 		# 1 客户信息-业务基本信息
 		# log_to().info(u"客户基本信息录入")
@@ -144,7 +144,7 @@ class EYT(unittest.TestCase):
 		common.submit(self.page)
 	
 	def test_eyt_05_get_applyCode(self):
-		'''申请件查询'''
+		"""申请件查询"""
 		
 		self.test_eyt_04_applydata()
 		applycode = common.get_applycode(self.page, self.custName)
@@ -157,7 +157,7 @@ class EYT(unittest.TestCase):
 			raise ValueError("can't get applyCode!")
 	
 	def test_eyt_06_show_task(self):
-		'''查看待处理任务列表'''
+		"""查看待处理任务列表"""
 		self.test_eyt_05_get_applyCode()
 		next_id = common.process_monitor(self.page, self.applyCode)
 		if next_id:
@@ -177,7 +177,7 @@ class EYT(unittest.TestCase):
 			raise ValueError("待处理任务列表中不存在该笔案件")
 	
 	def test_eyt_07_process_monitor(self):
-		'''流程监控'''
+		"""流程监控"""
 		self.test_eyt_05_get_applyCode()  # 申请件查询
 		res = common.process_monitor(self.page, self.applyCode)  # l流程监控
 		
@@ -191,7 +191,7 @@ class EYT(unittest.TestCase):
 			self.log.info("next deal User: " + self.next_user_id)
 	
 	def test_eyt_08_branch_supervisor_approval(self):
-		'''分公司主管审批'''
+		"""分公司主管审批"""
 		
 		# 获取分公司登录ID
 		self.test_eyt_07_process_monitor()
@@ -214,12 +214,12 @@ class EYT(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_quit_system(self):
-		'''退出系统'''
+		"""退出系统"""
 		logout(self.page.driver)
 		self.page.driver.close()  # 关闭浏览器
 	
 	def test_eyt_09_branch_manager_approval(self):
-		'''分公司经理审批'''
+		"""分公司经理审批"""
 		
 		# 获取分公司经理登录ID
 		self.test_eyt_08_branch_supervisor_approval()
@@ -242,7 +242,7 @@ class EYT(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_eyt_10_regional_prereview(self):
-		'''区域预复核审批'''
+		"""区域预复核审批"""
 		
 		# 获取区域预复核员ID
 		self.test_eyt_09_branch_manager_approval()
@@ -270,7 +270,7 @@ class EYT(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_eyt_11_manager_approval(self):
-		'''高级审批经理审批'''
+		"""高级审批经理审批"""
 		
 		# 获取审批经理ID
 		self.test_eyt_10_regional_prereview()
@@ -293,7 +293,7 @@ class EYT(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_12_contract_signing(self):
-		'''签约'''
+		"""签约"""
 		
 		# 收款银行信息
 		rec_bank_info = dict(
@@ -326,7 +326,7 @@ class EYT(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_13_compliance_audit(self):
-		'''合规审查'''
+		"""合规审查"""
 		
 		# i_frame = 'bTabs_tab_house_commonIndex_todoList'
 		# 获取下一步合同登录ID
@@ -345,7 +345,7 @@ class EYT(unittest.TestCase):
 		page.driver.quit()
 	
 	def test_eyt_14_authority_card_member_transact(self):
-		'''权证办理'''
+		"""权证办理"""
 		
 		# 合规审查
 		self.test_13_compliance_audit()
@@ -369,7 +369,7 @@ class EYT(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_eyt_15_warrant_apply(self):
-		'''权证请款-原件请款'''
+		"""权证请款-原件请款"""
 		
 		# 获取合同打印专员ID
 		self.test_eyt_14_authority_card_member_transact()
@@ -384,7 +384,7 @@ class EYT(unittest.TestCase):
 			raise AssertionError('权证请款失败')
 	
 	def test_eyt_16_finace_transact(self):
-		'''财务办理'''
+		"""财务办理"""
 		
 		# 权证请款
 		self.test_eyt_15_warrant_apply()
@@ -407,7 +407,7 @@ class EYT(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_eyt_17_finace_approve_branch_manager(self):
-		'''财务分公司经理审批'''
+		"""财务分公司经理审批"""
 		
 		remark = u"财务分公司经理审批"
 		
@@ -430,7 +430,7 @@ class EYT(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_eyt_18_finace_approve_risk_control_manager(self):
-		'''财务风控经理审批'''
+		"""财务风控经理审批"""
 		
 		remark = u'风控经理审批'
 		
@@ -455,7 +455,7 @@ class EYT(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_eyt_19_finace_approve_financial_accounting(self):
-		'''财务会计审批'''
+		"""财务会计审批"""
 		
 		remark = u'财务会计审批'
 		
@@ -480,7 +480,7 @@ class EYT(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_eyt_20_finace_approve_financial_manager(self):
-		'''财务经理审批'''
+		"""财务经理审批"""
 		
 		remark = u'财务经理审批'
 		
@@ -495,7 +495,7 @@ class EYT(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_eyt_21_funds_raise(self):
-		'''资金主管募资审批'''
+		"""资金主管募资审批"""
 		
 		remark = u'资金主管审批'
 		

@@ -18,7 +18,7 @@ def print_env(env, company):
 
 
 def Log():
-	'''定义logger级别'''
+	"""定义logger级别"""
 	
 	logging.basicConfig(
 			level=logging.INFO,
@@ -31,10 +31,10 @@ def Log():
 
 
 def get_name():
-	'''
+	"""
 		获取随机姓名
 	:return: name
-	'''
+	"""
 	family_names = [
 		"赵", "钱", "孙", "李", "周", "吴", "郑", "王", "冯", "陈",
 		"褚", "卫", "蒋", "沈", "韩", "杨", "朱", "秦", "尤", "许",
@@ -74,12 +74,12 @@ def logout(driver):
 
 
 def enviroment_change(filename, number=0, enviroment="SIT"):
-	'''
+	"""
 		环境切换
 	:param enviroment: SIT/UAT
 	:param number:  "0" 广州分公司; "1" 长沙分公司
 	:return:    录入的数据， 所选分公司
-	'''
+	"""
 	
 	try:
 		import config
@@ -103,10 +103,10 @@ def enviroment_change(filename, number=0, enviroment="SIT"):
 
 
 def get_current_function_name():
-	'''
+	"""
 		获取当前方法的名字
 	:return:
-	'''
+	"""
 	return inspect.stack()[1][3]
 
 

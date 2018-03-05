@@ -89,7 +89,11 @@ class UploadImageData(unittest.TestCase):
 				self.data['applyCustCreditInfoVo'][0]
 				)
 		# 删除影像资料
-		common.upload_image_file(self.page, self.exe, self.image, True)
+		res = common.upload_image_file(self.page, self.exe, self.image, True)
+		if res:
+			self.log.info("上传影像资料成功！")
+		else:
+			raise (res)
 		
 		# 提交
 		common.submit(self.page)

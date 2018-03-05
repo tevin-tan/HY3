@@ -29,7 +29,7 @@ http://www.cnblogs.com/xudong-bupt/p/3293838.html
 这里把原文的js语言转为python语言以备将来使用：
 ```
 def getValidateCheckout(id17):
-    '''获得校验码算法'''
+    """获得校验码算法"""
     weight=[7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2] #十七位数字本体码权重   
     validate=['1','0','X','9','8','7','6','5','4','3','2'] #mod11,对应校验码字符值   
 
@@ -43,7 +43,7 @@ def getValidateCheckout(id17):
 可以用来做啥呢？比如随机产生一个身份证号码，需要获得地址码、生日、循序码、校验码，下面就依次叠加吧：
 ```
 def getRandomIdNumber(sex = 1):
-    '''产生随机可用身份证号，sex = 1表示男性，sex = 0表示女性'''
+    """产生随机可用身份证号，sex = 1表示男性，sex = 0表示女性"""
     #地址码产生
     from addr import addr #地址码
     addrInfo = random.randint(0,len(addr))#随机选择一个值

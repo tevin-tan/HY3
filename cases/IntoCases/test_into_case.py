@@ -10,7 +10,7 @@ from com.custom import Log, print_env
 
 
 class IntoCase(unittest.TestCase):
-	'''申请录入进件场景'''
+	"""申请录入进件场景"""
 	
 	def setUp(self):
 		try:
@@ -41,7 +41,7 @@ class IntoCase(unittest.TestCase):
 		pass
 	
 	def test_01_one_borrower(self):
-		'''单借款人'''
+		"""单借款人"""
 		
 		name = custom.get_current_function_name()
 		print("当前用例编号:" + name)
@@ -173,7 +173,7 @@ class IntoCase(unittest.TestCase):
 	
 	
 	def test_03_two_borrower(self):
-		'''录入两个借款人'''
+		"""录入两个借款人"""
 		
 		name = custom.get_current_function_name()
 		print("当前用例编号:" + name)
@@ -194,7 +194,7 @@ class IntoCase(unittest.TestCase):
 		self.page.driver.quit()
 	
 	def test_gqt_04_applydata(self):
-		'''过桥通申请件录入,提交'''
+		"""过桥通申请件录入,提交"""
 		
 		data, _ = custom.enviroment_change("data_gqt.json", self.number, self.env)
 		

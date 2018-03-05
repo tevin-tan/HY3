@@ -1,9 +1,9 @@
 # coding:utf-8
-'''
+"""
 	Desc: 特批
 	Author: tsx
 	Date: 2018-1-24
-'''
+"""
 
 import unittest
 import json
@@ -14,7 +14,7 @@ from com.custom import Log, enviroment_change, print_env
 
 
 class SPA(unittest.TestCase):
-	'''特批'''
+	"""特批"""
 	
 	def setUp(self):
 		self.log = Log()
@@ -56,13 +56,13 @@ class SPA(unittest.TestCase):
 		self.page.driver.quit()
 	
 	def test_01_region_special_approval(self):
-		'''区域李伟波特批'''
+		"""区域李伟波特批"""
 		
-		'''
+		"""
 			---------------------------------------------------------------------
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
-		'''
+		"""
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
@@ -96,11 +96,11 @@ class SPA(unittest.TestCase):
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
 		
-		'''
+		"""
 			------------------------------------------------------------
 								2. 风控审批-区域特批
 			------------------------------------------------------------
-		'''
+		"""
 		# 下一个处理人重新登录
 		page = Login(result)
 		
@@ -147,7 +147,7 @@ class SPA(unittest.TestCase):
 				page.driver.quit()
 	
 	def test_02_manage_special_approval(self):
-		'''高级经理特批'''
+		"""高级经理特批"""
 		
 		self.test_01_region_special_approval()
 		
@@ -162,7 +162,7 @@ class SPA(unittest.TestCase):
 			page.driver.quit()
 	
 	def test_03_risk_director_special_approval(self):
-		'''区域特批，风控总监特批终审'''
+		"""区域特批，风控总监特批终审"""
 		
 		self.test_02_manage_special_approval()
 		

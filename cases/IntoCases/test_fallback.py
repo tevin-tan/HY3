@@ -1,9 +1,9 @@
 # coding:utf-8
-'''
+"""
 	description: 回退，取消，拒绝场景
 	Author: tsx
 	date: 2018-1-15
-'''
+"""
 import unittest
 import json
 import os
@@ -13,7 +13,7 @@ from com.custom import Log, enviroment_change, print_env
 
 
 class FallBack(unittest.TestCase):
-	'''风控回退/拒绝/取消场景'''
+	"""风控回退/拒绝/取消场景"""
 	
 	def setUp(self):
 		try:
@@ -55,11 +55,11 @@ class FallBack(unittest.TestCase):
 			page.driver.quit()
 	
 	def test_01_branch_director_fallback(self):
-		'''主管回退到申请录入'''
+		"""主管回退到申请录入"""
 		
-		'''
+		"""
 			1. 申请基本信息录入
-		'''
+		"""
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
@@ -90,9 +90,9 @@ class FallBack(unittest.TestCase):
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
 		
-		'''
+		"""
 			2. 风控回退
-		'''
+		"""
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
@@ -106,13 +106,13 @@ class FallBack(unittest.TestCase):
 			self.get_next_user(page, applycode)
 	
 	def test_02_branch_manager_fallback(self):
-		'''分公司经理回退到申请录入'''
+		"""分公司经理回退到申请录入"""
 		
-		'''
+		"""
 			---------------------------------------------------------------------
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
-		'''
+		"""
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
@@ -143,11 +143,11 @@ class FallBack(unittest.TestCase):
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
 		
-		'''
+		"""
 			------------------------------------------------------------
 								2. 风控审批回退
 			------------------------------------------------------------
-		'''
+		"""
 		# 下一个处理人重新登录
 		page = Login(result)
 		
@@ -172,13 +172,13 @@ class FallBack(unittest.TestCase):
 			self.get_next_user(page, applycode)
 	
 	def test_03_regional_fallback(self):
-		'''区域复核回退到申请录入'''
+		"""区域复核回退到申请录入"""
 		
-		'''
+		"""
 			---------------------------------------------------------------------
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
-		'''
+		"""
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
@@ -208,11 +208,11 @@ class FallBack(unittest.TestCase):
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
 		
-		'''
+		"""
 			------------------------------------------------------------
 								2. 风控审批回退
 			------------------------------------------------------------
-		'''
+		"""
 		# 下一个处理人重新登录
 		page = Login(result)
 		
@@ -250,13 +250,13 @@ class FallBack(unittest.TestCase):
 			self.get_next_user(page, applycode)
 	
 	def test_04_manage_fallback(self):
-		'''高级审批经理回退到申请录入'''
+		"""高级审批经理回退到申请录入"""
 		
-		'''
+		"""
 			---------------------------------------------------------------------
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
-		'''
+		"""
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
@@ -285,11 +285,11 @@ class FallBack(unittest.TestCase):
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
 		
-		'''
+		"""
 			------------------------------------------------------------
 								2. 风控审批回退
 			------------------------------------------------------------
-		'''
+		"""
 		# 下一个处理人重新登录
 		page = Login(result)
 		
@@ -339,13 +339,13 @@ class FallBack(unittest.TestCase):
 			self.get_next_user(page, applycode)
 	
 	def test_05_risk_fallback(self):
-		'''风控逐级回退'''
+		"""风控逐级回退"""
 		
-		'''
+		"""
 			---------------------------------------------------------------------
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
-		'''
+		"""
 		option = [u'区域预复核', u'分公司经理', u'分公司风控主管', u'风控专员录入']
 		
 		# 1 客户信息-业务基本信息
@@ -377,11 +377,11 @@ class FallBack(unittest.TestCase):
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
 		
-		'''
+		"""
 			------------------------------------------------------------
 								2. 风控审批回退
 			------------------------------------------------------------
-		'''
+		"""
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		# 分公司主管审批
@@ -460,11 +460,11 @@ class FallBack(unittest.TestCase):
 			self.get_next_user(page, applycode)
 	
 	def test_01_branch_director_cancel(self):
-		'''主管取消'''
+		"""主管取消"""
 		
-		'''
+		"""
 			1. 申请基本信息录入
-		'''
+		"""
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
@@ -496,9 +496,9 @@ class FallBack(unittest.TestCase):
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
 		
-		'''
+		"""
 			2. 风控取消
-		'''
+		"""
 		# 下一个处理人重新登录
 		page = Login(result)
 		
@@ -512,13 +512,13 @@ class FallBack(unittest.TestCase):
 			self.get_next_user(page, applycode)
 	
 	def test_02_branch_manager_cancel(self):
-		'''分公司经理取消'''
+		"""分公司经理取消"""
 		
-		'''
+		"""
 			---------------------------------------------------------------------
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
-		'''
+		"""
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
@@ -550,11 +550,11 @@ class FallBack(unittest.TestCase):
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
 		
-		'''
+		"""
 			------------------------------------------------------------
 								2. 风控审批回退
 			------------------------------------------------------------
-		'''
+		"""
 		# 下一个处理人重新登录
 		page = Login(result)
 		
@@ -579,13 +579,13 @@ class FallBack(unittest.TestCase):
 			self.get_next_user(page, applycode)
 	
 	def test_03_regional_cancel(self):
-		'''区域复核取消'''
+		"""区域复核取消"""
 		
-		'''
+		"""
 			---------------------------------------------------------------------
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
-		'''
+		"""
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
@@ -615,11 +615,11 @@ class FallBack(unittest.TestCase):
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
 		
-		'''
+		"""
 			------------------------------------------------------------
 								2. 风控审批取消
 			------------------------------------------------------------
-		'''
+		"""
 		# 下一个处理人重新登录
 		page = Login(result)
 		
@@ -657,13 +657,13 @@ class FallBack(unittest.TestCase):
 			self.get_next_user(page, applycode)
 	
 	def test_04_manage_cancel(self):
-		'''审批经理取消'''
+		"""审批经理取消"""
 		
-		'''
+		"""
 			---------------------------------------------------------------------
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
-		'''
+		"""
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
@@ -692,11 +692,11 @@ class FallBack(unittest.TestCase):
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
 		
-		'''
+		"""
 			------------------------------------------------------------
 								2. 风控审批回退
 			------------------------------------------------------------
-		'''
+		"""
 		# 下一个处理人重新登录
 		page = Login(result)
 		
@@ -746,11 +746,11 @@ class FallBack(unittest.TestCase):
 			self.get_next_user(page, applycode)
 	
 	def test_01_branch_director_reject(self):
-		'''主管拒绝'''
+		"""主管拒绝"""
 		
-		'''
+		"""
 			1. 申请基本信息录入
-		'''
+		"""
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
@@ -781,9 +781,9 @@ class FallBack(unittest.TestCase):
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
 		
-		'''
+		"""
 			2. 风控拒绝
-		'''
+		"""
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
@@ -809,11 +809,11 @@ class FallBack(unittest.TestCase):
 			raise AssertionError('主管拒绝失败，拒绝队列未找到该笔单！')
 	
 	def test_01_branch_director_reject_pass(self):
-		'''主管拒绝,并复议通过'''
+		"""主管拒绝,并复议通过"""
 		
-		'''
+		"""
 			1. 申请基本信息录入
-		'''
+		"""
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
@@ -872,11 +872,11 @@ class FallBack(unittest.TestCase):
 			raise AssertionError('主管拒绝失败，复议出错！')
 	
 	def test_01_branch_director_reject_fail(self):
-		'''主管拒绝,并复议不通过'''
+		"""主管拒绝,并复议不通过"""
 		
-		'''
+		"""
 			1. 申请基本信息录入
-		'''
+		"""
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
@@ -907,9 +907,9 @@ class FallBack(unittest.TestCase):
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
 		
-		'''
+		"""
 			2. 风控拒绝
-		'''
+		"""
 		# 下一个处理人重新登录
 		page = Login(result)
 		
@@ -935,13 +935,13 @@ class FallBack(unittest.TestCase):
 			raise AssertionError('主管拒绝失败，复议不通过出错！')
 	
 	def test_02_branch_manager_reject(self):
-		'''分公司经理拒绝'''
+		"""分公司经理拒绝"""
 		
-		'''
+		"""
 			---------------------------------------------------------------------
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
-		'''
+		"""
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
@@ -965,11 +965,11 @@ class FallBack(unittest.TestCase):
 		# 流程监控
 		self.get_next_user(self.page, applycode)
 		
-		'''
+		"""
 			------------------------------------------------------------
 								2. 风控审批拒绝
 			------------------------------------------------------------
-		'''
+		"""
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
@@ -1030,13 +1030,13 @@ class FallBack(unittest.TestCase):
 			raise AssertionError('分公司经理拒绝失败，拒绝队列未找到该笔单！')
 	
 	def test_02_branch_manager_reject_pass(self):
-		'''分公司经理拒绝,并复议通过'''
+		"""分公司经理拒绝,并复议通过"""
 		
-		'''
+		"""
 			---------------------------------------------------------------------
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
-		'''
+		"""
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
@@ -1060,11 +1060,11 @@ class FallBack(unittest.TestCase):
 		else:
 			self.log.info(u'获取applycode')
 		self.get_next_user(self.page, self.applycode)
-		'''
+		"""
 			------------------------------------------------------------
 								2. 风控审批拒绝
 			------------------------------------------------------------
-		'''
+		"""
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
@@ -1125,11 +1125,11 @@ class FallBack(unittest.TestCase):
 			raise AssertionError('分公司经理拒绝失败，复议出错！')
 	
 	def test_02_branch_manager_reject_fail(self):
-		'''分公司经理拒绝,并复议不通过'''
+		"""分公司经理拒绝,并复议不通过"""
 		
-		'''
+		"""
 			1. 申请基本信息录入
-		'''
+		"""
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
@@ -1160,9 +1160,9 @@ class FallBack(unittest.TestCase):
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
 		
-		'''
+		"""
 			2. 风控拒绝
-		'''
+		"""
 		# 下一个处理人重新登录
 		page = Login(result)
 		
@@ -1222,13 +1222,13 @@ class FallBack(unittest.TestCase):
 			raise AssertionError('分公司经理拒绝成功，但复议不通过出错！')
 	
 	def test_03_regional_reject(self):
-		'''区域复核拒绝'''
+		"""区域复核拒绝"""
 		
-		'''
+		"""
 			---------------------------------------------------------------------
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
-		'''
+		"""
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
@@ -1258,11 +1258,11 @@ class FallBack(unittest.TestCase):
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
 		
-		'''
+		"""
 			------------------------------------------------------------
 								2. 风控审批拒绝
 			------------------------------------------------------------
-		'''
+		"""
 		# 下一个处理人重新登录
 		page = Login(result)
 		
@@ -1323,13 +1323,13 @@ class FallBack(unittest.TestCase):
 			raise AssertionError('区域失败，拒绝队列未找到该笔单！')
 	
 	def test_03_regional_reject_pass(self):
-		'''区域复核拒绝，并复议通过'''
+		"""区域复核拒绝，并复议通过"""
 		
-		'''
+		"""
 			---------------------------------------------------------------------
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
-		'''
+		"""
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
@@ -1359,11 +1359,11 @@ class FallBack(unittest.TestCase):
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
 		
-		'''
+		"""
 			------------------------------------------------------------
 								2. 风控审批取消
 			------------------------------------------------------------
-		'''
+		"""
 		# 下一个处理人重新登录
 		page = Login(result)
 		
@@ -1424,13 +1424,13 @@ class FallBack(unittest.TestCase):
 			raise AssertionError('区域拒绝失败，复议出错！')
 	
 	def test_03_regional_reject_fail(self):
-		'''区域复核拒绝，并复议不通过'''
+		"""区域复核拒绝，并复议不通过"""
 		
-		'''
+		"""
 			---------------------------------------------------------------------
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
-		'''
+		"""
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
@@ -1460,11 +1460,11 @@ class FallBack(unittest.TestCase):
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
 		
-		'''
+		"""
 			------------------------------------------------------------
 								2. 风控审批拒绝
 			------------------------------------------------------------
-		'''
+		"""
 		# 下一个处理人重新登录
 		page = Login(result)
 		
@@ -1525,13 +1525,13 @@ class FallBack(unittest.TestCase):
 			raise AssertionError('区域拒绝成功，复议不通过出错！')
 	
 	def test_04_manage_reject(self):
-		'''高级审批经理拒绝'''
+		"""高级审批经理拒绝"""
 		
-		'''
+		"""
 			---------------------------------------------------------------------
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
-		'''
+		"""
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
@@ -1625,13 +1625,13 @@ class FallBack(unittest.TestCase):
 			raise AssertionError(u'审批经理拒绝失败，拒绝队列未找到该笔单！')
 	
 	def test_04_manage_reject_pass(self):
-		'''高级审批经理拒绝,并复议通过'''
+		"""高级审批经理拒绝,并复议通过"""
 		
-		'''
+		"""
 			---------------------------------------------------------------------
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
-		'''
+		"""
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
@@ -1660,11 +1660,11 @@ class FallBack(unittest.TestCase):
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
 		
-		'''
+		"""
 			------------------------------------------------------------
 								2. 风控审批回退
 			------------------------------------------------------------
-		'''
+		"""
 		# 下一个处理人重新登录
 		page = Login(result)
 		
@@ -1726,13 +1726,13 @@ class FallBack(unittest.TestCase):
 			raise AssertionError('复议出错！')
 	
 	def test_04_manage_reject_fail(self):
-		'''高级审批经理拒绝,并复议不通过'''
+		"""高级审批经理拒绝,并复议不通过"""
 		
-		'''
+		"""
 			---------------------------------------------------------------------
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
-		'''
+		"""
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
@@ -1761,11 +1761,11 @@ class FallBack(unittest.TestCase):
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
 		
-		'''
+		"""
 			------------------------------------------------------------
 								2. 风控审批拒绝
 			------------------------------------------------------------
-		'''
+		"""
 		# 下一个处理人重新登录
 		page = Login(result)
 		

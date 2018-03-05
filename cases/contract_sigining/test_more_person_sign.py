@@ -10,7 +10,7 @@ from com.custom import Log, enviroment_change
 
 
 class ContractSign(unittest.TestCase):
-	'''合同签约'''
+	"""合同签约"""
 	
 	def setUp(self):
 		try:
@@ -52,7 +52,7 @@ class ContractSign(unittest.TestCase):
 		self.page.driver.quit()
 	
 	def test_one_person_sign(self):
-		'''单人签约'''
+		"""单人签约"""
 		
 		# ---------------------------------------------------------------------------------
 		#                   1. 申请录入
@@ -162,7 +162,7 @@ class ContractSign(unittest.TestCase):
 		self.get_next_user(page, apply_code)
 	
 	def test_two_person_sign(self):
-		'''两人签约'''
+		"""两人签约"""
 		
 		# ---------------------------------------------------------------------------------
 		#                   1. 申请录入
@@ -285,7 +285,7 @@ class ContractSign(unittest.TestCase):
 		self.get_next_user(page, apply_code)
 	
 	def test_03_three_person_sign(self):
-		'''三人签约'''
+		"""三人签约"""
 		
 		# ---------------------------------------------------------------------------------
 		#                   1. 申请录入
@@ -395,7 +395,7 @@ class ContractSign(unittest.TestCase):
 		self.get_next_user(page, apply_code)
 	
 	def test_04_four_person_sign(self):
-		'''四人签约'''
+		"""四人签约"""
 		
 		# ---------------------------------------------------------------------------------
 		#                   1. 申请录入
@@ -505,7 +505,7 @@ class ContractSign(unittest.TestCase):
 		self.get_next_user(page, apply_code)
 	
 	def test_05_five_person_sign(self):
-		'''五人签约'''
+		"""五人签约"""
 		
 		# ---------------------------------------------------------------------------------
 		#                   1. 申请录入

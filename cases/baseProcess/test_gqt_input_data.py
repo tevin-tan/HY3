@@ -14,7 +14,7 @@ from com.custom import get_name, Log, enviroment_change
 
 
 class GQT(unittest.TestCase):
-	'''过桥通-1.0产品测试'''
+	"""过桥通-1.0产品测试"""
 	
 	def setUp(self):
 		self.page = Login()
@@ -76,18 +76,18 @@ class GQT(unittest.TestCase):
 	def tearDown(self):
 		self.page.quit()
 	
-	'''
+	"""
 		  过桥通案件数据录入
-	'''
+	"""
 	
 	def test_gqt_01_base_info(self):
-		'''过桥通产品客户基本信息录入'''
+		"""过桥通产品客户基本信息录入"""
 		
 		common.input_customer_base_info(self.page, self.cust_info['_cust_base_info'])
 		self.log.info("客户基本信息录入结束")
 	
 	def test_gqt_02_input(self):
-		'''过桥通产品借款人信息录入'''
+		"""过桥通产品借款人信息录入"""
 		
 		# 1 客户信息-业务基本信息
 		common.input_customer_base_info(self.page, self.cust_info['_cust_base_info'])
@@ -96,7 +96,7 @@ class GQT(unittest.TestCase):
 		common.input_customer_borrow_info(self.page, self.cust_info['_borrow_info'])
 	
 	def test_cwd_03_Property_info(self):
-		'''物业信息录入'''
+		"""物业信息录入"""
 		
 		# 1 客户信息-业务基本信息
 		common.input_customer_base_info(self.page, self.cust_info['_cust_base_info'])
@@ -110,7 +110,7 @@ class GQT(unittest.TestCase):
 		self.log.info("录入物业信息结束")
 	
 	def test_gqt_04_applydata(self):
-		'''申请件录入,提交'''
+		"""申请件录入,提交"""
 		
 		# 1 客户信息-业务基本信息
 		common.input_customer_base_info(self.page, self.data['applyVo'])
@@ -127,7 +127,7 @@ class GQT(unittest.TestCase):
 		self.log.info("申请件录入完成提交")
 	
 	def test_gqt_05_get_applyCode(self):
-		'''申请件查询'''
+		"""申请件查询"""
 		
 		self.test_gqt_04_applydata()
 		applycode = common.get_applycode(self.page, self.custName)
@@ -140,7 +140,7 @@ class GQT(unittest.TestCase):
 			return None, False
 	
 	def test_gqt_06_show_task(self):
-		'''查看待处理任务列表'''
+		"""查看待处理任务列表"""
 		
 		self.test_gqt_05_get_applyCode()[0]
 		next_id = common.process_monitor(self.page, self.applyCode)
@@ -161,7 +161,7 @@ class GQT(unittest.TestCase):
 			return False
 	
 	def test_gqt_07_process_monitor(self):
-		'''流程监控'''
+		"""流程监控"""
 		
 		result = self.test_gqt_05_get_applyCode()  # 申请件查询
 		res = common.process_monitor(self.page, result[0])  # l流程监控
@@ -177,7 +177,7 @@ class GQT(unittest.TestCase):
 			return res, result[0]  # (下一个处理人ID, 申请件ID)
 	
 	def test_gqt_08_branch_supervisor_approval(self):
-		'''分公司主管审批'''
+		"""分公司主管审批"""
 		
 		# 获取分公司登录ID
 		res = self.test_gqt_07_process_monitor()
@@ -205,7 +205,7 @@ class GQT(unittest.TestCase):
 			return next_id  # 下一步处理人ID
 	
 	def test_gqt_09_branch_manager_approval(self):
-		'''分公司经理审批'''
+		"""分公司经理审批"""
 		
 		# 获取分公司经理登录ID
 		next_id = self.test_gqt_08_branch_supervisor_approval()
@@ -231,7 +231,7 @@ class GQT(unittest.TestCase):
 			return res
 	
 	def test_gqt_10_regional_prereview(self):
-		'''区域预复核审批'''
+		"""区域预复核审批"""
 		
 		# 获取区域预复核员ID
 		next_id = self.test_gqt_09_branch_manager_approval()
@@ -256,7 +256,7 @@ class GQT(unittest.TestCase):
 			return res
 	
 	def test_gqt_11_manager_approval(self):
-		'''审批经理审批'''
+		"""审批经理审批"""
 		
 		# 获取审批经理ID
 		next_id = self.test_gqt_10_regional_prereview()
@@ -282,7 +282,7 @@ class GQT(unittest.TestCase):
 			return res
 	
 	def test_gqt_12_contract_signing(self):
-		'''签约'''
+		"""签约"""
 		
 		rec_bank_info = dict(
 				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
@@ -314,7 +314,7 @@ class GQT(unittest.TestCase):
 			return res
 	
 	def test_gqt_13_compliance_audit(self):
-		'''合规审查'''
+		"""合规审查"""
 		
 		# 获取下一步合同登录ID
 		next_id = self.test_gqt_12_contract_signing()
@@ -330,7 +330,7 @@ class GQT(unittest.TestCase):
 			self.log.error("合规审查失败")
 	
 	def test_gqt_14_authority_card_member_transact(self):
-		'''权证办理'''
+		"""权证办理"""
 		
 		# 合规审查
 		self.test_gqt_13_compliance_audit()
@@ -353,7 +353,7 @@ class GQT(unittest.TestCase):
 			return res
 	
 	def test_gqt_15_warrant_apply(self):
-		'''权证请款-原件请款'''
+		"""权证请款-原件请款"""
 		
 		# 获取合同打印专员ID
 		next_id = self.test_gqt_14_authority_card_member_transact()
@@ -368,7 +368,7 @@ class GQT(unittest.TestCase):
 		self.page.driver.quit()
 	
 	def test_gqt_16_finace_transact(self):
-		'''财务办理'''
+		"""财务办理"""
 		
 		# 权证请款
 		self.test_gqt_15_warrant_apply()
@@ -388,7 +388,7 @@ class GQT(unittest.TestCase):
 			return res
 	
 	def test_gqt_17_finace_approve_branch_manager(self):
-		'''财务分公司经理审批'''
+		"""财务分公司经理审批"""
 		
 		remark = u"财务分公司经理审批"
 		
@@ -414,7 +414,7 @@ class GQT(unittest.TestCase):
 				return res
 	
 	def test_gqt_18_finace_approve_risk_control_manager(self):
-		'''财务风控经理审批'''
+		"""财务风控经理审批"""
 		
 		remark = u'风控经理审批'
 		
@@ -440,7 +440,7 @@ class GQT(unittest.TestCase):
 			return res
 	
 	def test_gqt_19_funds_appprove(self):
-		'''资金主管审批'''
+		"""资金主管审批"""
 		
 		remark = u'资金主管审批'
 		self.test_gqt_18_finace_approve_risk_control_manager()
@@ -464,7 +464,7 @@ class GQT(unittest.TestCase):
 			return res
 	
 	def test_gqt_20_finace_approve_financial_accounting(self):
-		'''财务会计审批'''
+		"""财务会计审批"""
 		
 		remark = u'财务会计审批'
 		
@@ -489,7 +489,7 @@ class GQT(unittest.TestCase):
 			return res
 	
 	def test_gqt_21_finace_approve_financial_manager(self):
-		'''财务经理审批'''
+		"""财务经理审批"""
 		
 		remark = u'财务经理审批'
 		
@@ -503,7 +503,7 @@ class GQT(unittest.TestCase):
 			raise AssertionError('Error-财务经理审批出错！')
 	
 	def test_gqt_22_funds_raise(self):
-		'''资金主管募资审批'''
+		"""资金主管募资审批"""
 		
 		remark = u'资金主管审批'
 		

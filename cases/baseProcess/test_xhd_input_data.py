@@ -1,8 +1,8 @@
 # coding:utf-8
 
-'''
+"""
     循环贷进件流程
-'''
+"""
 
 import os
 import json
@@ -15,7 +15,7 @@ from com.custom import get_name, Log, enviroment_change
 
 
 class XHD(unittest.TestCase):
-	'''循环贷流程用例'''
+	"""循环贷流程用例"""
 	
 	def _init_params(self):
 		self.cust_info = dict(
@@ -82,12 +82,12 @@ class XHD(unittest.TestCase):
 	def tearDown(self):
 		self.page.quit()
 	
-	'''
+	"""
 		  循环贷案件数据录入
-	'''
+	"""
 	
 	def test_xhd_01_base_info(self):
-		'''客户基本信息录入'''
+		"""客户基本信息录入"""
 		res = common.input_customer_base_info(self.page, self.cust_info['_cust_base_info'])
 		if not res:
 			self.log.error("客户基本信息录入出错！")
@@ -96,18 +96,18 @@ class XHD(unittest.TestCase):
 			self.log.info("客户基本信息录入完成！")
 	
 	def test_xhd_02_borrowr_info(self):
-		'''借款人/共贷人/担保人信息'''
+		"""借款人/共贷人/担保人信息"""
 		common.input_customer_base_info(self.page, self.cust_info['_cust_base_info'])
 		common.input_customer_borrow_info(self.page, self.cust_info['_borrow_info'])
 	
 	def test_xhd_03_Property_info(self):
-		'''物业信息录入'''
+		"""物业信息录入"""
 		common.input_customer_base_info(self.page, self.cust_info['_cust_base_info'])
 		common.input_customer_borrow_info(self.page, self.cust_info['_borrow_info'])
 		common.input_bbi_property_info(self.page)
 	
 	def test_xhd_04_applydata(self):
-		'''申请件录入,提交'''
+		"""申请件录入,提交"""
 		
 		# 1 客户信息-业务基本信息
 		# log_to().info(u"客户基本信息录入")
@@ -125,7 +125,7 @@ class XHD(unittest.TestCase):
 		common.submit(self.page)
 	
 	def test_xhd_05_get_applyCode(self):
-		'''申请件查询'''
+		"""申请件查询"""
 		
 		self.test_xhd_04_applydata()
 		applycode = common.get_applycode(self.page, self.custName)
@@ -137,7 +137,7 @@ class XHD(unittest.TestCase):
 			raise AssertionError("Can't get applyCode!")
 	
 	def test_xhd_06_show_task(self):
-		'''查看待处理任务列表'''
+		"""查看待处理任务列表"""
 		self.test_xhd_05_get_applyCode()
 		next_id = common.process_monitor(self.page, self.applyCode)
 		if next_id:
@@ -157,7 +157,7 @@ class XHD(unittest.TestCase):
 			raise AssertionError('待处理任务查询fail')
 	
 	def test_xhd_07_process_monitor(self):
-		'''流程监控'''
+		"""流程监控"""
 		
 		self.test_xhd_05_get_applyCode()  # 申请件查询
 		res = common.process_monitor(self.page, self.applyCode)  # l流程监控
@@ -170,7 +170,7 @@ class XHD(unittest.TestCase):
 			self.log.info("Next Deal User: " + self.next_user_id)
 	
 	def test_xhd_08_branch_supervisor_approval(self):
-		'''分公司主管审批'''
+		"""分公司主管审批"""
 		
 		# 获取分公司登录ID
 		self.test_xhd_07_process_monitor()
@@ -193,7 +193,7 @@ class XHD(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_xhd_09_branch_manager_approval(self):
-		'''分公司经理审批'''
+		"""分公司经理审批"""
 		
 		# 获取分公司经理登录ID
 		self.test_xhd_08_branch_supervisor_approval()
@@ -221,7 +221,7 @@ class XHD(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_xhd_10_regional_prereview(self):
-		'''区域预复核审批'''
+		"""区域预复核审批"""
 		
 		# 获取区域预复核员ID
 		self.test_xhd_09_branch_manager_approval()
@@ -249,7 +249,7 @@ class XHD(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_xhd_11_manager_approval(self):
-		'''高级审批经理审批'''
+		"""高级审批经理审批"""
 		
 		# 获取审批经理ID
 		self.test_xhd_10_regional_prereview()
@@ -277,7 +277,7 @@ class XHD(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_xhd_12_contract_signing(self):
-		'''签约'''
+		"""签约"""
 		
 		rec_bank_info = dict(
 				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
@@ -313,7 +313,7 @@ class XHD(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_xhd_13_compliance_audit(self):
-		'''合规审查'''
+		"""合规审查"""
 		
 		# 获取下一步合同登录ID
 		self.test_xhd_12_contract_signing()
@@ -331,7 +331,7 @@ class XHD(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_xhd_14_authority_card_member_transact(self):
-		'''权证办理'''
+		"""权证办理"""
 		
 		# print  u"申请编号:" + self.applyCode
 		# 合规审查
@@ -358,7 +358,7 @@ class XHD(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_xhd_15_warrant_apply(self):
-		'''权证请款-原件请款'''
+		"""权证请款-原件请款"""
 		
 		# 获取合同打印专员ID
 		self.test_xhd_14_authority_card_member_transact()
@@ -373,7 +373,7 @@ class XHD(unittest.TestCase):
 			page.driver.quit()
 	
 	def test_xhd_16_finace_transact(self):
-		'''财务办理'''
+		"""财务办理"""
 		
 		# 权证请款
 		self.test_xhd_15_warrant_apply()
@@ -398,7 +398,7 @@ class XHD(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_xhd_17_finace_approve_branch_manager(self):
-		'''财务分公司经理审批'''
+		"""财务分公司经理审批"""
 		
 		remark = u"财务分公司经理审批"
 		
@@ -421,7 +421,7 @@ class XHD(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_xhd_18_finace_approve_risk_control_manager(self):
-		'''财务风控经理审批'''
+		"""财务风控经理审批"""
 		
 		remark = u'风控经理审批'
 		
@@ -447,7 +447,7 @@ class XHD(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_xhd_19_finace_approve_financial_accounting(self):
-		'''财务会计审批'''
+		"""财务会计审批"""
 		
 		remark = u'财务会计审批'
 		
@@ -473,7 +473,7 @@ class XHD(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_xhd_20_finace_approve_financial_manager(self):
-		'''财务经理审批'''
+		"""财务经理审批"""
 		
 		remark = u'财务经理审批'
 		
@@ -488,7 +488,7 @@ class XHD(unittest.TestCase):
 			self.page.driver.quit()
 	
 	def test_xhd_21_funds_raise(self):
-		'''资金主管募资审批'''
+		"""资金主管募资审批"""
 		
 		remark = u'资金主管审批'
 		
