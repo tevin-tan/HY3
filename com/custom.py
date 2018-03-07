@@ -5,6 +5,7 @@ import inspect
 import random
 import json
 import os
+import datetime
 
 
 def print_env(env, company):
@@ -121,6 +122,13 @@ def hello():
 	print(dir + "/config/env.json")
 
 
+def get_current_day():
+	"""获取当前日期"""
+	c_time = str(datetime.datetime.now())
+	c_d = str(datetime.date.today())
+	return c_time, c_d
+
+
 if __name__ == '__main__':
 	# dr = webdriver.Chrome()
 	# dr.get("http://www.baidu.com")
@@ -131,4 +139,7 @@ if __name__ == '__main__':
 	# logger.info('This is info message')
 	# logger.warning('This is warning message')
 	
-	hello()
+	# hello()
+	
+	res = get_current_day()
+	print(res)

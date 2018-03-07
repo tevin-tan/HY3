@@ -56,6 +56,7 @@ class WarrantManage(unittest.TestCase):
 			self.next_user_id = common.get_next_user(page, apply_code)
 	
 	def test_01_warrantManage_original(self):
+		"""权证原件请款"""
 		
 		self.data['applyVo']['applyAmount'] = 2000000
 		# ---------------------------------------------------------------------------------

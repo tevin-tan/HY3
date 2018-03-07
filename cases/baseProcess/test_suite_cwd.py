@@ -14,7 +14,7 @@ class CWD(unittest.TestCase):
 	
 	def setUp(self):
 		self.page = Login()
-		self.applyCode = ''
+		self.apply_code = ''
 		self.next_user_id = ""
 		local_dir = os.getcwd()
 		print("local_dir: %s " % local_dir)
@@ -132,7 +132,7 @@ class CWD(unittest.TestCase):
 		
 		if applycode:
 			self.log.info("申请件查询完成")
-			self.applyCode = applycode
+			self.apply_code = applycode
 		else:
 			raise ValueError("申请件查询失败")
 	
@@ -140,7 +140,7 @@ class CWD(unittest.TestCase):
 		"""查看待处理任务列表"""
 		
 		self.test_cwd_05_get_applyCode()
-		next_id = common.process_monitor(self.page, self.applyCode)
+		next_id = common.process_monitor(self.page, self.apply_code)
 		if next_id:
 			self.log.info("下一个处理人:" + next_id)
 			self.next_user_id = next_id
@@ -150,7 +150,7 @@ class CWD(unittest.TestCase):
 		
 		page = Login(self.next_user_id)
 		
-		res = common.query_task(page, self.applyCode)
+		res = common.query_task(page, self.apply_code)
 		if res:
 			self.log.info("查询待处理任务成功")
 		else:
@@ -161,7 +161,7 @@ class CWD(unittest.TestCase):
 		"""流程监控"""
 		
 		self.test_cwd_05_get_applyCode()  # 申请件查询
-		res = common.process_monitor(self.page, self.applyCode)  # l流程监控
+		res = common.process_monitor(self.page, self.apply_code)  # l流程监控
 		
 		if not res:
 			raise ValueError("流程监控查询出错！")
@@ -183,7 +183,7 @@ class CWD(unittest.TestCase):
 		page = Login(self.next_user_id)
 		
 		# 审批审核
-		res = common.approval_to_review(page, self.applyCode, u'分公司主管同意审批')
+		res = common.approval_to_review(page, self.apply_code, u'分公司主管同意审批')
 		if not res:
 			self.log.error("can't find applycode")
 			raise ValueError("can't find applycode")
@@ -191,7 +191,7 @@ class CWD(unittest.TestCase):
 			self.log.info("风控审批-分公司主管审批结束")
 		
 		# 查看下一步处理人
-		next_id = common.process_monitor(page, self.applyCode)
+		next_id = common.process_monitor(page, self.apply_code)
 		if not res:
 			raise ValueError("查询下一步处理人出错！")
 		else:
@@ -210,14 +210,14 @@ class CWD(unittest.TestCase):
 		page = Login(self.next_user_id)
 		
 		# 审批审核
-		res = common.approval_to_review(page, self.applyCode, u'分公司经理同意审批')
+		res = common.approval_to_review(page, self.apply_code, u'分公司经理同意审批')
 		if not res:
 			raise ValueError("can't find applycode")
 		else:
 			self.log.info("风控审批-分公司经理审批结束")
 		
 		# 查看下一步处理人
-		res = common.process_monitor(page, self.applyCode)
+		res = common.process_monitor(page, self.apply_code)
 		if not res:
 			raise ValueError("查询下一步处理人出错！")
 		else:
@@ -236,7 +236,7 @@ class CWD(unittest.TestCase):
 		page = Login(self.next_user_id)
 		
 		# 审批审核
-		res = common.approval_to_review(page, self.applyCode, u'区域预复核通过')
+		res = common.approval_to_review(page, self.apply_code, u'区域预复核通过')
 		if not res:
 			custom.Log().error("can't find applycode")
 			raise ValueError("can't find applycode")
@@ -244,7 +244,7 @@ class CWD(unittest.TestCase):
 			self.log.info("区域预复核审批结束")
 		
 		# 查看下一步处理人
-		res = common.process_monitor(page, self.applyCode)
+		res = common.process_monitor(page, self.apply_code)
 		if not res:
 			self.log.error("Can't found next user!")
 			raise ValueError("没有找到下一个处理人")
@@ -264,7 +264,7 @@ class CWD(unittest.TestCase):
 		page = Login(self.next_user_id)
 		
 		# 审批审核
-		res = common.approval_to_review(page, self.applyCode, u'审批经理审批')
+		res = common.approval_to_review(page, self.apply_code, u'审批经理审批')
 		if not res:
 			custom.Log().ERROR("can't find applycode")
 			raise ValueError("can't find applycode")
@@ -272,7 +272,7 @@ class CWD(unittest.TestCase):
 			self.log.info("风控审批-审批经理审批结束")
 		
 		# 查看下一步处理人
-		res = common.process_monitor(page, self.applyCode)
+		res = common.process_monitor(page, self.apply_code)
 		if not res:
 			self.log.error("Can't found next user!")
 		else:
@@ -300,10 +300,10 @@ class CWD(unittest.TestCase):
 		page = Login(self.next_user_id)
 		
 		# 签约
-		common.make_signing(page, self.applyCode, rec_bank_info)
+		common.make_signing(page, self.apply_code, rec_bank_info)
 		
 		# 查看下一步处理人
-		res = common.process_monitor(page, self.applyCode)
+		res = common.process_monitor(page, self.apply_code)
 		if not res:
 			self.log.error("Can't found next User!")
 		else:
@@ -323,7 +323,7 @@ class CWD(unittest.TestCase):
 		page = Login(self.next_user_id)
 		
 		# 合规审查
-		res = common.compliance_audit(page, self.applyCode)
+		res = common.compliance_audit(page, self.apply_code)
 		if res:
 			self.log.info("合规审批结束")
 		else:
@@ -338,9 +338,9 @@ class CWD(unittest.TestCase):
 		# 权证员登录
 		page = Login(self.company["authority_member"]["user"])
 		# 权证员上传权证信息
-		common.authority_card_transact(page, self.applyCode, self.env)
+		common.authority_card_transact(page, self.apply_code, self.env)
 		# 查看下一步处理人
-		res = common.process_monitor(page, self.applyCode)
+		res = common.process_monitor(page, self.apply_code)
 		if not res:
 			self.log.error("上传权证资料失败")
 			raise ValueError("上传权证资料失败")
@@ -358,7 +358,7 @@ class CWD(unittest.TestCase):
 		self.test_cwd_14_authority_card_member_transact()
 		page = Login(self.next_user_id)
 		# 权证请款
-		res = common.warrant_apply(page, self.applyCode)
+		res = common.warrant_apply(page, self.apply_code)
 		if not res:
 			raise ValueError("权证请款失败！")
 		else:
@@ -372,11 +372,11 @@ class CWD(unittest.TestCase):
 		self.test_cwd_15_warrant_apply()
 		# 业务助理登录
 		page = Login(self.company["business_assistant"]["user"])
-		common.finace_transact(page, self.applyCode)
+		common.finace_transact(page, self.apply_code)
 		self.log.info("完成财务办理")
 		
 		# 查看下一步处理人
-		res = common.process_monitor(page, self.applyCode, 1)
+		res = common.process_monitor(page, self.apply_code, 1)
 		if not res:
 			raise ValueError("Can't found Next User!")
 		else:
@@ -394,14 +394,14 @@ class CWD(unittest.TestCase):
 		# 下一个处理人
 		self.test_cwd_16_finace_transact()
 		page = Login(self.next_user_id)
-		result = common.finace_approve(page, self.applyCode, remark)
+		result = common.finace_approve(page, self.apply_code, remark)
 		
 		if not result:
 			raise result
 		else:
 			self.log.info("财务流程-分公司经理审批结束")
 			# 查看下一步处理人
-			res = common.process_monitor(page, self.applyCode, 1)
+			res = common.process_monitor(page, self.apply_code, 1)
 			if not res:
 				raise ValueError("Can't found Next User!")
 			else:
@@ -418,14 +418,14 @@ class CWD(unittest.TestCase):
 		
 		self.test_cwd_17_finace_approve_branch_manager()
 		page = Login(self.next_user_id)
-		rs = common.finace_approve(page, self.applyCode, remark)
+		rs = common.finace_approve(page, self.apply_code, remark)
 		if rs:
 			self.log.info("财务流程-风控经理审批结束")
 		else:
 			raise ValueError("风控经理审批出错！")
 		
 		# 查看下一步处理人
-		res = common.process_monitor(page, self.applyCode, 1)
+		res = common.process_monitor(page, self.apply_code, 1)
 		if not res:
 			raise ValueError("can't found Next User！")
 		else:
@@ -442,10 +442,10 @@ class CWD(unittest.TestCase):
 		
 		self.test_cwd_18_finace_approve_risk_control_manager()
 		page = Login(self.next_user_id)
-		common.finace_approve(page, self.applyCode, remark)
+		common.finace_approve(page, self.apply_code, remark)
 		
 		# 查看下一步处理人
-		res = common.process_monitor(page, self.applyCode, 1)
+		res = common.process_monitor(page, self.apply_code, 1)
 		if not res:
 			raise ValueError("Can't found next User!")
 		else:
@@ -462,7 +462,7 @@ class CWD(unittest.TestCase):
 		
 		self.test_cwd_19_finace_approve_financial_accounting()
 		page = Login(self.next_user_id)
-		res = common.finace_approve(page, self.applyCode, remark)
+		res = common.finace_approve(page, self.apply_code, remark)
 		if res:
 			self.log.info("财务流程-财务经理审批结束")
 		else:
@@ -475,7 +475,7 @@ class CWD(unittest.TestCase):
 		
 		self.test_cwd_20_finace_approve_financial_manager()
 		page = Login('xn0007533')
-		res = common.funds_raise(page, self.applyCode, remark)
+		res = common.funds_raise(page, self.apply_code, remark)
 		if res:
 			self.log.info("募资流程-资金主管审批结束")
 			self.page.driver.quit()

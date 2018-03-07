@@ -12,6 +12,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from config.locator import loc_cust_info, loc_borrower
 from selenium.common import exceptions as ec
 from com.custom import get_name, Log
+from com import custom
 # import common.getIdNumber as GT
 from com.idCardNumber import IdCardNumber as IDCard
 
@@ -703,13 +704,14 @@ def submit(page):
 
 
 # 审批审核
-def approval_to_review(page, condition, remark, action=0):
+def approval_to_review(page, condition, remark, action=0, image=False):
 	"""
 		审批审核
 	:param page:    页面对象
 	:param condition:   applyCode
 	:param remark:  审批审核意见
 	:param action   0 通过， 1 回退， 2 取消， 3 拒绝
+	:param image True 上传，False 不上传
 	:return:
 	"""
 	# 打开任务中心
@@ -751,6 +753,9 @@ def approval_to_review(page, condition, remark, action=0):
 			time.sleep(1)
 			page.driver.find_element_by_xpath("//*[@id=\"approve_opinion_form\"]/div[5]/div[2]").click()
 			page.driver.find_element_by_xpath("//*[@id=\"remarkable\"]").send_keys(remark)
+			if image:
+				upload_image_file(page, "E:\\HouseLoanAutoPy3\\lib\\uploadtool.exe",
+				                  "E:\\HouseLoanAutoPy3\\image\\2.jpg")
 		elif action == 1:
 			# 回退
 			Select(page.driver.find_element_by_name("appResult")).select_by_visible_text(u"回退")
@@ -1189,7 +1194,7 @@ def make_signing(page, condition, rec_bank_info, number=1):
 		return True
 
 
-def compliance_audit(page, condition):
+def compliance_audit(page, condition, upload=False):
 	"""
 		合规审查
 	:param page: 页面对象
@@ -1228,8 +1233,27 @@ def compliance_audit(page, condition):
 			page.driver.find_element_by_xpath(
 					'//*[@id="listVue"]/div[4]/form/div[' + str(i) + ']/div/div[3]/input').click()
 	
-	# 保存
 	page.driver.switch_to.parent_frame()
+	if not False:
+		try:
+			page.driver.find_element_by_link_text("影像资料").click()
+			try:
+				page.driver.switch_to_frame('myIframeImage5')
+			except ec.NoSuchFrameException as msg:
+				raise (msg)
+			# upload
+			page.driver.find_element_by_class_name('img_upload_area').click()
+			page.driver.find_element_by_id('browse').click()
+			
+			os.system("E:\\HouseLoanAutoPy3\\lib\\uploadtool.exe" + " " + "E:\\HouseLoanAutoPy3\\image\\2.jpg")
+		except ec.NoSuchElementException as msg:
+			raise ValueError(msg)
+		finally:
+			time.sleep(1)
+			page.driver.switch_to.parent_frame()
+	
+	# 保存
+	
 	page.driver.find_element_by_xpath('//*[@id="apply_module_apply_save"]').click()
 	page.driver.find_element_by_xpath(' /html/body/div[4]/div[3]/a').click()
 	
@@ -1744,10 +1768,17 @@ def upload_image_file(page, exe, image, delete=None):
 		
 		# Todo 图片名称随机变动，不好处理
 		if delete:
+			
+			t_time = custom.get_current_day()[0]
+			t_s = t_time.split(":")[0].replace("-", "/").replace(" ", "/")
+			print(t_s)
+			# match_str = '//*[starts-with(@id, "signPersonForm")]/'
+			jpg_name = '//*[ends-with(@id, "jpg")]'
+			# jpg_name = 'substring(@id, string-length(@id) - string-length("jpg") +1) = "jpg"'
+			
 			se = page.driver.find_element_by_xpath(
-					'//*[@id="checkhttp://uat-img.xnph66.com/AttachFiles/loanbefore/2018/03/02/17/871940b2f3f8ddeaf342fa33039aab1e.jpg"]')
-			page.driver.find_element_by_id(
-				'checkhttp://uat-img.xnph66.com/AttachFiles/loanbefore/2018/03/05/15/97fe8d83f46f0ace0d522dfe838d5a11.jpg')
+					'//*[@id="checkhttp://uat-img.xnph66.com/AttachFiles/loanbefore/' + t_s + jpg_name)
+			# se = page.driver.find_element_by_xpath(jpg_name)
 			se.click()
 			# delete image
 			page.driver.find_element_by_id('deleteItems').click()
