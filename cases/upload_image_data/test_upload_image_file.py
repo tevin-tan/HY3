@@ -2,42 +2,17 @@
 import unittest
 import json
 import os
-from com import common, contract
+from com import common, contract, base, custom
 from com.login import Login
-from com.custom import Log, enviroment_change, print_env
 
 
-class UploadImageData(unittest.TestCase):
+class UploadImageData(unittest.TestCase, base.Base):
 	"""影响资料上传"""
 	
 	def setUp(self):
-		self.log = Log()
-		try:
-			import config
-			rdir = config.__path__[0]
-			config_env = os.path.join(rdir, 'env.json')
-			print("config_env:" + config_env)
-			with open(config_env, 'r', encoding='utf-8') as f:
-				self.da = json.load(f)
-				self.number = self.da["number"]
-				self.env = self.da["enviroment"]
-				self.exe = self.da["upload_exe"]
-				self.image = self.da["image_jpg"]
-			f.close()
-			filename = "data_cwd.json"
-			data, company = enviroment_change(filename, self.number, self.env)
-			self.page = Login()
-			
-			# 录入的源数据
-			self.data = data
-			
-			# 分公司选择
-			self.company = company
-			print_env(self.env, self.company)
-			self.next_user_id = ""
-		except Exception as e:
-			self.log.error('load config error:', str(e))
-			raise e
+		self.env_file = "env.json"
+		self.data_file = "data_xhd.json"
+		base.Base.__init__(self, self.env_file, self.data_file)
 	
 	def tearDown(self):
 		self.page.driver.quit()
@@ -60,15 +35,18 @@ class UploadImageData(unittest.TestCase):
 	def test_01_upload_image(self):
 		"""房贷专员:上传权证资料"""
 		
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(
+		common.input_all_bbi_property_info(
 				self.page, self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0]
 				)
@@ -92,15 +70,18 @@ class UploadImageData(unittest.TestCase):
 	def test_02_upload_image_delete(self):
 		"""房贷专员删除权证资料"""
 		
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(
+		common.input_all_bbi_property_info(
 				self.page, self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0]
 				)
@@ -124,15 +105,18 @@ class UploadImageData(unittest.TestCase):
 	def test_03_upload_many_image(self):
 		"""专员-上传多张权证资料"""
 		
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(
+		common.input_all_bbi_property_info(
 				self.page, self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0]
 				)
@@ -158,15 +142,18 @@ class UploadImageData(unittest.TestCase):
 	def test_04_branch_director_upload_image(self):
 		"""分公司主管:上传权证资料"""
 		
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(
+		common.input_all_bbi_property_info(
 				self.page, self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0]
 				)
@@ -239,7 +226,7 @@ class UploadImageData(unittest.TestCase):
 	def test_08_compliance_Officer_original(self):
 		"""合规审查员上传影像资料"""
 		
-		self.data['applyVo']['applyAmount'] = 2000000
+		self.update_product_amount(2000000)
 		# ---------------------------------------------------------------------------------
 		#                   1. 申请录入
 		# ---------------------------------------------------------------------------------
@@ -249,11 +236,12 @@ class UploadImageData(unittest.TestCase):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page, self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")

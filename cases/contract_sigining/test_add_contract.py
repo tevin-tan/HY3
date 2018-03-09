@@ -1,40 +1,16 @@
 import unittest
-import json
-import os
-from com import common
 from com.login import Login
-from com import custom, contract
-from com.custom import Log, enviroment_change
+from com import custom, contract, common, base
 
 
-class AddContract(unittest.TestCase):
+class AddContract(unittest.TestCase, base.Base):
 	"""多借款人签约"""
 	
 	def setUp(self):
-		try:
-			import config
-			rootdir = config.__path__[0]
-			config_env = os.path.join(rootdir, 'env.json')
-			print("config_env:" + config_env)
-			with open(config_env, 'r', encoding='utf-8') as f:
-				self.da = json.load(f)
-				self.number = self.da["number"]
-				self.env = self.da["enviroment"]
-			f.close()
-			filename = "data_cwd.json"
-			data, company = enviroment_change(filename, self.number, self.env)
-			self.page = Login()
-			self.log = Log()
-			
-			# 录入的源数据
-			self.data = data
-			# 分公司选择
-			self.company = company
-			custom.print_env(self.env, self.company)
 		
-		except Exception as e:
-			self.log.error('load config error:', str(e))
-			raise e
+		self.env_file = "env.json"
+		self.data_file = "data_eyt.json"
+		base.Base.__init__(self, self.env_file, self.data_file)
 	
 	def tearDown(self):
 		self.page.driver.quit()
@@ -56,17 +32,21 @@ class AddContract(unittest.TestCase):
 		# ---------------------------------------------------------------------------------
 		#                   1. 申请录入
 		# ---------------------------------------------------------------------------------
+		# 贷款产品信息
+		custom.print_product_info(self.product_info)
 		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -140,7 +120,6 @@ class AddContract(unittest.TestCase):
 		# -----------------------------------------------------------------------------
 		# 	                        3. 合同打印
 		# -----------------------------------------------------------------------------
-		
 		
 		rec_bank_info = dict(
 				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
@@ -158,7 +137,9 @@ class AddContract(unittest.TestCase):
 	
 	def test_02_2Person_contract(self):
 		"""双人签约"""
-		self.data['applyVo']['applyAmount'] = 400000
+		
+		# 贷款金额
+		self.update_product_amount(400000)
 		# ---------------------------------------------------------------------------------
 		#                   1. 申请录入
 		# ---------------------------------------------------------------------------------
@@ -168,11 +149,13 @@ class AddContract(unittest.TestCase):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -246,7 +229,6 @@ class AddContract(unittest.TestCase):
 		# -----------------------------------------------------------------------------
 		# 	                        3. 合同打印
 		# -----------------------------------------------------------------------------
-		
 		
 		rec_bank_info = dict(
 				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
@@ -264,7 +246,8 @@ class AddContract(unittest.TestCase):
 	
 	def test_03_3Person_contract(self):
 		"""三人签约"""
-		self.data['applyVo']['applyAmount'] = 600000
+		# 贷款金额
+		self.update_product_amount(600000)
 		
 		# ---------------------------------------------------------------------------------
 		#                   1. 申请录入
@@ -275,11 +258,12 @@ class AddContract(unittest.TestCase):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page, self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -353,8 +337,6 @@ class AddContract(unittest.TestCase):
 		# -----------------------------------------------------------------------------
 		# 	                        3. 合同打印
 		# -----------------------------------------------------------------------------
-		
-		
 		rec_bank_info = dict(
 				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
 				recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
@@ -372,7 +354,9 @@ class AddContract(unittest.TestCase):
 	def test_04_4Person_contract(self):
 		"""四人签约"""
 		
-		self.data['applyVo']['applyAmount'] = 800000
+		# 贷款金额
+		self.update_product_amount(800000)
+		
 		# ---------------------------------------------------------------------------------
 		#                   1. 申请录入
 		# ---------------------------------------------------------------------------------
@@ -382,11 +366,12 @@ class AddContract(unittest.TestCase):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page, self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -460,8 +445,6 @@ class AddContract(unittest.TestCase):
 		# -----------------------------------------------------------------------------
 		# 	                        3. 合同打印
 		# -----------------------------------------------------------------------------
-		
-		
 		rec_bank_info = dict(
 				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
 				recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
@@ -479,7 +462,8 @@ class AddContract(unittest.TestCase):
 	def test_05_5Person_contract(self):
 		"""五人签约"""
 		
-		self.data['applyVo']['applyAmount'] = 1000000
+		# 贷款金额
+		self.update_product_amount(1000000)
 		# ---------------------------------------------------------------------------------
 		#                   1. 申请录入
 		# ---------------------------------------------------------------------------------
@@ -489,11 +473,12 @@ class AddContract(unittest.TestCase):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page, self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -567,8 +552,6 @@ class AddContract(unittest.TestCase):
 		# -----------------------------------------------------------------------------
 		# 	                        3. 合同打印
 		# -----------------------------------------------------------------------------
-		
-		
 		rec_bank_info = dict(
 				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
 				recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
@@ -585,7 +568,10 @@ class AddContract(unittest.TestCase):
 	
 	def test_06_6Person_contract(self):
 		"""六人签约"""
-		self.data['applyVo']['applyAmount'] = 1200000
+		
+		# 贷款金额
+		self.update_product_amount(1200000)
+		
 		# ---------------------------------------------------------------------------------
 		#                   1. 申请录入
 		# ---------------------------------------------------------------------------------
@@ -595,11 +581,12 @@ class AddContract(unittest.TestCase):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page, self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -673,8 +660,6 @@ class AddContract(unittest.TestCase):
 		# -----------------------------------------------------------------------------
 		# 	                        3. 合同打印
 		# -----------------------------------------------------------------------------
-		
-		
 		rec_bank_info = dict(
 				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
 				recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
@@ -691,7 +676,10 @@ class AddContract(unittest.TestCase):
 	
 	def test_07_7Person_contract(self):
 		"""七人签约"""
-		self.data['applyVo']['applyAmount'] = 1400000
+		
+		# 贷款金额
+		self.update_product_amount(1400000)
+		
 		# ---------------------------------------------------------------------------------
 		#                   1. 申请录入
 		# ---------------------------------------------------------------------------------
@@ -701,11 +689,12 @@ class AddContract(unittest.TestCase):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page, self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -779,8 +768,6 @@ class AddContract(unittest.TestCase):
 		# -----------------------------------------------------------------------------
 		# 	                        3. 合同打印
 		# -----------------------------------------------------------------------------
-		
-		
 		rec_bank_info = dict(
 				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
 				recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
@@ -798,7 +785,9 @@ class AddContract(unittest.TestCase):
 	def test_08_10Person_contract(self):
 		"""10人签约"""
 		
-		self.data['applyVo']['applyAmount'] = 2000000
+		# 贷款金额
+		self.update_product_amount(2000000)
+		
 		# ---------------------------------------------------------------------------------
 		#                   1. 申请录入
 		# ---------------------------------------------------------------------------------
@@ -808,11 +797,13 @@ class AddContract(unittest.TestCase):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -918,7 +909,9 @@ class AddContract(unittest.TestCase):
 		"""20人签约
 		"""
 		
-		self.data['applyVo']['applyAmount'] = 4000000
+		# 贷款金额
+		self.update_product_amount(4000000)
+		
 		# ---------------------------------------------------------------------------------
 		#                   1. 申请录入
 		# ---------------------------------------------------------------------------------
@@ -928,11 +921,12 @@ class AddContract(unittest.TestCase):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page, self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")

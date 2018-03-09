@@ -1,72 +1,22 @@
 # coding:utf-8
 import unittest
-import json
-import os
-from com import common
+from com import common, custom, base
 from com.login import Login
-from com import custom
-import config
-import common.getIdNumber as GT
 
 
-class CWD(unittest.TestCase):
-	"""车位贷流程用例"""
+class CWD(unittest.TestCase, base.Base):
+	"""车位贷募资流程"""
+	
+	# Todo: 这个方法构造函数的第二个参数取值有问题
+	# def __init__(self, a=None, env_file="env.json", data_file="data_cwd.json"):
+	# 	base.Base.__init__(self,env_file, data_file)
 	
 	def setUp(self):
-		self.page = Login()
-		self.apply_code = ''
-		self.next_user_id = ""
-		local_dir = os.getcwd()
-		print("local_dir: %s " % local_dir)
-		self.log = custom.Log()
-		# 环境初始化
-		# self._enviroment_change(0)
-		try:
-			rootdir = config.__path__[0]
-			config_env = os.path.join(rootdir, 'env.json')
-			# print("root_dir:" + rootdir)
-			print("config_env:" + config_env)
-			with open(config_env, 'r', encoding='utf-8') as f:
-				self.fd = f
-				self.da = json.load(f)
-				self.number = self.da["number"]
-				self.env = self.da["enviroment"]
-			
-			f.close()
-			
-			filename = "data_cwd.json"
-			data, company = custom.enviroment_change(filename, self.number, self.env)
-			# 录入的源数据
-			self.data = data
-			# 分公司选择
-			self.company = company
-			custom.print_env(self.env, self.company)
-		except Exception as e:
-			print('load config error:', str(e))
-			raise ValueError("load config error")
-	
-	# def _enviroment_change(self, i):
-	# 	"""
-	# 		环境切换
-	# 	:param i:   分公司序号  "0" 广州， "1" 长沙
-	# 	:return:
-	# 	"""
-	# 	# 导入数据
-	# 	import config
-	# 	rd = config.__path__[0]
-	# 	config_env = os.path.join(rd, 'env.json')
-	# 	data_config = os.path.join(rd, "data_cwd.json")
-	# 	with open(data_config, 'r') as f:
-	# 		self.data = json.load(f)
-	# 		print(self.data['applyVo']['productName'])
-	#
-	# 	# 环境变量, 切换分公司
-	# 	with open(config_env, 'r') as f1:
-	# 		self.env = json.load(f1)
-	# 		self.company = self.env["SIT"]["company"][i]
+		self.env_file = "env.json"
+		self.data_file = "data_cwd.json"
+		base.Base.__init__(self, self.env_file, self.data_file)
 	
 	def tearDown(self):
-		self.fd.close()
 		self.page.driver.quit()
 	
 	def skipTest(self, reason):
@@ -75,6 +25,7 @@ class CWD(unittest.TestCase):
 	def test_cwd_01_base_info(self):
 		"""客户基本信息录入"""
 		
+		custom.print_product_info(self.product_info)
 		common.input_customer_base_info(self.page, self.data['applyVo'])
 		self.log.info("客户基本信息录入结束")
 	
@@ -83,7 +34,7 @@ class CWD(unittest.TestCase):
 		
 		self.test_cwd_01_base_info()
 		try:
-			res = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+			res = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 			if res:
 				self.log.info("录入借款人信息结束")
 		except Exception as e:
@@ -95,31 +46,24 @@ class CWD(unittest.TestCase):
 		
 		self.test_cwd_02_borrowr_info()
 		
-		data1 = self.data['applyPropertyInfoVo'][0]
-		data2 = self.data['applyCustCreditInfoVo'][0]
-		
-		res = common.input_cwd_bbi_property_info(self.page, data1, data2, True)
-		if res:
-			self.log.info("录入物业信息结束")
-		else:
-			raise AssertionError('录入物业信息出错！')
+		try:
+			res = common.input_all_bbi_property_info(
+					self.page,
+					self.data['applyPropertyInfoVo'][0],
+					self.data['applyCustCreditInfoVo'][0],
+					True
+					)
+			if res:
+				self.log.info("录入物业信息结束")
+			else:
+				self.log.error('进件失败：录入物业信息出错！')
+		except Exception as e:
+			raise e
 	
 	def test_cwd_04_applydata(self):
 		"""申请件录入,提交"""
 		
-		# 1 客户信息-业务基本信息
-		# log_to().info(u"客户基本信息录入")
-		common.input_customer_base_info(self.page, self.data['applyVo'])
-		
-		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		# log_to().info(u"借款人/共贷人信息录入")
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
-		
-		# 3 物业信息
-		# log_to().info(u"物业基本信息录入")
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0], True)
-		
+		self.test_cwd_03_Property_info()
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -167,7 +111,6 @@ class CWD(unittest.TestCase):
 			raise ValueError("流程监控查询出错！")
 		else:
 			self.page.user_info['auth']["username"] = res  # 更新下一个登录人
-			# print(self.page.user_info['auth']["username"])
 			self.next_user_id = res
 			self.log.info("下一个处理人:" + self.next_user_id)
 			self.log.info("完成流程监控查询")
@@ -238,7 +181,7 @@ class CWD(unittest.TestCase):
 		# 审批审核
 		res = common.approval_to_review(page, self.apply_code, u'区域预复核通过')
 		if not res:
-			custom.Log().error("can't find applycode")
+			custom.mylog().error("can't find applycode")
 			raise ValueError("can't find applycode")
 		else:
 			self.log.info("区域预复核审批结束")
@@ -266,7 +209,7 @@ class CWD(unittest.TestCase):
 		# 审批审核
 		res = common.approval_to_review(page, self.apply_code, u'审批经理审批')
 		if not res:
-			custom.Log().ERROR("can't find applycode")
+			custom.mylog().ERROR("can't find applycode")
 			raise ValueError("can't find applycode")
 		else:
 			self.log.info("风控审批-审批经理审批结束")
@@ -326,9 +269,9 @@ class CWD(unittest.TestCase):
 		res = common.compliance_audit(page, self.apply_code)
 		if res:
 			self.log.info("合规审批结束")
+			page.driver.quit()
 		else:
 			raise ValueError("合规审查失败")
-		self.page.driver.quit()
 	
 	def test_cwd_14_authority_card_member_transact(self):
 		"""权证办理"""
@@ -384,7 +327,6 @@ class CWD(unittest.TestCase):
 			self.log.info("Next deal User:" + self.next_user_id)
 			# 当前用户退出系统
 			page.driver.quit()
-		self.page.driver.quit()
 	
 	def test_cwd_17_finace_approve_branch_manager(self):
 		"""财务分公司经理审批"""
@@ -409,7 +351,6 @@ class CWD(unittest.TestCase):
 				self.log.info("Next deal User:" + self.next_user_id)
 				# 当前用户退出系统
 				page.driver.quit()
-				self.page.driver.quit()
 	
 	def test_cwd_18_finace_approve_risk_control_manager(self):
 		"""财务风控经理审批"""
@@ -433,7 +374,6 @@ class CWD(unittest.TestCase):
 			self.log.info("nextId:" + self.next_user_id)
 			# 当前用户退出系统
 			page.driver.quit()
-		self.page.driver.quit()
 	
 	def test_cwd_19_finace_approve_financial_accounting(self):
 		"""财务会计审批"""
@@ -453,7 +393,7 @@ class CWD(unittest.TestCase):
 			self.next_user_id = res
 			self.log.info("nextId:" + self.next_user_id)
 			# 当前用户退出系统
-			self.page.driver.quit()
+			page.driver.quit()
 	
 	def test_cwd_20_finace_approve_financial_manager(self):
 		"""财务经理审批"""
@@ -465,6 +405,7 @@ class CWD(unittest.TestCase):
 		res = common.finace_approve(page, self.apply_code, remark)
 		if res:
 			self.log.info("财务流程-财务经理审批结束")
+			page.driver.quit()
 		else:
 			raise ValueError("财务经理审批出错")
 	
@@ -474,10 +415,10 @@ class CWD(unittest.TestCase):
 		remark = u'资金主管审批'
 		
 		self.test_cwd_20_finace_approve_financial_manager()
-		page = Login('xn0007533')
+		page = Login(self.treasurer)
 		res = common.funds_raise(page, self.apply_code, remark)
 		if res:
 			self.log.info("募资流程-资金主管审批结束")
-			self.page.driver.quit()
+			page.driver.quit()
 		else:
 			raise ValueError("募资流程出错")

@@ -5,40 +5,17 @@
 	date: 2018-1-15
 """
 import unittest
-import json
-import os
-from com import common
+from com import common, custom, base
 from com.login import Login
-from com.custom import Log, enviroment_change, print_env
 
 
-class FallBack(unittest.TestCase):
+class FallBack(unittest.TestCase, base.Base):
 	"""风控回退/拒绝/取消场景"""
 	
 	def setUp(self):
-		try:
-			import config
-			rootdir = config.__path__[0]
-			config_env = os.path.join(rootdir, 'env.json')
-			print("config_env:" + config_env)
-			with open(config_env, 'r', encoding='utf-8') as f:
-				self.da = json.load(f)
-				self.number = self.da["number"]
-				self.env = self.da["enviroment"]
-			f.close()
-			filename = "data_cwd.json"
-			data, company = enviroment_change(filename, self.number, self.env)
-			self.page = Login()
-			self.log = Log()
-			
-			# 录入的源数据
-			self.data = data
-			# 分公司选择
-			self.company = company
-			print_env(self.env, self.company)
-		except Exception as e:
-			self.log.error('load config error:', str(e))
-			raise e
+		self.env_file = "env.json"
+		self.data_file = "data_xhd.json"
+		base.Base.__init__(self, self.env_file, self.data_file)
 	
 	def tearDown(self):
 		pass
@@ -60,16 +37,21 @@ class FallBack(unittest.TestCase):
 		"""
 			1. 申请基本信息录入
 		"""
+		
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page, self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
 		common.submit(self.page)
@@ -113,16 +95,22 @@ class FallBack(unittest.TestCase):
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
 		"""
+		
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
 		common.submit(self.page)
@@ -179,16 +167,22 @@ class FallBack(unittest.TestCase):
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
 		"""
+		
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -257,16 +251,22 @@ class FallBack(unittest.TestCase):
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
 		"""
+		
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -348,16 +348,21 @@ class FallBack(unittest.TestCase):
 		"""
 		option = [u'区域预复核', u'分公司经理', u'分公司风控主管', u'风控专员录入']
 		
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -465,16 +470,21 @@ class FallBack(unittest.TestCase):
 		"""
 			1. 申请基本信息录入
 		"""
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
 		common.submit(self.page)
@@ -519,16 +529,21 @@ class FallBack(unittest.TestCase):
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
 		"""
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
 		common.submit(self.page)
@@ -586,16 +601,21 @@ class FallBack(unittest.TestCase):
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
 		"""
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -664,16 +684,21 @@ class FallBack(unittest.TestCase):
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
 		"""
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -751,16 +776,21 @@ class FallBack(unittest.TestCase):
 		"""
 			1. 申请基本信息录入
 		"""
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
 		common.submit(self.page)
@@ -814,16 +844,21 @@ class FallBack(unittest.TestCase):
 		"""
 			1. 申请基本信息录入
 		"""
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
 		common.submit(self.page)
@@ -877,16 +912,22 @@ class FallBack(unittest.TestCase):
 		"""
 			1. 申请基本信息录入
 		"""
+		
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
 		common.submit(self.page)
@@ -942,16 +983,21 @@ class FallBack(unittest.TestCase):
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
 		"""
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
 		common.submit(self.page)
@@ -1037,16 +1083,21 @@ class FallBack(unittest.TestCase):
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
 		"""
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
 		common.submit(self.page)
@@ -1130,16 +1181,21 @@ class FallBack(unittest.TestCase):
 		"""
 			1. 申请基本信息录入
 		"""
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
 		common.submit(self.page)
@@ -1229,16 +1285,21 @@ class FallBack(unittest.TestCase):
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
 		"""
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -1330,16 +1391,21 @@ class FallBack(unittest.TestCase):
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
 		"""
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -1431,16 +1497,21 @@ class FallBack(unittest.TestCase):
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
 		"""
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -1532,16 +1603,21 @@ class FallBack(unittest.TestCase):
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
 		"""
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -1632,16 +1708,21 @@ class FallBack(unittest.TestCase):
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
 		"""
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -1733,16 +1814,21 @@ class FallBack(unittest.TestCase):
 									1. 申请基本信息录入
 			---------------------------------------------------------------------
 		"""
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.data['applyPropertyInfoVo'][0],
-		                                   self.data['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		# 提交
 		common.submit(self.page)
 		self.log.info("申请件录入完成提交")

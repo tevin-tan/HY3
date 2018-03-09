@@ -11,7 +11,7 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.action_chains import ActionChains
 from config.locator import loc_cust_info, loc_borrower
 from selenium.common import exceptions as ec
-from com.custom import get_name, Log
+from com.custom import get_name, mylog
 from com import custom
 # import common.getIdNumber as GT
 from com.idCardNumber import IdCardNumber as IDCard
@@ -94,15 +94,15 @@ def input_customer_borrow_info(page, data):
 	:param data 传入的数据
 	:return:
 	"""
-	custname = get_name()
+	# custname = get_name()
 	try:
 		page._click_control(page.driver, "xpath", ".//*[@id='tb']/a[1]/span[2]")
 		# Update  2017-12-27
 		# 姓名元素变更，身份证号码变更
-		page.driver.find_element_by_xpath(loc_borrower['jkrxm']).send_keys(custname)  # 借款人姓名
+		page.driver.find_element_by_xpath(loc_borrower['jkrxm']).send_keys(data['custName'])  # 借款人姓名
 		time.sleep(1)
-		# page._send_data(page.driver, "xpath", loc_borrower['sfzhm'], data["idNum"])  # 身份证号码
-		page._send_data(page.driver, "xpath", loc_borrower['sfzhm'], IDCard.getRandomIdNumber()[0])  # 身份证号码
+		page._send_data(page.driver, "xpath", loc_borrower['sfzhm'], data["idNum"])  # 身份证号码
+		# page._send_data(page.driver, "xpath", loc_borrower['sfzhm'], IDCard.getRandomIdNumber()[0])  # 身份证号码
 		# 受教育程度
 		page._click_control(page.driver, "id", loc_borrower['sjycd']['locate'])
 		page._click_control(page.driver, "id", loc_borrower['sjycd']['value'])
@@ -112,10 +112,10 @@ def input_customer_borrow_info(page, data):
 		time.sleep(1)
 		page._click_control(page.driver, "id", loc_borrower['hyzk']['value'])
 		
-		# page._send_data(page.driver, "id", loc_borrower['jtdzxx'], data['address'])  # 家庭地址信息
-		page._send_data(page.driver, "id", loc_borrower['jtdzxx'], IDCard.getRandomIdNumber()[1])  # 家庭地址信息
-		# page._send_data(page.driver, "xpath", loc_borrower['xxfs'], data["phone"])  # 联系方式
-		page._send_data(page.driver, "xpath", loc_borrower['xxfs'], IDCard.createPhone())  # 联系方式
+		page._send_data(page.driver, "id", loc_borrower['jtdzxx'], data['address'])  # 家庭地址信息
+		# page._send_data(page.driver, "id", loc_borrower['jtdzxx'], IDCard.getRandomIdNumber()[1])  # 家庭地址信息
+		page._send_data(page.driver, "xpath", loc_borrower['xxfs'], data["phone"])  # 联系方式
+		# page._send_data(page.driver, "xpath", loc_borrower['xxfs'], IDCard.createPhone())  # 联系方式
 		page._send_data(page.driver, "xpath", loc_borrower['dwmc'], data["companyName"])  # 单位名称
 		
 		# 公司规模
@@ -140,9 +140,9 @@ def input_customer_borrow_info(page, data):
 		page.driver.find_element_by_xpath('//*[@id="tb"]/a[3]/span[2]').click()
 		# 临时保存
 		save(page)
-		return True, custname
+		return True
 	except ec.NoSuchElementException as e:
-		Log().error(e)
+		mylog().error(e)
 		raise e.msg
 
 
@@ -245,7 +245,7 @@ def input_bbi_property_info(page):
 		page.driver.execute_script("window.scrollTo(1600, 0)")  # 页面滑动到顶部
 		page.driver.find_element_by_link_text(u"业务基本信息").click()
 	except ec.ElementNotVisibleException as e:
-		Log().error(e.msg)
+		mylog().error(e.msg)
 		raise e
 	
 	try:
@@ -343,7 +343,7 @@ def input_bbi_property_info(page):
 		raise e.msg
 
 
-def input_cwd_bbi_property_info(page, data, apply_cust_credit_info, associated=False, product_name=None):
+def input_all_bbi_property_info(page, data, apply_cust_credit_info, associated=False, product_name=None):
 	"""
 		车位贷物业信息录入
 	:param page: 页面对象
@@ -361,7 +361,7 @@ def input_cwd_bbi_property_info(page, data, apply_cust_credit_info, associated=F
 		page.driver.execute_script("window.scrollTo(1600, 0)")  # 页面滑动到顶部
 		page.driver.find_element_by_link_text(u"业务基本信息").click()
 	except ec.ElementNotVisibleException as e:
-		Log().error(e.msg)
+		mylog().error(e.msg)
 		return False
 	
 	try:
@@ -501,7 +501,7 @@ def input_cwd_bbi_property_info(page, data, apply_cust_credit_info, associated=F
 		save(page)
 		return True
 	except ec.NoSuchElementException as e:
-		Log().error(e.msg)
+		mylog().error(e.msg)
 		return False
 
 
@@ -546,7 +546,7 @@ def get_applycode(page, condition):
 	
 	if t1:
 		# 获取申请编号
-		Log().info("applyCode: " + t1.text)
+		mylog().info("applyCode: " + t1.text)
 		return t1.text
 	else:
 		raise ValueError("Value error")
@@ -649,7 +649,7 @@ def process_monitor(page, condition, stage=0):
 				for i in range(1, len(rcount)):
 					role = page.driver.find_element_by_xpath('//*[@id="datagrid-row-r1-2-%s"]/td[1]/div' % i).text
 					time.sleep(1)
-				Log().info("下一个处理节点:" + role)  # 返回节点所有值
+				mylog().info("下一个处理节点:" + role)  # 返回节点所有值
 				# 下一步处理人ID
 				next_user_id = page.driver.find_element_by_xpath(
 						'//*[@id="datagrid-row-r1-2-%s"]/td[4]/div' % (len(rcount) - 1)).text
@@ -662,7 +662,7 @@ def process_monitor(page, condition, stage=0):
 				for i in range(1, len(rcount)):
 					role = page.driver.find_element_by_xpath('//*[@id="datagrid-row-r4-2-%s"]/td[1]/div' % i).text
 					time.sleep(1)
-				Log().info("下一个处理环节:" + role)  # 返回节点所有值
+				mylog().info("下一个处理环节:" + role)  # 返回节点所有值
 				next_user_id = page.driver.find_element_by_xpath(
 						'//*[@id="datagrid-row-r4-2-%s"]/td[4]/div' % (len(rcount) - 1)).text
 			elif stage == 2:
@@ -674,7 +674,7 @@ def process_monitor(page, condition, stage=0):
 				for i in range(1, len(rcount)):
 					role = page.driver.find_element_by_xpath('//*[@id="datagrid-row-r8-2-%s"]/td[1]/div' % i).text
 					time.sleep(1)
-				Log().info("下一个处理节点:" + role)  # 返回节点所有值
+				mylog().info("下一个处理节点:" + role)  # 返回节点所有值
 				# 下一步处理人ID
 				next_user_id = page.driver.find_element_by_xpath(
 						'//*[@id="datagrid-row-r8-2-%s"]/td[4]/div' % (len(rcount) - 1)).text
@@ -775,7 +775,7 @@ def approval_to_review(page, condition, remark, action=0, image=False):
 			# 填写意见
 			page.driver.find_element_by_id('remarkable2').send_keys(remark)
 		else:
-			Log().error("输入的参数有误(0-3)!")
+			mylog().error("输入的参数有误(0-3)!")
 			raise ValueError('参数有误！')
 		
 		# 保存
@@ -1013,6 +1013,7 @@ def make_signing(page, condition, rec_bank_info, number=1):
 			custname = get_name()
 			page.driver.find_element_by_link_text(u"拆借人信息").click()
 			page.driver.find_element_by_id('addLoanApartPerson').click()
+			time.sleep(1)
 			page.driver.find_element_by_id('apply_loanApart_info').click()
 			page.driver.find_element_by_id("loanApartPersonForm0").click()
 			# name
@@ -1205,7 +1206,7 @@ def compliance_audit(page, condition, upload=False):
 	# 查询待处理任务
 	t1 = task_search(page, condition)
 	if not t1.text:
-		Log().error("can't found the task in the taskList")
+		mylog().error("can't found the task in the taskList")
 		return False
 	else:
 		t1.click()
@@ -1608,7 +1609,7 @@ def reconsideration(page, applycode, action=0):
 		page.driver.find_element_by_id('frmQuery').click()
 		t1 = page.driver.find_element_by_xpath('//*[@id="datagrid-row-r1-2-0"]/td[13]/div')
 		if t1.text != "":
-			Log().info("拒绝案件:" + t1.text)
+			mylog().info("拒绝案件:" + t1.text)
 			return True
 		else:
 			return False
@@ -1633,7 +1634,7 @@ def reconsideration(page, applycode, action=0):
 		page.driver.find_element_by_xpath('/html/body/div[5]/div[3]/a').click()
 		return True
 	else:
-		Log().error("param wrong!")
+		mylog().error("param wrong!")
 		return False
 
 
@@ -1649,7 +1650,7 @@ def get_next_user(page, applycode, stage=0):
 		raise ValueError("没有找到下一步处理人")
 	else:
 		next_user_id = next_id
-		Log().info("下一步处理人:" + next_id)
+		mylog().info("下一步处理人:" + next_id)
 		# 当前用户退出系统
 		page.driver.quit()
 	return next_user_id

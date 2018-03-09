@@ -33,8 +33,8 @@ eyt:
  - test_eyt_09_branch_manager_approval
  - test_eyt_10_regional_prereview
  - test_eyt_11_manager_approval
- - test_12_contract_signing
- - test_13_compliance_audit
+ - test_eyt_12_contract_signing
+ - test_eyt_13_compliance_audit
  - test_eyt_14_authority_card_member_transact
  - test_eyt_15_warrant_apply
  - test_eyt_16_finace_transact
@@ -70,7 +70,7 @@ xhd:
 gqt:
  - test_gqt_01_base_info
  - test_gqt_02_input
- - test_cwd_03_Property_info
+ - test_gqt_03_Property_info
  - test_gqt_04_applydata
  - test_gqt_05_get_applyCode
  - test_gqt_06_show_task
@@ -169,4 +169,10 @@ WarrantManage:
 
 UploadImageData:
  - test_01_upload_image
-
+ - test_02_upload_image_delete
+ - test_03_upload_many_image
+ - test_04_branch_director_upload_image
+ - test_05_branch_manage_upload_image
+ - test_06_area_manage_upload_image
+ - test_07_senior_manager_upload_image
+ - test_08_compliance_Officer_original

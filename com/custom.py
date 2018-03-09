@@ -8,17 +8,58 @@ import os
 import datetime
 
 
-def print_env(env, company):
+def print_env_info(env, company):
+	"""
+	输出环境信息
+	:param env:
+	:param company:
+	:return:
+	"""
 	print('*' * 100)
 	print(' ' * 40 + '当前环境:' + env)
 	print(' ' * 40 + '当前公司:' + company['branchName'])
-	print(' ' * 40 + '风控专员:' + company['Commissioner']['user'])
+	print("环境信息:" + ' ' * 32 + '风控专员:' + company['Commissioner']['user'])
 	print(' ' * 42 + '权证员:' + company['authority_member']['user'])
 	print(' ' * 40 + '业务助理:' + company['business_assistant']['user'])
 	print('*' * 100)
 
 
-def Log():
+def print_product_info(product_info):
+	"""
+	产品信息输出
+	:param product_info: 产品信息
+	:return:
+	"""
+	# print('*' * 100)
+	if type(product_info) is dict:
+		if 'name' in product_info.keys():
+			print(' ' * 40 + '产品名称:' + product_info['name'])
+		if 'amount' in product_info.keys():
+			print('产品信息:' + ' ' * 32 + '申请金额:' + str(product_info['amount']))
+		if 'period' in product_info.keys():
+			print(' ' * 40 + '贷款期数:' + product_info['period'])
+	print('*' * 100)
+
+
+def print_person_info(person_info):
+	"""
+	借款人信息
+	:param person_info: 个人信息
+	:return:
+	"""
+	if type(person_info) is dict:
+		if 'name' in person_info.keys():
+			print(' ' * 40 + '借款人名:' + person_info['name'])
+		if 'idNum' in person_info.keys():
+			print('个人信息:' + ' ' * 32 + '身份证号:' + person_info['idNum'])
+		if 'phone' in person_info.keys():
+			print(' ' * 40 + '联系方式:' + person_info['phone'])
+		if 'address' in person_info.keys():
+			print(' ' * 40 + '家庭地址:' + person_info['address'])
+	print('*' * 100)
+
+
+def mylog():
 	"""定义logger级别"""
 	
 	logging.basicConfig(

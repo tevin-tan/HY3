@@ -4,40 +4,17 @@
 """
 
 import unittest
-import json
-import os
-from com import common
+from com import common, base, custom
 from com.login import Login
-from com.custom import Log, enviroment_change, print_env
 
 
-class PartRaise(unittest.TestCase):
+class PartRaise(unittest.TestCase, base.Base):
 	"""部分请款募资"""
 	
 	def setUp(self):
-		try:
-			import config
-			rootdir = config.__path__[0]
-			config_env = os.path.join(rootdir, 'env.json')
-			print("config_env:" + config_env)
-			with open(config_env, 'r', encoding='utf-8') as f:
-				self.da = json.load(f)
-				self.number = self.da["number"]
-				self.env = self.da["enviroment"]
-			
-			filename = "data_cwd.json"
-			data, company = enviroment_change(filename, self.number, self.env)
-			self.page = Login()
-			self.log = Log()
-			f.close()
-			# 录入的源数据
-			self.data = data
-			# 分公司选择
-			self.company = company
-			print_env(self.env, self.company)
-		except Exception as e:
-			self.log.error('load config error:', str(e))
-			raise e
+		self.env_file = "env.json"
+		self.data_file = "data_cwd.json"
+		base.Base.__init__(self, self.env_file, self.data_file)
 	
 	def risk_approval_result(self, res, mark, page, apply_code):
 		"""
@@ -65,15 +42,20 @@ class PartRaise(unittest.TestCase):
 		# ---------------------------------------------------------------------------------
 		
 		self.data['applyVo']['applyAmount'] = 400000
+		self.product_info.update(amount=self.data['applyVo']['applyAmount'])
+		
+		# 打印贷款产品信息
+		custom.print_product_info(self.product_info)
+		
 		# 1 客户信息-业务基本信息
 		if common.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])[1]
+		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(
+		common.input_all_bbi_property_info(
 				self.page, self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0]
 				)
@@ -195,6 +177,7 @@ class PartRaise(unittest.TestCase):
 	
 	def test_02_part_receipt_manage_approval(self):
 		"""回执分公司经理审批"""
+		
 		self.test_01_part_receipt_director_approval()
 		
 		page = Login(self.next_user_id)
@@ -243,7 +226,7 @@ class PartRaise(unittest.TestCase):
 		page = Login(self.next_user_id)
 		result = common.finace_approve(page, self.apply_code, remark)
 		if not result:
-			Log().error("财务流程-分公司经理审批失败")
+			self.log.error("财务流程-分公司经理审批失败")
 			raise AssertionError('财务流程-分公司经理审批失败')
 		# 查看下一步处理人
 		self.next_user_id = common.get_next_user(page, self.apply_code, 1)
@@ -257,10 +240,10 @@ class PartRaise(unittest.TestCase):
 		page = Login(self.next_user_id)
 		result = common.finace_approve(page, self.apply_code, remark)
 		if not result:
-			Log().error("财务流程-风控经理审批出错")
+			self.log.error("财务流程-风控经理审批出错")
 			raise AssertionError('财务流程-风控经理审批出错')
 		else:
-			Log().info("财务流程-风控经理审批完成")
+			self.log.info("财务流程-风控经理审批完成")
 		
 		# 查看下一步处理人
 		self.next_user_id = common.get_next_user(page, self.apply_code, 1)
@@ -274,10 +257,10 @@ class PartRaise(unittest.TestCase):
 		page = Login(self.next_user_id)
 		rs = common.finace_approve(page, self.apply_code, remark)
 		if not rs:
-			Log().error("财务流程-财务会计审批失败")
+			self.log.error("财务流程-财务会计审批失败")
 			raise AssertionError('财务流程-财务会计审批失败')
 		else:
-			Log().info("财务流程-财务会计审批完成")
+			self.log.info("财务流程-财务会计审批完成")
 		
 		# 查看下一步处理人
 		self.next_user_id = common.get_next_user(page, self.apply_code, 1)
@@ -291,10 +274,10 @@ class PartRaise(unittest.TestCase):
 		page = Login(self.next_user_id)
 		res = common.finace_approve(page, self.apply_code, remark)
 		if not res:
-			Log().error("财务流程-财务经理审批失败")
+			self.log.error("财务流程-财务经理审批失败")
 			raise AssertionError('财务流程-财务经理审批失败')
 		else:
-			Log().info("财务流程-财务经理审批完成")
+			self.log.info("财务流程-财务经理审批完成")
 			self.page.driver.quit()
 	
 	def test_09_part_funds_raise(self):
@@ -306,10 +289,10 @@ class PartRaise(unittest.TestCase):
 		page = Login('xn0007533')
 		res = common.funds_raise(page, self.apply_code, remark)
 		if not res:
-			Log().error("募资-资金主管审批失败")
+			self.log.error("募资-资金主管审批失败")
 			raise AssertionError('募资-资金主管审批失败')
 		else:
-			Log().info("募资-资金主管审批完成!")
+			self.log.info("募资-资金主管审批完成!")
 			self.page.driver.quit()
 	
 	def test_10_part_authority_card_second_deal(self):
@@ -363,7 +346,7 @@ class PartRaise(unittest.TestCase):
 		page = Login(self.next_user_id)
 		result = common.finace_approve(page, self.apply_code, remark)
 		if not result:
-			Log().error("财务流程-分公司经理审批失败")
+			self.log.error("财务流程-分公司经理审批失败")
 			raise AssertionError('财务流程-分公司经理审批失败')
 		# 查看下一步处理人
 		self.next_user_id = common.get_next_user(page, self.apply_code, 2)
@@ -376,10 +359,10 @@ class PartRaise(unittest.TestCase):
 		page = Login(self.next_user_id)
 		result = common.finace_approve(page, self.apply_code, remark)
 		if not result:
-			Log().error("财务流程-风控经理审批出错")
+			self.log.error("财务流程-风控经理审批出错")
 			raise AssertionError('财务流程-风控经理审批出错')
 		else:
-			Log().info("财务流程-风控经理审批完成")
+			self.log.info("财务流程-风控经理审批完成")
 		
 		# 查看下一步处理人
 		self.next_user_id = common.get_next_user(page, self.apply_code, 2)
@@ -393,10 +376,10 @@ class PartRaise(unittest.TestCase):
 		page = Login(self.next_user_id)
 		rs = common.finace_approve(page, self.apply_code, remark)
 		if not rs:
-			Log().error("财务流程-财务会计审批失败")
+			self.log.error("财务流程-财务会计审批失败")
 			raise AssertionError('财务流程-财务会计审批失败')
 		else:
-			Log().info("财务流程-财务会计审批完成")
+			self.log.info("财务流程-财务会计审批完成")
 		
 		# 查看下一步处理人
 		self.next_user_id = common.get_next_user(page, self.apply_code, 2)
@@ -410,10 +393,10 @@ class PartRaise(unittest.TestCase):
 		page = Login(self.next_user_id)
 		res = common.finace_approve(page, self.apply_code, remark)
 		if not res:
-			Log().error("财务流程-财务经理审批失败")
+			self.log.error("财务流程-财务经理审批失败")
 			raise AssertionError('财务流程-财务经理审批失败')
 		else:
-			Log().info("财务流程-财务经理审批完成")
+			self.log.info("财务流程-财务经理审批完成")
 			self.page.driver.quit()
 	
 	def test_17_part_funds_raise_second(self):
@@ -425,8 +408,8 @@ class PartRaise(unittest.TestCase):
 		page = Login('xn0007533')
 		res = common.funds_raise(page, self.apply_code, remark)
 		if not res:
-			Log().error("募资-资金主管审批失败")
+			self.log.error("募资-资金主管审批失败")
 			raise AssertionError('募资-资金主管审批失败')
 		else:
-			Log().info("募资-资金主管审批完成!")
+			self.log.info("募资-资金主管审批完成!")
 			self.page.driver.quit()

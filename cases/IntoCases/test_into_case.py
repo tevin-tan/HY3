@@ -1,41 +1,16 @@
 # coding:utf-8
 import unittest
 import time
-import json
-import os
-from com import common
-from com import custom
-from com.login import Login
-from com.custom import Log, print_env
+from com import common, custom, base
 
 
-class IntoCase(unittest.TestCase):
+class IntoCase(unittest.TestCase, base.Base):
 	"""申请录入进件场景"""
 	
 	def setUp(self):
-		try:
-			import config
-			rootdir = config.__path__[0]
-			config_env = os.path.join(rootdir, 'env.json')
-			print("config_env:" + config_env)
-			with open(config_env, 'r', encoding='utf-8') as f:
-				self.da = json.load(f)
-				self.number = self.da["number"]
-				self.env = self.da["enviroment"]
-			f.close()
-			filename = "data_cwd.json"
-			data, company = custom.enviroment_change(filename, self.number, self.env)
-			self.page = Login()
-			self.log = Log()
-			
-			self.evt = dict(
-					data=data,
-					company=company
-					)
-			print_env(self.env, self.evt['company'])
-		except Exception as e:
-			print('load config error:', str(e))
-			raise e
+		self.env_file = "env.json"
+		self.data_file = "data_xhd.json"
+		base.Base.__init__(self, self.env_file, self.data_file)
 	
 	def tearDown(self):
 		pass
@@ -47,15 +22,19 @@ class IntoCase(unittest.TestCase):
 		print("当前用例编号:" + name)
 		# 录入一个借款人
 		
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		# 1 客户信息-业务基本信息
-		common.input_customer_base_info(self.page, self.evt['data']['applyVo'])
+		common.input_customer_base_info(self.page, self.data['applyVo'])
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		common.input_customer_borrow_info(self.page, self.evt['data']['custInfoVo'][0])
+		common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.evt['data']['applyPropertyInfoVo'][0],
-		                                   self.evt['data']['applyCustCreditInfoVo'][0])
+		common.input_all_bbi_property_info(
+				self.page, self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
 		common.submit(self.page)
@@ -64,10 +43,10 @@ class IntoCase(unittest.TestCase):
 	def test_02_two_borrower(self, n=2):
 		# 录入两个借款人
 		self.skipTest("xxxxx")
-		common.input_customer_base_info(self.page, self.evt['data']['applyVo'])
+		common.input_customer_base_info(self.page, self.data['applyVo'])
 		
 		if n == 1:
-			# common.input_customer_borrow_info(self.page, self.evt['data']['custInfoVo'][0])
+			# common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 			# 添加借款人
 			self.page.driver.find_element_by_xpath('//*[@id="tb"]/a[1]/span[2]').click()
 			# 姓名
@@ -117,7 +96,7 @@ class IntoCase(unittest.TestCase):
 			# 确认
 			self.page.driver.find_element_by_xpath('//*[@id="tb"]/a[3]/span[2]').click()
 		elif n == 2:
-			common.input_customer_borrow_info(self.page, self.evt['data']['custInfoVo'][0])
+			common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 			self.page.driver.find_element_by_xpath('//*[@id="tb"]/a[1]/span[2]').click()
 			self.page.driver.find_element_by_xpath(
 					'//*[@id="datagrid-row-r1-2-1"]/td[4]/div/table/tbody/tr/td/input').send_keys(u"小黑")
@@ -175,18 +154,21 @@ class IntoCase(unittest.TestCase):
 	def test_03_two_borrower(self):
 		"""录入两个借款人"""
 		
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		name = custom.get_current_function_name()
 		print("当前用例编号:" + name)
 		# 录入基本信息
-		common.input_customer_base_info(self.page, self.evt['data']['applyVo'])
+		common.input_customer_base_info(self.page, self.data['applyVo'])
 		# 录入借款人/共贷人信息
-		common.input_customer_borrow_info(self.page, self.evt['data']['custInfoVo'][0])
+		common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		common.input_more_borrower(self.page)
 		# 录入业务基本信息
-		common.input_cwd_bbi_property_info(
+		common.input_all_bbi_property_info(
 				self.page,
-				self.evt['data']['applyPropertyInfoVo'][0],
-				self.evt['data']['applyCustCreditInfoVo'][0]
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0]
 				)
 		
 		# 提交
@@ -196,20 +178,28 @@ class IntoCase(unittest.TestCase):
 	def test_gqt_04_applydata(self):
 		"""过桥通申请件录入,提交"""
 		
+		custom.print_product_info(self.product_info)
+		custom.print_person_info(self.person_info)
+		
 		data, _ = custom.enviroment_change("data_gqt.json", self.number, self.env)
 		
-		self.evt['data'].update(data)
+		self.data.update(data)
 		
 		# 1 客户信息-业务基本信息
-		common.input_customer_base_info(self.page, self.evt['data']['applyVo'])
+		common.input_customer_base_info(self.page, self.data['applyVo'])
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		common.input_customer_borrow_info(self.page, self.evt['data']['custInfoVo'][0])
+		common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		common.input_more_borrower(self.page)
 		
 		# 3 物业信息
-		common.input_cwd_bbi_property_info(self.page, self.evt['data']['applyPropertyInfoVo'][0],
-		                                   self.evt['data']['applyCustCreditInfoVo'][0], True, 'gqt')
+		common.input_all_bbi_property_info(
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0],
+				True,
+				'gqt'
+				)
 		
 		# 提交
 		common.submit(self.page)
