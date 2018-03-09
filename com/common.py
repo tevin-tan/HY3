@@ -13,7 +13,6 @@ from config.locator import loc_cust_info, loc_borrower
 from selenium.common import exceptions as ec
 from com.custom import get_name, mylog
 from com import custom
-# import common.getIdNumber as GT
 from com.idCardNumber import IdCardNumber as IDCard
 
 import datetime

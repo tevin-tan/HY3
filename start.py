@@ -24,7 +24,7 @@ from cases.contract_sigining import (
 	test_add_contract
 	)
 
-from cases.warrantManage import test_warrantManage
+from cases.warrantManage import test_warrant_manage
 from cases.upload_image_data import test_upload_image_file
 
 if __name__ == "__main__":
@@ -97,7 +97,7 @@ if __name__ == "__main__":
 				elif e == 'PartRaise':
 					run_case(e, test_part_raise.PartRaise)
 				elif e == 'WarrantManage':
-					run_case(e, test_warrantManage.WarrantManage)
+					run_case(e, test_warrant_manage.WarrantManage)
 				elif e == 'UploadImageData':
 					run_case(e, test_upload_image_file.UploadImageData)
 		print("f1:", f1)
