@@ -1,15 +1,14 @@
 import time
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.action_chains import ActionChains
-from com.custom import get_name
-from com.common import task_search
-from selenium.common import exceptions as EC
-# import common.getIdNumber as GT
-from com.idCardNumber import IdCardNumber as IDCN
-from common import getBankCard
+from com import custom
+# from com.common import task_search
+from com.pobj.TaskCenter import PendingTask
+from selenium.common import exceptions as ec
+from com.idCardNumber import IdCardNumber as Icn
 
 
-class Contract():
+class ContractSign(object):
 	"""合同签约"""
 	
 	def __init__(self, page, condition, rec_bank_info, number=1):
@@ -17,8 +16,9 @@ class Contract():
 		self.page = page
 		self.condition = condition
 		self.rec_bank_info = rec_bank_info
+		self.PT = PendingTask.PendingTask()
 		
-		t1 = task_search(self.page, self.condition)
+		t1 = self.PT.task_search(self.page, self.condition)
 		if not t1.text:
 			raise AssertionError('查询流程监控出错！')
 		else:
@@ -27,7 +27,7 @@ class Contract():
 			time.sleep(1)
 			try:
 				self.page.driver.switch_to_frame("myIframeImage1")  # 切换iframe
-			except EC.NoSuchFrameException as e:
+			except ec.NoSuchFrameException as e:
 				raise e.msg
 			# ----------------------------------------------------------------------------------------
 			#                                 合同信息录入
@@ -36,7 +36,7 @@ class Contract():
 				Select(self.page.driver.find_element_by_name("signAddressProvince")).select_by_visible_text(u"陕西省")
 				Select(self.page.driver.find_element_by_name("signAddressCity")).select_by_visible_text(u"咸阳市")
 				Select(self.page.driver.find_element_by_name("signAddressDistinct")).select_by_visible_text(u"武功县")
-			except EC.ElementNotSelectableException as e:
+			except ec.ElementNotSelectableException as e:
 				raise e.msg
 			try:
 				self.page.driver.find_element_by_xpath('//*[@id="sign_module_form"]/div/div[3]/div[2]/input').send_keys(
@@ -47,7 +47,7 @@ class Contract():
 				self.page.driver.find_element_by_xpath(
 						'//*[@id="sign_module_form"]/div/div[5]/div[2]/textarea').send_keys(
 						u'签约备注信息')
-			except EC.NoSuchElementException as e:
+			except ec.NoSuchElementException as e:
 				raise e.msg
 	
 	def personal_information(self):
@@ -64,7 +64,7 @@ class Contract():
 		# self.page.driver.find_element_by_xpath(bank_str + '/section[1]/div[2]/div[6]/input').send_keys(
 		# 		self.rec_bank_info['recBankNum']) # 收款银行账号
 		self.page.driver.find_element_by_xpath(bank_str + '/section[1]/div[2]/div[6]/input').send_keys(
-				getBankCard.getBankCardNumber())  # 收款银行账号
+				custom.get_bankcard_number())  # 收款银行账号
 		self.page.driver.find_element_by_xpath(bank_str + '/section[1]/div[2]/div[8]/input').send_keys(
 				self.rec_bank_info['recPhone'])  # 银行预留电话
 		
@@ -101,7 +101,7 @@ class Contract():
 	# 拆借人银行信息录入
 	def add_first_person(self, personform, bankform):
 		
-		cust_name = get_name()
+		cust_name = custom.get_name()
 		self.page.driver.find_element_by_link_text(u"拆借人信息").click()
 		self.page.driver.find_element_by_id('addLoanApartPerson').click()
 		self.page.driver.find_element_by_id('apply_loanApart_info').click()
@@ -112,11 +112,11 @@ class Contract():
 		# phone
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[4]/input').send_keys(
-				IDCN.createPhone())
+				Icn.create_phone())
 		# ID
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[6]/input').send_keys(
-				IDCN.getRandomIdNumber()[0])
+				Icn.getRandomIdNumber()[0])
 		# age
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[8]/input').send_keys("30")
@@ -158,10 +158,10 @@ class Contract():
 		# self.page.driver.find_element_by_id('loanApartBankForm0').click()
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(bankform) + '"]/section[1]/div[2]/div[6]/input').send_keys(
-				getBankCard.getBankCardNumber())
+				custom.get_bankcard_number())
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(bankform) + '"]/section[1]/div[2]/div[8]/input').send_keys(
-				IDCN.createPhone())
+				Icn.create_phone())
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(bankform) + '"]/section[1]/div[3]/div[2]/input[3]').send_keys(u'深圳支行')
 		self.page.driver.find_element_by_xpath(
@@ -176,7 +176,7 @@ class Contract():
 	
 	# 添加其他拆借人
 	def add_other_person(self, personform, bankform):
-		cust_name = get_name()
+		cust_name = custom.get_name()
 		self.page.driver.find_element_by_id('addLoanApartPerson').click()
 		self.page.driver.find_element_by_id(str(personform)).click()
 		
@@ -185,11 +185,11 @@ class Contract():
 				'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[2]/input').send_keys(cust_name)
 		# phone
 		self.page.driver.find_element_by_xpath(
-				'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[4]/input').send_keys(IDCN.createPhone())
+				'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[4]/input').send_keys(Icn.create_phone())
 		# ID
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[6]/input').send_keys(
-				IDCN.getRandomIdNumber()[0])
+				Icn.getRandomIdNumber()[0])
 		# age
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[8]/input').send_keys("30")
@@ -230,10 +230,10 @@ class Contract():
 		# 收扣款银行信息录入
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(bankform) + '"]/section[1]/div[2]/div[6]/input').send_keys(
-				getBankCard.getBankCardNumber())
+				custom.get_bankcard_number())
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(bankform) + '"]/section[1]/div[2]/div[8]/input').send_keys(
-				IDCN.createPhone())
+				Icn.create_phone())
 		self.page.driver.find_element_by_xpath(
 				'//*[@id="' + str(bankform) + '"]/section[1]/div[3]/div[2]/input[3]').send_keys(u'深圳支行')
 		self.page.driver.find_element_by_xpath(
@@ -316,3 +316,4 @@ class Contract():
 		
 		self.contract_save()
 		self.contract_submit()
+		return True

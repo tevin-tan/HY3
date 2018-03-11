@@ -1,7 +1,8 @@
 # coding:utf-8
 import unittest
 from com.login import Login
-from com import custom, base, common
+from com import custom, base
+from com.pobj.ContractSign import ContractSign as Cts
 
 
 class EYT(unittest.TestCase, base.Base):
@@ -21,9 +22,10 @@ class EYT(unittest.TestCase, base.Base):
 	
 	def test_eyt_01_base_info(self):
 		"""客户基本信息录入"""
+		
 		# 打印贷款产品信息
 		custom.print_product_info(self.product_info)
-		common.input_customer_base_info(self.page, self.data['applyVo'])
+		self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
 	
 	def test_ety_02_borrowr_info(self):
 		"""借款人/共贷人/担保人信息"""
@@ -31,7 +33,7 @@ class EYT(unittest.TestCase, base.Base):
 		self.test_eyt_01_base_info()
 		
 		try:
-			res = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+			res = self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 			if res:
 				self.log.info("录入借款人信息结束")
 		except Exception as e:
@@ -44,7 +46,7 @@ class EYT(unittest.TestCase, base.Base):
 		self.test_ety_02_borrowr_info()
 		
 		try:
-			res = common.input_all_bbi_property_info(
+			res = self.HAE.input_all_bbi_property_info(
 					self.page,
 					self.data['applyPropertyInfoVo'][0],
 					self.data['applyCustCreditInfoVo'][0],
@@ -61,13 +63,13 @@ class EYT(unittest.TestCase, base.Base):
 		"""申请件录入,提交"""
 		
 		self.test_eyt_03_Property_info()
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 	
 	def test_eyt_05_get_applyCode(self):
 		"""申请件查询"""
 		
 		self.test_eyt_04_applydata()
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		if applycode:
 			self.log.info("申请件查询完成")
 			self.apply_code = applycode
@@ -79,7 +81,7 @@ class EYT(unittest.TestCase, base.Base):
 		"""查看待处理任务列表"""
 		
 		self.test_eyt_05_get_applyCode()
-		next_id = common.process_monitor(self.page, self.apply_code)
+		next_id = self.PM.process_monitor(self.page, self.apply_code)
 		if next_id:
 			self.log.info("下一个处理人:" + next_id)
 			self.next_user_id = next_id
@@ -89,7 +91,7 @@ class EYT(unittest.TestCase, base.Base):
 		
 		page = Login(self.next_user_id)
 		
-		res = common.query_task(page, self.apply_code)
+		res = self.PT.query_task(page, self.apply_code)
 		if res:
 			self.log.info("待处理任务列表中存在该笔案件！")
 		else:
@@ -100,7 +102,7 @@ class EYT(unittest.TestCase, base.Base):
 		"""流程监控"""
 		
 		self.test_eyt_05_get_applyCode()  # 申请件查询
-		res = common.process_monitor(self.page, self.apply_code)  # l流程监控
+		res = self.PM.process_monitor(self.page, self.apply_code)  # l流程监控
 		if not res:
 			raise ValueError("流程监控错误！")
 		else:
@@ -118,10 +120,10 @@ class EYT(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 审批审核
-		common.approval_to_review(page, self.apply_code, u'分公司主管同意审批')
+		self.PT.approval_to_review(page, self.apply_code, u'分公司主管同意审批', 0, True)
 		
 		# 查看下一步处理人
-		next_id = common.process_monitor(page, self.apply_code)
+		next_id = self.PM.process_monitor(page, self.apply_code)
 		if not next_id:
 			raise AssertionError("没有找到下一个处理人")
 		else:
@@ -145,10 +147,10 @@ class EYT(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 审批审核
-		common.approval_to_review(page, self.apply_code, u'分公司经理同意审批')
+		self.PT.approval_to_review(page, self.apply_code, u'分公司经理同意审批')
 		
 		# 查看下一步处理人
-		res = common.process_monitor(page, self.apply_code)
+		res = self.PM.process_monitor(page, self.apply_code)
 		if not res:
 			raise AssertionError("没有找到下一个处理人")
 		else:
@@ -167,7 +169,7 @@ class EYT(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 审批审核
-		res = common.approval_to_review(page, self.apply_code, u'区域预复核通过')
+		res = self.PT.approval_to_review(page, self.apply_code, u'区域预复核通过')
 		if not res:
 			self.log.error("区域预复核失败")
 			raise AssertionError("区域预复核失败")
@@ -175,7 +177,7 @@ class EYT(unittest.TestCase, base.Base):
 			self.log.info("区域预复核审批完成！")
 		
 		# 查看下一步处理人
-		res = common.process_monitor(page, self.apply_code)
+		res = self.PM.process_monitor(page, self.apply_code)
 		if not res:
 			self.log.error("Can't not found the next UserId")
 			raise AssertionError("Can't not found the next UserId")
@@ -195,10 +197,10 @@ class EYT(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 审批审核
-		common.approval_to_review(page, self.apply_code, u'高级审批经理审批')
+		self.PT.approval_to_review(page, self.apply_code, u'高级审批经理审批')
 		
 		# 查看下一步处理人
-		res = common.process_monitor(page, self.apply_code)
+		res = self.PM.process_monitor(page, self.apply_code)
 		if not res:
 			raise AssertionError('没有找到下一个处理人')
 		else:
@@ -228,10 +230,11 @@ class EYT(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 签约
-		common.make_signing(page, self.apply_code, rec_bank_info)
+		res = Cts.ContractSign(page, self.apply_code, rec_bank_info)
+		res.execute_sign()
 		
 		# 查看下一步处理人
-		res = common.process_monitor(page, self.apply_code)
+		res = self.PM.process_monitor(page, self.apply_code)
 		if not res:
 			raise AssertionError('没有找到下一个处理人')
 		else:
@@ -250,7 +253,7 @@ class EYT(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 合规审查
-		res = common.compliance_audit(page, self.apply_code)
+		res = self.PT.compliance_audit(page, self.apply_code)
 		if res:
 			self.log.info("合规审查通过")
 		else:
@@ -266,13 +269,13 @@ class EYT(unittest.TestCase, base.Base):
 		# 权证员登录
 		page = Login(self.company["authority_member"]["user"])
 		# 权证员上传权证信息
-		rs = common.authority_card_transact(page, self.apply_code, self.env)
+		rs = self.WM.authority_card_transact(page, self.apply_code, self.env)
 		if not rs:
 			self.log.error("上传权证信息失败")
 			raise AssertionError('上传权证信息失败')
 		
 		# 查看下一步处理人
-		res = common.process_monitor(page, self.apply_code)
+		res = self.PM.process_monitor(page, self.apply_code)
 		if not res:
 			self.log.error("权证办理-没找到下一步处理人")
 			raise AssertionError('权证办理-没找到下一步处理人')
@@ -289,7 +292,7 @@ class EYT(unittest.TestCase, base.Base):
 		self.test_eyt_14_authority_card_member_transact()
 		page = Login(self.next_user_id)
 		# 权证请款
-		res = common.warrant_apply(page, self.apply_code)
+		res = self.WM.warrant_apply(page, self.apply_code)
 		if res:
 			self.log.info("权证请款成功")
 			page.driver.quit()
@@ -304,13 +307,13 @@ class EYT(unittest.TestCase, base.Base):
 		self.test_eyt_15_warrant_apply()
 		# 业务助理登录
 		page = Login(self.company["business_assistant"]["user"])
-		rs = common.finace_transact(page, self.apply_code)
+		rs = self.FA.finace_transact(page, self.apply_code)
 		if not rs:
 			self.log.error("财务办理失败")
 			raise AssertionError('财务办理失败')
 		
 		# 查看下一步处理人
-		res = common.process_monitor(page, self.apply_code, 1)
+		res = self.PM.process_monitor(page, self.apply_code, 1)
 		if not res:
 			self.log.error("没有找到下一步处理人")
 			raise AssertionError('没有找到下一步处理人')
@@ -320,7 +323,7 @@ class EYT(unittest.TestCase, base.Base):
 			# 当前用户退出系统
 			self.page.driver.quit()
 	
-	def test_eyt_17_finace_approve_branch_manager(self):
+	def test_eyt_17_finace_approval_branch_manager(self):
 		"""财务分公司经理审批"""
 		
 		remark = u"财务分公司经理审批"
@@ -328,12 +331,12 @@ class EYT(unittest.TestCase, base.Base):
 		# 下一个处理人
 		self.test_eyt_16_finace_transact()
 		page = Login(self.next_user_id)
-		result = common.finace_approve(page, self.apply_code, remark)
+		result = self.FA.finace_approval(page, self.apply_code, remark)
 		if not result:
 			self.log.error("财务流程-分公司经理审批失败")
 			raise AssertionError('财务流程-分公司经理审批失败')
 		# 查看下一步处理人
-		res = common.process_monitor(page, self.apply_code, 1)
+		res = self.PM.process_monitor(page, self.apply_code, 1)
 		if not res:
 			self.log.error("没有找到下一步处理人")
 			raise AssertionError('没有找到下一步处理人')
@@ -343,14 +346,14 @@ class EYT(unittest.TestCase, base.Base):
 			# 当前用户退出系统
 			self.page.driver.quit()
 	
-	def test_eyt_18_finace_approve_risk_control_manager(self):
+	def test_eyt_18_finace_approval_risk_control_manager(self):
 		"""财务风控经理审批"""
 		
 		remark = u'风控经理审批'
 		
-		self.test_eyt_17_finace_approve_branch_manager()
+		self.test_eyt_17_finace_approval_branch_manager()
 		page = Login(self.next_user_id)
-		result = common.finace_approve(page, self.apply_code, remark)
+		result = self.FA.finace_approval(page, self.apply_code, remark)
 		if not result:
 			self.log.error("财务流程-风控经理审批出错")
 			raise AssertionError('财务流程-风控经理审批出错')
@@ -358,7 +361,7 @@ class EYT(unittest.TestCase, base.Base):
 			self.log.info("财务流程-风控经理审批完成")
 		
 		# 查看下一步处理人
-		res = common.process_monitor(page, self.apply_code, 1)
+		res = self.PM.process_monitor(page, self.apply_code, 1)
 		if not res:
 			self.log.error("Can't found the next userId!")
 			raise AssertionError("Can't found the next userId!")
@@ -368,14 +371,14 @@ class EYT(unittest.TestCase, base.Base):
 			# 当前用户退出系统
 			self.page.driver.quit()
 	
-	def test_eyt_19_finace_approve_financial_accounting(self):
+	def test_eyt_19_finace_approval_financial_accounting(self):
 		"""财务会计审批"""
 		
 		remark = u'财务会计审批'
 		
-		self.test_eyt_18_finace_approve_risk_control_manager()
+		self.test_eyt_18_finace_approval_risk_control_manager()
 		page = Login(self.next_user_id)
-		rs = common.finace_approve(page, self.apply_code, remark)
+		rs = self.FA.finace_approval(page, self.apply_code, remark)
 		if not rs:
 			self.log.error("财务流程-财务会计审批失败")
 			raise AssertionError('财务流程-财务会计审批失败')
@@ -383,7 +386,7 @@ class EYT(unittest.TestCase, base.Base):
 			self.log.info("财务流程-财务会计审批完成")
 		
 		# 查看下一步处理人
-		res = common.process_monitor(page, self.apply_code, 1)
+		res = self.PM.process_monitor(page, self.apply_code, 1)
 		if not res:
 			self.log.error("Can't found The next UserId")
 			raise AssertionError("Can't found The next UserId")
@@ -393,14 +396,14 @@ class EYT(unittest.TestCase, base.Base):
 			# 当前用户退出系统
 			self.page.driver.quit()
 	
-	def test_eyt_20_finace_approve_financial_manager(self):
+	def test_eyt_20_finace_approval_financial_manager(self):
 		"""财务经理审批"""
 		
 		remark = u'财务经理审批'
 		
-		self.test_eyt_19_finace_approve_financial_accounting()
+		self.test_eyt_19_finace_approval_financial_accounting()
 		page = Login(self.next_user_id)
-		res = common.finace_approve(page, self.apply_code, remark)
+		res = self.FA.finace_approval(page, self.apply_code, remark)
 		if not res:
 			self.log.error("财务流程-财务经理审批失败")
 			raise AssertionError('财务流程-财务经理审批失败')
@@ -409,13 +412,13 @@ class EYT(unittest.TestCase, base.Base):
 			self.page.driver.quit()
 	
 	def test_eyt_21_funds_raise(self):
-		"""资金主管募资审批"""
+		"""募资-资金主管募资审批"""
 		
 		remark = u'资金主管审批'
 		
-		self.test_eyt_20_finace_approve_financial_manager()
+		self.test_eyt_20_finace_approval_financial_manager()
 		page = Login(self.treasurer)
-		res = common.funds_raise(page, self.apply_code, remark)
+		res = self.RA.funds_raise(page, self.apply_code, remark)
 		if not res:
 			self.log.error("募资-资金主管审批失败")
 			raise AssertionError('募资-资金主管审批失败')

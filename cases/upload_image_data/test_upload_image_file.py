@@ -1,9 +1,8 @@
 # coding: utf-8
 import unittest
-import json
-import os
-from com import common, contract, base, custom
+from com import common, base, custom
 from com.login import Login
+from com.pobj.ContractSign import ContractSign
 
 
 class UploadImageData(unittest.TestCase, base.Base):
@@ -36,32 +35,31 @@ class UploadImageData(unittest.TestCase, base.Base):
 		"""房贷专员:上传权证资料"""
 		
 		custom.print_product_info(self.product_info)
-		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page, self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0]
 				)
 		# 上传影像资料
-		res = common.upload_image_file(self.page, self.exe, self.image)
+		res = self.HAE.upload_image_file(self.page, self.exe, self.image)
 		if res:
 			self.log.info("上传影像资料成功！")
 		else:
-			raise (res)
+			raise res
 		
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		apply_code = common.get_applycode(self.page, self.custName)
+		apply_code = self.AQ.get_applycode(self.page, self.custName)
 		if apply_code:
 			self.apply_code = apply_code
 			self.log.info("申请件查询完成")
@@ -69,34 +67,34 @@ class UploadImageData(unittest.TestCase, base.Base):
 	
 	def test_02_upload_image_delete(self):
 		"""房贷专员删除权证资料"""
-		
+		self.skipTest("图片定位困难")
 		custom.print_product_info(self.product_info)
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page, self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0]
 				)
 		# 删除影像资料
-		res = common.upload_image_file(self.page, self.exe, self.image, True)
+		res = self.HAE.upload_image_file(self.page, self.exe, self.image, True)
 		if res:
 			self.log.info("上传影像资料成功！")
 		else:
-			raise (res)
+			raise res
 		
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		apply_code = common.get_applycode(self.page, self.custName)
+		apply_code = self.AQ.get_applycode(self.page, self.custName)
 		if apply_code:
 			self.apply_code = apply_code
 			self.log.info("申请件查询完成")
@@ -109,31 +107,31 @@ class UploadImageData(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page, self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0]
 				)
 		# 上传影像资料
 		
 		for i in range(0, 5):
-			res = common.upload_image_file(self.page, self.exe, self.image)
+			res = self.HAE.upload_image_file(self.page, self.exe, self.image)
 			if res:
 				self.log.info("上传第" + str(i) + "张影像资料成功！")
 			else:
-				raise (res)
+				raise res
 		
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		apply_code = common.get_applycode(self.page, self.custName)
+		apply_code = self.AQ.get_applycode(self.page, self.custName)
 		if apply_code:
 			self.apply_code = apply_code
 			self.log.info("申请件查询完成")
@@ -146,22 +144,22 @@ class UploadImageData(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page, self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0]
 				)
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		apply_code = common.get_applycode(self.page, self.custName)
+		apply_code = self.AQ.get_applycode(self.page, self.custName)
 		if apply_code:
 			self.apply_code = apply_code
 			self.log.info("申请件查询完成")
@@ -170,7 +168,7 @@ class UploadImageData(unittest.TestCase, base.Base):
 		self.next_user_id = common.get_next_user(self.page, self.apply_code)
 		# Login
 		page = Login(self.next_user_id)
-		res = common.approval_to_review(page, self.apply_code, u'分公司主管同意审批', 0, True)
+		res = self.PT.approval_to_review(page, self.apply_code, u'分公司主管同意审批', 0, True)
 		if not res:
 			self.log.error("can't find applycode")
 			raise ValueError("can't find applycode")
@@ -185,7 +183,7 @@ class UploadImageData(unittest.TestCase, base.Base):
 		
 		page = Login(self.next_user_id)
 		# 审批并上传权证资料
-		res = common.approval_to_review(page, self.apply_code, u'分公司经理同意审批', 0, True)
+		res = self.PT.approval_to_review(page, self.apply_code, u'分公司经理同意审批', 0, True)
 		if not res:
 			self.log.error("can't find applycode")
 			raise ValueError("can't find applycode")
@@ -200,7 +198,7 @@ class UploadImageData(unittest.TestCase, base.Base):
 		
 		# 区域审批审核，并上传资料
 		page = Login(self.next_user_id)
-		res = common.approval_to_review(page, self.apply_code, u'区域经理同意审批', 0, True)
+		res = self.PT.approval_to_review(page, self.apply_code, u'区域经理同意审批', 0, True)
 		if not res:
 			self.log.error("can't find applyCode")
 			raise ValueError("can't find applyCode")
@@ -215,7 +213,7 @@ class UploadImageData(unittest.TestCase, base.Base):
 		
 		# 高级审批审核，并上传资料
 		page = Login(self.next_user_id)
-		res = common.approval_to_review(page, self.apply_code, u'高级经理同意审批', 0, True)
+		res = self.PT.approval_to_review(page, self.apply_code, u'高级经理同意审批', 0, True)
 		if not res:
 			self.log.error("can't find applyCode")
 			raise ValueError("can't find applyCode")
@@ -232,21 +230,21 @@ class UploadImageData(unittest.TestCase, base.Base):
 		# ---------------------------------------------------------------------------------
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page, self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		apply_code = common.get_applycode(self.page, self.custName)
+		apply_code = self.AQ.get_applycode(self.page, self.custName)
 		if apply_code:
 			self.apply_code = apply_code
 			self.log.info("申请件查询完成")
@@ -270,7 +268,7 @@ class UploadImageData(unittest.TestCase, base.Base):
 			]
 		
 		for e in list_mark:
-			res = common.approval_to_review(page, apply_code, e, 0)
+			res = self.PT.approval_to_review(page, apply_code, e, 0)
 			self.risk_approval_result(res, e, page, apply_code)
 			# 下一个处理人重新登录
 			page = Login(self.next_user_id)
@@ -291,7 +289,7 @@ class UploadImageData(unittest.TestCase, base.Base):
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
-		res = contract.Contract(page, self.apply_code, rec_bank_info, 10)
+		res = ContractSign.ContractSign(page, self.apply_code, rec_bank_info, 10)
 		res.execute_sign()
 		
 		self.next_user_id = common.get_next_user(page, self.apply_code)
@@ -300,8 +298,8 @@ class UploadImageData(unittest.TestCase, base.Base):
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
-		# 合规审查
-		res = common.compliance_audit(page, self.apply_code, True)
+		# 合规审查, 并上传影像资料
+		res = self.PT.compliance_audit(page, self.apply_code, True)
 		if res:
 			self.log.info("合规审批结束")
 			page.driver.quit()

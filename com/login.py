@@ -36,7 +36,7 @@ class Login(object):
 			self.data = json.load(f)
 			self.number = self.data["number"]
 			self.env = self.data["enviroment"]
-		f.close()
+			f.close()
 		# 环境SIT/UAT
 		if self.data["enviroment"]:
 			self.env = self.data["enviroment"]

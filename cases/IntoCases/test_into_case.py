@@ -1,7 +1,7 @@
 # coding:utf-8
 import unittest
 import time
-from com import common, custom, base
+from com import custom, base
 
 
 class IntoCase(unittest.TestCase, base.Base):
@@ -13,7 +13,7 @@ class IntoCase(unittest.TestCase, base.Base):
 		base.Base.__init__(self, self.env_file, self.data_file)
 	
 	def tearDown(self):
-		pass
+		self.page.driver.quit()
 	
 	def test_01_one_borrower(self):
 		"""单借款人"""
@@ -23,30 +23,29 @@ class IntoCase(unittest.TestCase, base.Base):
 		# 录入一个借款人
 		
 		custom.print_product_info(self.product_info)
-		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		common.input_customer_base_info(self.page, self.data['applyVo'])
+		self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page, self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.countTestCases()
 	
 	def test_02_two_borrower(self, n=2):
 		# 录入两个借款人
-		self.skipTest("xxxxx")
-		common.input_customer_base_info(self.page, self.data['applyVo'])
+		self.skipTest("没有完成好, 写法不推荐")
+		self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
 		
 		if n == 1:
-			# common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+			# self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 			# 添加借款人
 			self.page.driver.find_element_by_xpath('//*[@id="tb"]/a[1]/span[2]').click()
 			# 姓名
@@ -96,7 +95,7 @@ class IntoCase(unittest.TestCase, base.Base):
 			# 确认
 			self.page.driver.find_element_by_xpath('//*[@id="tb"]/a[3]/span[2]').click()
 		elif n == 2:
-			common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+			self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 			self.page.driver.find_element_by_xpath('//*[@id="tb"]/a[1]/span[2]').click()
 			self.page.driver.find_element_by_xpath(
 					'//*[@id="datagrid-row-r1-2-1"]/td[4]/div/table/tbody/tr/td/input').send_keys(u"小黑")
@@ -147,53 +146,44 @@ class IntoCase(unittest.TestCase, base.Base):
 			self.page.driver.find_element_by_id('apply_module_apply_save').click()
 			self.page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a').click()
 	
-	# 提交
-	# self.page.driver.find_element_by_id('apply_module_apply_submit').click()
-	
-	
 	def test_03_two_borrower(self):
 		"""录入两个借款人"""
 		
 		custom.print_product_info(self.product_info)
-		custom.print_person_info(self.person_info)
-		
 		name = custom.get_current_function_name()
 		print("当前用例编号:" + name)
 		# 录入基本信息
-		common.input_customer_base_info(self.page, self.data['applyVo'])
+		self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
 		# 录入借款人/共贷人信息
-		common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
-		common.input_more_borrower(self.page)
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_more_borrower(self.page)
+		
 		# 录入业务基本信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0]
 				)
 		
 		# 提交
-		common.submit(self.page)
-		self.page.driver.quit()
+		self.HAE.submit(self.page)
 	
 	def test_gqt_04_applydata(self):
 		"""过桥通申请件录入,提交"""
 		
 		custom.print_product_info(self.product_info)
-		custom.print_person_info(self.person_info)
-		
 		data, _ = custom.enviroment_change("data_gqt.json", self.number, self.env)
-		
 		self.data.update(data)
 		
 		# 1 客户信息-业务基本信息
-		common.input_customer_base_info(self.page, self.data['applyVo'])
+		self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
-		common.input_more_borrower(self.page)
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_more_borrower(self.page)
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0],
@@ -202,10 +192,5 @@ class IntoCase(unittest.TestCase, base.Base):
 				)
 		
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
-
-
-if __name__ == '__main__':
-	
-	ic = IntoCase()

@@ -15,10 +15,10 @@ cwd:
  - test_cwd_14_authority_card_member_transact
  - test_cwd_15_warrant_apply
  - test_cwd_16_finace_transact
- - test_cwd_17_finace_approve_branch_manager
- - test_cwd_18_finace_approve_risk_control_manager
- - test_cwd_19_finace_approve_financial_accounting
- - test_cwd_20_finace_approve_financial_manager
+ - test_cwd_17_finace_approval_branch_manager
+ - test_cwd_18_finace_approval_risk_control_manager
+ - test_cwd_19_finace_approval_financial_accounting
+ - test_cwd_20_finace_approval_financial_manager
  - test_cwd_21_funds_raise
 
 eyt:
@@ -38,10 +38,10 @@ eyt:
  - test_eyt_14_authority_card_member_transact
  - test_eyt_15_warrant_apply
  - test_eyt_16_finace_transact
- - test_eyt_17_finace_approve_branch_manager
- - test_eyt_18_finace_approve_risk_control_manager
- - test_eyt_19_finace_approve_financial_accounting
- - test_eyt_20_finace_approve_financial_manager
+ - test_eyt_17_finace_approval_branch_manager
+ - test_eyt_18_finace_approval_risk_control_manager
+ - test_eyt_19_finace_approval_financial_accounting
+ - test_eyt_20_finace_approval_financial_manager
  - test_eyt_21_funds_raise
 
 xhd:
@@ -61,10 +61,10 @@ xhd:
  - test_xhd_14_authority_card_member_transact
  - test_xhd_15_warrant_apply
  - test_xhd_16_finace_transact
- - test_xhd_17_finace_approve_branch_manager
- - test_xhd_18_finace_approve_risk_control_manager
- - test_xhd_19_finace_approve_financial_accounting
- - test_xhd_20_finace_approve_financial_manager
+ - test_xhd_17_finace_approval_branch_manager
+ - test_xhd_18_finace_approval_risk_control_manager
+ - test_xhd_19_finace_approval_financial_accounting
+ - test_xhd_20_finace_approval_financial_manager
  - test_xhd_21_funds_raise
 
 gqt:
@@ -84,11 +84,11 @@ gqt:
  - test_gqt_14_authority_card_member_transact
  - test_gqt_15_warrant_apply
  - test_gqt_16_finace_transact
- - test_gqt_17_finace_approve_branch_manager
- - test_gqt_18_finace_approve_risk_control_manager
- - test_gqt_19_funds_appprove
- - test_gqt_20_finace_approve_financial_accounting
- - test_gqt_21_finace_approve_financial_manager
+ - test_gqt_17_finace_approval_branch_manager
+ - test_gqt_18_finace_approval_risk_control_manager
+ - test_gqt_19_funds_approval
+ - test_gqt_20_finace_approval_financial_accounting
+ - test_gqt_21_finace_approval_financial_manager
  - test_gqt_22_funds_raise
 
 IntoCase:
@@ -150,17 +150,17 @@ PartRaise:
  - test_03_receipt_first_approval
  - test_04_part_finace_transact
  - test_05_part_finace_branch_manage_aproval
- - test_06_part_finace_approve_risk_control_manager
- - test_07_part_finace_approve_financial_accounting
- - test_08_part_finace_approve_financial_manager
+ - test_06_part_finace_approval_risk_control_manager
+ - test_07_part_finace_approval_financial_accounting
+ - test_08_part_finace_approval_financial_manager
  - test_09_part_funds_raise
  - test_10_part_authority_card_second_deal
  - test_11_part_warrent_request_money
  - test_12_part_finace_transact_second
  - test_13_part_finace_branch_manage_aproval_second
- - test_14_part_finace_approve_risk_control_manager
- - test_15_part_finace_approve_financial_accounting_second
- - test_16_finace_approve_financial_manager_second
+ - test_14_part_finace_approval_risk_control_manager
+ - test_15_part_finace_approval_financial_accounting_second
+ - test_16_finace_approval_financial_manager_second
  - test_17_part_funds_raise_second
 
 WarrantManage:

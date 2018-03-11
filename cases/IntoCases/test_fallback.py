@@ -5,7 +5,7 @@
 	date: 2018-1-15
 """
 import unittest
-from com import common, custom, base
+from com import custom, base
 from com.login import Login
 
 
@@ -21,7 +21,7 @@ class FallBack(unittest.TestCase, base.Base):
 		pass
 	
 	def get_next_user(self, page, applycode):
-		next_id = common.process_monitor(page, applycode)
+		next_id = self.PM.process_monitor(page, applycode)
 		if next_id is None:
 			self.log.error("没有找到下一步处理人！")
 			raise AssertionError("没有找到下一步处理人！")
@@ -42,28 +42,28 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page, self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		
 		if applycode:
 			self.applycode = applycode
 			self.log.info("申请件查询完成:" + self.applycode)
 		# 流程监控
-		result = common.process_monitor(self.page, applycode)
+		result = self.PM.process_monitor(self.page, applycode)
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
@@ -79,7 +79,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 分公司主管回退
-		res = common.approval_to_review(page, applycode, u'回退到申请录入', 1)
+		res = self.PT.approval_to_review(page, applycode, u'回退到申请录入', 1)
 		if not res:
 			self.log.error("回退失败")
 			raise ValueError("回退失败")
@@ -100,29 +100,29 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		
 		if applycode:
 			self.applycode = applycode
 			self.log.info("申请件查询完成:" + self.applycode)
 		# 流程监控
-		result = common.process_monitor(self.page, applycode)
+		result = self.PM.process_monitor(self.page, applycode)
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
@@ -140,7 +140,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(result)
 		
 		# 分公司主管审批
-		res = common.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -151,7 +151,7 @@ class FallBack(unittest.TestCase, base.Base):
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		# 分公司经理回退
-		res = common.approval_to_review(page, applycode, u'分公司经理回退到申请录入', 1)
+		res = self.PT.approval_to_review(page, applycode, u'分公司经理回退到申请录入', 1)
 		if not res:
 			self.log.error("回退失败")
 			raise ValueError("回退失败")
@@ -172,28 +172,28 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		if applycode:
 			self.applycode = applycode
 			self.log.info("申请件查询完成:" + self.applycode)
 		
 		# 流程监控
-		result = common.process_monitor(self.page, applycode)
+		result = self.PM.process_monitor(self.page, applycode)
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
@@ -211,7 +211,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(result)
 		
 		# 分公司主管审批
-		res = common.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -223,7 +223,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 分公司经理审批通过
-		res = common.approval_to_review(page, applycode, u'分公司经理回退到申请录入', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司经理回退到申请录入', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -235,7 +235,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 区域预复核回退
-		res = common.approval_to_review(page, applycode, u'区域回退到申请录入', 1)
+		res = self.PT.approval_to_review(page, applycode, u'区域回退到申请录入', 1)
 		if not res:
 			self.log.error("回退失败")
 			raise ValueError("回退失败")
@@ -256,27 +256,27 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		if applycode:
 			self.applycode = applycode
 			self.log.info("申请件查询完成:" + self.applycode)
 		# 流程监控
-		result = common.process_monitor(self.page, applycode)
+		result = self.PM.process_monitor(self.page, applycode)
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
@@ -294,7 +294,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(result)
 		
 		# 分公司主管审批
-		res = common.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -306,7 +306,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 分公司经理审批
-		res = common.approval_to_review(page, applycode, u'分公司经理审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司经理审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -318,7 +318,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 区域预复核审批
-		res = common.approval_to_review(page, applycode, u'区域预复核审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'区域预复核审批通过', 0)
 		if not res:
 			self.log.error("区域预复核审批失败！")
 			raise AssertionError('区域预复核审批失败！')
@@ -330,7 +330,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 审批经理回退
-		res = common.approval_to_review(page, applycode, u'审批经理回退到申请录入成功', 1)
+		res = self.PT.approval_to_review(page, applycode, u'审批经理回退到申请录入成功', 1)
 		if not res:
 			self.log.error("审批经理回退失败！")
 			raise AssertionError('审批经理回退失败！')
@@ -352,28 +352,28 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		if applycode:
 			self.applycode = applycode
 			self.log.info("申请件查询完成:" + self.applycode)
 		
 		# 流程监控
-		result = common.process_monitor(self.page, applycode)
+		result = self.PM.process_monitor(self.page, applycode)
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
@@ -390,7 +390,7 @@ class FallBack(unittest.TestCase, base.Base):
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		# 分公司主管审批
-		res = common.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -401,7 +401,7 @@ class FallBack(unittest.TestCase, base.Base):
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		# 分公司经理审批
-		res = common.approval_to_review(page, applycode, u'分公司经理审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司经理审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -412,7 +412,7 @@ class FallBack(unittest.TestCase, base.Base):
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		# 区域预复核审批
-		res = common.approval_to_review(page, applycode, u'区域预复核审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'区域预复核审批通过', 0)
 		if not res:
 			self.log.error("区域预复核审批失败！")
 			raise AssertionError('区域预复核审批失败！')
@@ -423,7 +423,7 @@ class FallBack(unittest.TestCase, base.Base):
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		# 审批经理回退到区域预复核
-		res = common.risk_approval_fallback(page, applycode, option[0], u'回退到区域预复核')
+		res = self.PT.risk_approval_fallback(page, applycode, option[0], u'回退到区域预复核')
 		if not res:
 			self.log.error("审批经理回退到区域预复核失败 ！")
 			raise AssertionError('审批经理回退到区域预复核失败 ！')
@@ -434,7 +434,7 @@ class FallBack(unittest.TestCase, base.Base):
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		# 区域预复核回退到分公司经理
-		res = common.risk_approval_fallback(page, applycode, option[1], u'回退到分公司经理')
+		res = self.PT.risk_approval_fallback(page, applycode, option[1], u'回退到分公司经理')
 		if not res:
 			self.log.error("区域预复核回退到分公司经理失败 ！")
 			raise AssertionError('区域预复核回退到分公司经理失败 ！')
@@ -445,7 +445,7 @@ class FallBack(unittest.TestCase, base.Base):
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		# 分公司经理回退到分公司主管
-		res = common.risk_approval_fallback(page, applycode, option[2], u'回退到分公司主管')
+		res = self.PT.risk_approval_fallback(page, applycode, option[2], u'回退到分公司主管')
 		if not res:
 			self.log.error("分公司经理回退到分公司主管失败 ！")
 			raise AssertionError('分公司经理回退到分公司主管失败 ！')
@@ -456,7 +456,7 @@ class FallBack(unittest.TestCase, base.Base):
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		# 分公司主管回退到申请录入
-		res = common.risk_approval_fallback(page, applycode, option[3], u'回退到申请录入')
+		res = self.PT.risk_approval_fallback(page, applycode, option[3], u'回退到申请录入')
 		if not res:
 			self.log.error("分公司主管回退到申请录入失败 ！")
 			raise AssertionError('分公司主管回退到申请录入失败 ！')
@@ -474,30 +474,30 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		
 		if applycode:
 			self.applycode = applycode
 			self.log.info("申请件查询完成:" + self.applycode)
 			print("applycode:" + self.applycode)
 		# 流程监控
-		result = common.process_monitor(self.page, applycode)
+		result = self.PM.process_monitor(self.page, applycode)
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
@@ -512,8 +512,8 @@ class FallBack(unittest.TestCase, base.Base):
 		# 下一个处理人重新登录
 		page = Login(result)
 		
-		# 分公司主管回退
-		res = common.approval_to_review(page, applycode, u'主管取消', 2)
+		# 分公司主管取消
+		res = self.PT.approval_to_review(page, applycode, u'主管取消', 2)
 		if not res:
 			self.log.error("分公司主管取消失败")
 			raise AssertionError('分公司主管取消失败')
@@ -533,30 +533,30 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		
 		if applycode:
 			self.applycode = applycode
 			self.log.info("申请件查询完成:" + self.applycode)
 			print("applycode:" + self.applycode)
 		# 流程监控
-		result = common.process_monitor(self.page, applycode)
+		result = self.PM.process_monitor(self.page, applycode)
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
@@ -574,7 +574,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(result)
 		
 		# 分公司主管审批
-		res = common.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -585,7 +585,7 @@ class FallBack(unittest.TestCase, base.Base):
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		# 分公司经理回退
-		res = common.approval_to_review(page, applycode, u'分公司经理取消', 2)
+		res = self.PT.approval_to_review(page, applycode, u'分公司经理取消', 2)
 		if not res:
 			self.log.error("分公司经理取消失败！")
 			raise ValueError("分公司经理取消失败！")
@@ -605,28 +605,28 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		if applycode:
 			self.applycode = applycode
 			self.log.info("申请件查询完成:" + self.applycode)
 		
 		# 流程监控
-		result = common.process_monitor(self.page, applycode)
+		result = self.PM.process_monitor(self.page, applycode)
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
@@ -644,7 +644,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(result)
 		
 		# 分公司主管审批
-		res = common.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -656,7 +656,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 分公司经理审批通过
-		res = common.approval_to_review(page, applycode, u'分公司经理审批通过!', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司经理审批通过!', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -668,7 +668,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 区域预复核取消
-		res = common.approval_to_review(page, applycode, u'区域取消', 2)
+		res = self.PT.approval_to_review(page, applycode, u'区域取消', 2)
 		if not res:
 			self.log.error("取消失败")
 			raise AssertionError('取消失败')
@@ -688,27 +688,27 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		if applycode:
 			self.applycode = applycode
 			self.log.info("申请件查询完成:" + self.applycode)
 		# 流程监控
-		result = common.process_monitor(self.page, applycode)
+		result = self.PM.process_monitor(self.page, applycode)
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
@@ -726,7 +726,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(result)
 		
 		# 分公司主管审批
-		res = common.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -738,7 +738,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 分公司经理审批
-		res = common.approval_to_review(page, applycode, u'分公司经理审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司经理审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -750,7 +750,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 区域预复核审批
-		res = common.approval_to_review(page, applycode, u'区域预复核审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'区域预复核审批通过', 0)
 		if not res:
 			self.log.error("区域预复核审批失败！")
 			raise AssertionError('区域预复核审批失败！')
@@ -762,7 +762,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 审批经理取消
-		res = common.approval_to_review(page, applycode, u'审审批经理取消成功', 2)
+		res = self.PT.approval_to_review(page, applycode, u'审审批经理取消成功', 2)
 		if not res:
 			self.log.error("审批经理取消失败！")
 			raise AssertionError('审审批经理取消失败')
@@ -780,29 +780,29 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		
 		if applycode:
 			self.applycode = applycode
 			self.log.info("申请件查询完成:" + self.applycode)
 		# 流程监控
-		result = common.process_monitor(self.page, applycode)
+		result = self.PM.process_monitor(self.page, applycode)
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("下一个处理人:" + self.next_user_id)
@@ -818,7 +818,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 分公司主管拒绝
-		res = common.approval_to_review(page, applycode, u'主管拒绝', 3)
+		res = self.PT.approval_to_review(page, applycode, u'主管拒绝', 3)
 		if not res:
 			self.log.error("主管拒绝失败")
 			raise AssertionError('主管拒绝失败')
@@ -827,10 +827,10 @@ class FallBack(unittest.TestCase, base.Base):
 		page.driver.close()
 		
 		# 高级审批经理登录
-		page = Login('xn003625')
+		page = Login(self.senior_manager)
 		
 		# 拒绝
-		value = common.reconsideration(page, applycode)
+		value = self.HRL.reconsideration(page, applycode)
 		if value:
 			self.log.info(u'主管拒绝成功，拒绝单已处于拒绝队列！')
 			self.page.driver.quit()
@@ -845,32 +845,31 @@ class FallBack(unittest.TestCase, base.Base):
 			1. 申请基本信息录入
 		"""
 		custom.print_product_info(self.product_info)
-		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		
 		if applycode:
 			self.applycode = applycode
 			self.log.info("申请件查询完成:" + self.applycode)
 		# 流程监控
-		result = common.process_monitor(self.page, applycode)
+		result = self.PM.process_monitor(self.page, applycode)
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
@@ -886,7 +885,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(result)
 		
 		# 分公司主管回退
-		res = common.approval_to_review(page, applycode, u'主管拒绝', 3)
+		res = self.PT.approval_to_review(page, applycode, u'主管拒绝', 3)
 		if not res:
 			self.log.error("主管拒绝失败")
 			raise AssertionError('主管拒绝失败')
@@ -895,10 +894,10 @@ class FallBack(unittest.TestCase, base.Base):
 		page.driver.close()
 		
 		# 高级审批经理登录
-		page = Login('xn003625')
+		page = Login(self.senior_manager)
 		
 		# 复议通过
-		r1 = common.reconsideration(page, applycode, 1)
+		r1 = self.HRL.reconsideration(page, applycode, 1)
 		if r1:
 			self.log.info(u'主管拒绝成功，复议通过！')
 			self.page.driver.quit()
@@ -917,29 +916,29 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		
 		if applycode:
 			self.applycode = applycode
 			self.log.info("申请件查询完成! " + self.applycode)
 		# 流程监控
-		result = common.process_monitor(self.page, applycode)
+		result = self.PM.process_monitor(self.page, applycode)
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
@@ -955,7 +954,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(result)
 		
 		# 分公司主管回退
-		res = common.approval_to_review(page, applycode, u'主管拒绝', 3)
+		res = self.PT.approval_to_review(page, applycode, u'主管拒绝', 3)
 		if not res:
 			self.log.error("主管拒绝失败")
 			raise AssertionError('主管拒绝失败，复议出错！')
@@ -964,10 +963,10 @@ class FallBack(unittest.TestCase, base.Base):
 		page.driver.close()
 		
 		# 高级审批经理登录
-		page = Login('xn003625')
+		page = Login(self.senior_manager)
 		
 		# 复议通过
-		r1 = common.reconsideration(page, applycode, 2)
+		r1 = self.HRL.reconsideration(page, applycode, 2)
 		if r1:
 			self.log.info(u'主管拒绝成功，复议不通过成功！')
 			self.page.driver.quit()
@@ -987,23 +986,23 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		
 		if applycode:
 			self.applycode = applycode
@@ -1020,7 +1019,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 分公司主管审批
-		res = common.approval_to_review(page, applycode, u'分公司主管审批', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司主管审批', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -1032,7 +1031,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 分公司经理拒绝
-		res = common.approval_to_review(page, applycode, u'分公司经理拒绝', 3)
+		res = self.PT.approval_to_review(page, applycode, u'分公司经理拒绝', 3)
 		if not res:
 			self.log.error("分公司经理拒绝失败！")
 			raise AssertionError('分公司经理拒绝失败！')
@@ -1044,7 +1043,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 区域经理拒绝
-		res = common.approval_to_review(page, applycode, u'区域经理拒绝', 3)
+		res = self.PT.approval_to_review(page, applycode, u'区域经理拒绝', 3)
 		if not res:
 			self.log.error("区域经理拒绝失败！")
 			raise AssertionError('区域经理拒绝失败！')
@@ -1056,7 +1055,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 高级经理拒绝
-		res = common.approval_to_review(page, applycode, u'高级经理拒绝', 3)
+		res = self.PT.approval_to_review(page, applycode, u'高级经理拒绝', 3)
 		if not res:
 			self.log.error("高级经理拒绝失败！")
 			raise AssertionError('高级经理拒绝失败！')
@@ -1064,10 +1063,10 @@ class FallBack(unittest.TestCase, base.Base):
 			self.log.info(u'高级经理拒绝成功！')
 		
 		# 高级审批经理登录
-		page = Login('xn003625')
+		page = Login(self.senior_manager)
 		
 		# 拒绝
-		value = common.reconsideration(page, applycode)
+		value = self.HRL.reconsideration(page, applycode)
 		if value:
 			self.log.info(u'分公司经理拒成功，拒绝单已处于拒绝队列！')
 			self.page.driver.quit()
@@ -1087,23 +1086,23 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		
 		if applycode:
 			self.applycode = applycode
@@ -1120,7 +1119,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 分公司主管审批
-		res = common.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -1132,7 +1131,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 分公司经理回退
-		res = common.approval_to_review(page, applycode, u'分公司经理拒绝', 3)
+		res = self.PT.approval_to_review(page, applycode, u'分公司经理拒绝', 3)
 		if not res:
 			self.log.error("分公司经理拒绝失败！")
 			raise AssertionError('分公司经理拒绝失败！')
@@ -1144,7 +1143,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 区域经理拒绝
-		res = common.approval_to_review(page, applycode, u'区域经理拒绝', 3)
+		res = self.PT.approval_to_review(page, applycode, u'区域经理拒绝', 3)
 		if not res:
 			self.log.error("区域经理拒绝拒绝失败！")
 			raise AssertionError('区域经理拒绝拒绝失败')
@@ -1156,7 +1155,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 高级经理拒绝
-		res = common.approval_to_review(page, applycode, u'高级经理拒绝', 3)
+		res = self.PT.approval_to_review(page, applycode, u'高级经理拒绝', 3)
 		if not res:
 			self.log.error("高级经理拒绝失败！")
 			raise AssertionError('高级经理拒绝失败！')
@@ -1164,10 +1163,10 @@ class FallBack(unittest.TestCase, base.Base):
 			self.log.info(u'高级经理拒绝成功！')
 		
 		# 高级审批经理登录
-		page = Login('xn003625')
+		page = Login(self.senior_manager)
 		
 		# 复议通过
-		r1 = common.reconsideration(page, applycode, 1)
+		r1 = self.HRL.reconsideration(page, applycode, 1)
 		if r1:
 			self.log.info(u'分公司经理拒绝成功，复议通过！')
 			self.page.driver.quit()
@@ -1185,29 +1184,29 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		
 		if applycode:
 			self.applycode = applycode
 			self.log.info("申请件查询完成! " + self.applycode)
 		# 流程监控
-		result = common.process_monitor(self.page, applycode)
+		result = self.PM.process_monitor(self.page, applycode)
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
@@ -1223,7 +1222,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(result)
 		
 		# 分公司主管审批
-		res = common.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -1233,7 +1232,7 @@ class FallBack(unittest.TestCase, base.Base):
 		
 		page = Login(self.next_user_id)
 		# 分公司经理拒绝
-		res = common.approval_to_review(page, applycode, u'分公司经理拒绝', 3)
+		res = self.PT.approval_to_review(page, applycode, u'分公司经理拒绝', 3)
 		if not res:
 			self.log.error("分公司经理拒绝失败")
 			raise AssertionError('分公司经理拒绝失败')
@@ -1246,7 +1245,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 区域经理拒绝
-		res = common.approval_to_review(page, applycode, u'区域经理拒绝', 3)
+		res = self.PT.approval_to_review(page, applycode, u'区域经理拒绝', 3)
 		if not res:
 			self.log.error("区域经理拒绝拒绝失败！")
 			raise ValueError("区域经理拒绝拒绝失败！")
@@ -1258,7 +1257,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 高级经理拒绝
-		res = common.approval_to_review(page, applycode, u'高级经理拒绝', 3)
+		res = self.PT.approval_to_review(page, applycode, u'高级经理拒绝', 3)
 		if not res:
 			self.log.error("高级经理拒绝失败！")
 			raise AssertionError('高级经理拒绝失败！')
@@ -1266,10 +1265,10 @@ class FallBack(unittest.TestCase, base.Base):
 			self.log.info(u'高级经理拒绝成功！')
 		
 		# 高级审批经理登录
-		page = Login('xn003625')
+		page = Login(self.senior_manager)
 		
 		# 复议通过
-		r1 = common.reconsideration(page, applycode, 2)
+		r1 = self.HRL.reconsideration(page, applycode, 2)
 		if r1:
 			self.log.info(u'分公司经理拒绝成功，并复议不通过成功！')
 			page.driver.quit()
@@ -1289,28 +1288,28 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		if applycode:
 			self.applycode = applycode
 			self.log.info("申请件查询完成:" + self.applycode)
 		
 		# 流程监控
-		result = common.process_monitor(self.page, applycode)
+		result = self.PM.process_monitor(self.page, applycode)
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
@@ -1328,7 +1327,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(result)
 		
 		# 分公司主管审批
-		res = common.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -1340,7 +1339,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 分公司经理审批通过
-		res = common.approval_to_review(page, applycode, u'分公司经理审批通过!', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司经理审批通过!', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -1352,7 +1351,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 区域预复核拒绝
-		res = common.approval_to_review(page, applycode, u'区域拒绝', 3)
+		res = self.PT.approval_to_review(page, applycode, u'区域拒绝', 3)
 		if not res:
 			self.log.error("区域拒绝失败")
 			raise AssertionError('区域拒绝失败')
@@ -1363,7 +1362,7 @@ class FallBack(unittest.TestCase, base.Base):
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
-		res = common.approval_to_review(page, applycode, u'高级经理拒绝', 3)
+		res = self.PT.approval_to_review(page, applycode, u'高级经理拒绝', 3)
 		if not res:
 			self.log.error("高级经理拒绝失败")
 			raise AssertionError('高级经理拒绝失败')
@@ -1372,10 +1371,10 @@ class FallBack(unittest.TestCase, base.Base):
 			page.driver.quit()
 		
 		# 高级审批经理登录
-		page = Login('xn003625')
+		page = Login(self.senior_manager)
 		
 		# 拒绝
-		value = common.reconsideration(page, applycode)
+		value = self.HRL.reconsideration(page, applycode)
 		if value:
 			self.log.info(u'区域拒绝成功，拒绝单已处于拒绝队列！')
 			self.page.driver.quit()
@@ -1395,28 +1394,28 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		if applycode:
 			self.applycode = applycode
 			self.log.info("申请件查询完成:" + self.applycode)
 		
 		# 流程监控
-		result = common.process_monitor(self.page, applycode)
+		result = self.PM.process_monitor(self.page, applycode)
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
@@ -1434,7 +1433,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(result)
 		
 		# 分公司主管审批
-		res = common.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -1446,7 +1445,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 分公司经理审批通过
-		res = common.approval_to_review(page, applycode, u'分公司经理审批通过!', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司经理审批通过!', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -1458,7 +1457,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 区域预复核取消
-		res = common.approval_to_review(page, applycode, u'区域拒绝', 3)
+		res = self.PT.approval_to_review(page, applycode, u'区域拒绝', 3)
 		if not res:
 			self.log.error("区域拒绝失败")
 			raise AssertionError('区域拒绝失败')
@@ -1469,7 +1468,7 @@ class FallBack(unittest.TestCase, base.Base):
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		# 高级经理拒绝
-		res = common.approval_to_review(page, applycode, u'高级经理拒绝', 3)
+		res = self.PT.approval_to_review(page, applycode, u'高级经理拒绝', 3)
 		if not res:
 			self.log.error("高级经理拒绝失败！")
 			raise AssertionError('高级经理拒绝失败！')
@@ -1478,10 +1477,10 @@ class FallBack(unittest.TestCase, base.Base):
 			page.driver.quit()
 		
 		# 高级审批经理登录
-		page = Login('xn003625')
+		page = Login(self.senior_manager)
 		
 		# 复议通过
-		r1 = common.reconsideration(page, applycode, 1)
+		r1 = self.HRL.reconsideration(page, applycode, 1)
 		if r1:
 			self.log.info(u'区域拒绝成功！复议通过！')
 			self.page.driver.quit()
@@ -1501,28 +1500,28 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		if applycode:
 			self.applycode = applycode
 			self.log.info("申请件查询完成:" + self.applycode)
 		
 		# 流程监控
-		result = common.process_monitor(self.page, applycode)
+		result = self.PM.process_monitor(self.page, applycode)
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
@@ -1540,7 +1539,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(result)
 		
 		# 分公司主管审批
-		res = common.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -1552,7 +1551,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 分公司经理审批通过
-		res = common.approval_to_review(page, applycode, u'分公司经理审批通过!', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司经理审批通过!', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -1564,7 +1563,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 区域预复核取消
-		res = common.approval_to_review(page, applycode, u'区域拒绝', 3)
+		res = self.PT.approval_to_review(page, applycode, u'区域拒绝', 3)
 		if not res:
 			self.log.error("区域拒绝失败")
 			raise AssertionError('区域拒绝失败')
@@ -1575,7 +1574,7 @@ class FallBack(unittest.TestCase, base.Base):
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
-		res = common.approval_to_review(page, applycode, u'高级经理拒绝', 3)
+		res = self.PT.approval_to_review(page, applycode, u'高级经理拒绝', 3)
 		if not res:
 			self.log.error("高级经理失败")
 			raise AssertionError('高级经理失败')
@@ -1584,10 +1583,10 @@ class FallBack(unittest.TestCase, base.Base):
 			page.driver.quit()
 		
 		# 高级审批经理登录
-		page = Login('xn003625')
+		page = Login(self.senior_manager)
 		
 		# 复议通过
-		r1 = common.reconsideration(page, applycode, 2)
+		r1 = self.HRL.reconsideration(page, applycode, 2)
 		if r1:
 			self.log.info(u'区域拒绝成功，复议不通过成功！')
 			self.page.driver.quit()
@@ -1607,28 +1606,28 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		if applycode:
 			self.applycode = applycode
 			self.log.info("申请件查询完成:" + self.applycode)
 		
 		# 流程监控
-		result = common.process_monitor(self.page, applycode)
+		result = self.PM.process_monitor(self.page, applycode)
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
@@ -1645,7 +1644,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(result)
 		
 		# 分公司主管审批
-		res = common.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -1657,7 +1656,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 分公司经理审批
-		res = common.approval_to_review(page, applycode, u'分公司经理审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司经理审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -1669,7 +1668,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 区域预复核审批
-		res = common.approval_to_review(page, applycode, u'区域预复核审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'区域预复核审批通过', 0)
 		if not res:
 			self.log.error("区域预复核审批失败！")
 			raise AssertionError('区域预复核审批失败！')
@@ -1680,7 +1679,7 @@ class FallBack(unittest.TestCase, base.Base):
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		# 高级经理拒绝
-		res = common.approval_to_review(page, applycode, u'高级经理拒绝', 3)
+		res = self.PT.approval_to_review(page, applycode, u'高级经理拒绝', 3)
 		if not res:
 			self.log.error("高级经理拒绝失败！")
 			raise AssertionError('高级经理拒绝失败！')
@@ -1689,10 +1688,10 @@ class FallBack(unittest.TestCase, base.Base):
 			page.driver.quit()
 		
 		# 高级审批经理登录
-		page = Login('xn003625')
+		page = Login(self.senior_manager)
 		
 		# 拒绝
-		value = common.reconsideration(page, applycode)
+		value = self.HRL.reconsideration(page, applycode)
 		if value:
 			self.log.info(u'审批经理拒绝成功，拒绝单已处于拒绝队列！')
 			self.page.driver.quit()
@@ -1712,27 +1711,27 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		if applycode:
 			self.applycode = applycode
 			self.log.info("申请件查询完成:" + self.applycode)
 		# 流程监控
-		result = common.process_monitor(self.page, applycode)
+		result = self.PM.process_monitor(self.page, applycode)
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
@@ -1750,7 +1749,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(result)
 		
 		# 分公司主管审批
-		res = common.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -1762,7 +1761,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 分公司经理审批
-		res = common.approval_to_review(page, applycode, u'分公司经理审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司经理审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -1774,7 +1773,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 区域预复核审批
-		res = common.approval_to_review(page, applycode, u'区域预复核审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'区域预复核审批通过', 0)
 		if not res:
 			self.log.error("区域预复核审批失败！")
 			raise AssertionError('区域预复核审批失败！')
@@ -1786,7 +1785,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 高级经理拒绝
-		res = common.approval_to_review(page, applycode, u'高级经理拒绝', 3)
+		res = self.PT.approval_to_review(page, applycode, u'高级经理拒绝', 3)
 		if not res:
 			self.log.error("高级经理拒绝失败！")
 			raise AssertionError('高级经理拒绝失败！')
@@ -1795,10 +1794,10 @@ class FallBack(unittest.TestCase, base.Base):
 			page.driver.quit()
 		
 		# 高级审批经理登录
-		page = Login('xn003625')
+		page = Login(self.senior_manager)
 		
 		# 复议通过
-		r1 = common.reconsideration(page, applycode, 1)
+		r1 = self.HRL.reconsideration(page, applycode, 1)
 		if r1:
 			self.log.info(u'复议通过！')
 			self.page.driver.quit()
@@ -1818,27 +1817,27 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		
 		# 1 客户信息-业务基本信息
-		if common.input_customer_base_info(self.page, self.data['applyVo']):
+		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.custName = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 		
 		# 3 物业信息
-		common.input_all_bbi_property_info(
+		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
 				self.data['applyCustCreditInfoVo'][0])
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		if applycode:
 			self.applycode = applycode
 			self.log.info("申请件查询完成:" + self.applycode)
 		# 流程监控
-		result = common.process_monitor(self.page, applycode)
+		result = self.PM.process_monitor(self.page, applycode)
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
@@ -1856,7 +1855,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(result)
 		
 		# 分公司主管审批
-		res = common.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司主管审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -1868,7 +1867,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 分公司经理审批
-		res = common.approval_to_review(page, applycode, u'分公司经理审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'分公司经理审批通过', 0)
 		if not res:
 			self.log.error("审批失败")
 			raise AssertionError('审批失败')
@@ -1880,7 +1879,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 区域预复核审批
-		res = common.approval_to_review(page, applycode, u'区域预复核审批通过', 0)
+		res = self.PT.approval_to_review(page, applycode, u'区域预复核审批通过', 0)
 		if not res:
 			self.log.error("区域预复核审批失败！")
 			raise AssertionError('区域预复核审批失败！')
@@ -1892,7 +1891,7 @@ class FallBack(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 高级经理拒绝
-		res = common.approval_to_review(page, applycode, u'高级经理拒绝', 3)
+		res = self.PT.approval_to_review(page, applycode, u'高级经理拒绝', 3)
 		if not res:
 			self.log.error("高级经理拒绝失败！")
 			raise AssertionError('高级经理拒绝失败！')
@@ -1901,10 +1900,10 @@ class FallBack(unittest.TestCase, base.Base):
 			page.driver.quit()
 		
 		# 高级审批经理登录
-		page = Login('xn003625')
+		page = Login(self.senior_manager)
 		
 		# 复议通过
-		r1 = common.reconsideration(page, applycode, 2)
+		r1 = self.HRL.reconsideration(page, applycode, 2)
 		if r1:
 			self.log.info(u'复议不通过成功！')
 			self.page.driver.quit()

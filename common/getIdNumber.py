@@ -3,7 +3,6 @@
 	生成手机号
 """
 import random
-import datetime
 from datetime import date
 from datetime import timedelta
 import os
@@ -13,7 +12,7 @@ DC_PATH = base_dir + "/common/districtcode.txt"
 
 
 # 随机生成手机号码
-def createPhone():
+def create_phone():
 	prelist = [
 		"130", "131", "132", "133", "134", "135", "136", "137", "138", "139", "147", "150", "151", "152", "153",
 		"155", "156", "157", "158", "159", "186", "187", "188"]
@@ -25,6 +24,8 @@ def getdistrictcode():
 	with open(DC_PATH) as file:
 		data = file.read()
 		districtlist = data.split('\n')
+	state = None
+	city = None
 	for node in districtlist:
 		# print("node:", node)
 		if node[10:11] != ' ':
@@ -40,7 +41,7 @@ def getdistrictcode():
 				})
 
 
-def getValidateCheckout(id17):
+def get_validate_checkout(id17):
 	"""获得校验码算法"""
 	weight = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2]  # 十七位数字本体码权重
 	validate = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2']  # mod11,对应校验码字符值
@@ -63,7 +64,7 @@ def gennerator():
 	id = id + da.strftime('%m%d')
 	id = id + str(random.randint(100, 300))  # ，顺序号简单处理
 	
-	checkOut = getValidateCheckout(id)
+	checkOut = get_validate_checkout(id)
 	id = id + str(checkOut)
 	
 	"""
@@ -79,7 +80,8 @@ def gennerator():
 	
 	return id
 
-print(createPhone())
+
+print(create_phone())
 print(gennerator())
 
 # Todo
@@ -107,7 +109,7 @@ def getRandomIdNumber(sex=1):
 	sexId = random.randrange(sex, 10, step=2)  # 性别码
 	idNumber = idNumber + str(sexId)
 	# 校验码
-	checkOut = getValidateCheckout(idNumber)
+	checkOut = get_validate_checkout(idNumber)
 	idNumber = idNumber + str(checkOut)
 	return idNumber, addrName, addrId, birthDays, sex, checkOut
 

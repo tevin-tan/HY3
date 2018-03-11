@@ -3,6 +3,7 @@
 import unittest
 from com import common, custom, base
 from com.login import Login
+from com.pobj.ContractSign import ContractSign as Cts
 
 
 class XHD(unittest.TestCase, base.Base):
@@ -24,7 +25,7 @@ class XHD(unittest.TestCase, base.Base):
 		"""客户基本信息录入"""
 		
 		custom.print_product_info(self.product_info)
-		res = common.input_customer_base_info(self.page, self.data['applyVo'])
+		res = self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
 		if not res:
 			self.log.error("客户基本信息录入出错！")
 			raise AssertionError('客户基本信息录入出错')
@@ -36,7 +37,7 @@ class XHD(unittest.TestCase, base.Base):
 		
 		self.test_xhd_01_base_info()
 		try:
-			res = common.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+			res = self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 			if res:
 				self.log.info("录入借款人信息结束")
 		except Exception as e:
@@ -49,7 +50,7 @@ class XHD(unittest.TestCase, base.Base):
 		self.test_xhd_02_borrowr_info()
 		
 		try:
-			res = common.input_all_bbi_property_info(
+			res = self.HAE.input_all_bbi_property_info(
 					self.page,
 					self.data['applyPropertyInfoVo'][0],
 					self.data['applyCustCreditInfoVo'][0],
@@ -67,13 +68,13 @@ class XHD(unittest.TestCase, base.Base):
 		
 		self.test_xhd_03_Property_info()
 		# 提交
-		common.submit(self.page)
+		self.HAE.submit(self.page)
 	
 	def test_xhd_05_get_applyCode(self):
 		"""申请件查询"""
 		
 		self.test_xhd_04_applydata()
-		applycode = common.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.custName)
 		if applycode:
 			self.log.info("申请件查询完成")
 			self.apply_code = applycode
@@ -85,7 +86,7 @@ class XHD(unittest.TestCase, base.Base):
 		"""查看待处理任务列表"""
 		
 		self.test_xhd_05_get_applyCode()
-		next_id = common.process_monitor(self.page, self.apply_code)
+		next_id = self.PM.process_monitor(self.page, self.apply_code)
 		if next_id:
 			self.log.info("下一个处理人:" + next_id)
 			self.next_user_id = next_id
@@ -95,7 +96,7 @@ class XHD(unittest.TestCase, base.Base):
 		
 		page = Login(self.next_user_id)
 		
-		res = common.query_task(page, self.apply_code)
+		res = self.PT.query_task(page, self.apply_code)
 		if res:
 			self.log.info("待处理任务查询ok")
 			page.driver.quit()
@@ -107,7 +108,7 @@ class XHD(unittest.TestCase, base.Base):
 		"""流程监控"""
 		
 		self.test_xhd_05_get_applyCode()  # 申请件查询
-		res = common.process_monitor(self.page, self.apply_code)  # l流程监控
+		res = self.PM.process_monitor(self.page, self.apply_code)  # l流程监控
 		
 		if not res:
 			raise AssertionError('流程监控出错！')
@@ -126,10 +127,10 @@ class XHD(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 审批审核
-		common.approval_to_review(page, self.apply_code, u'分公司主管同意审批')
+		self.PT.approval_to_review(page, self.apply_code, u'分公司主管同意审批')
 		
 		# 查看下一步处理人
-		next_id = common.process_monitor(page, self.apply_code)
+		next_id = self.PM.process_monitor(page, self.apply_code)
 		if not next_id:
 			self.log.error("Can't Get Next User")
 			raise AssertionError("get Next user error!")
@@ -149,7 +150,7 @@ class XHD(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 审批审核
-		res = common.approval_to_review(page, self.apply_code, u'分公司经理同意审批')
+		res = self.PT.approval_to_review(page, self.apply_code, u'分公司经理同意审批')
 		if not res:
 			self.log.error("风控-分公司审批失败")
 			raise AssertionError('风控-分公司审批失败')
@@ -169,7 +170,7 @@ class XHD(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 审批审核
-		rs = common.approval_to_review(page, self.apply_code, u'区域预复核通过')
+		rs = self.PT.approval_to_review(page, self.apply_code, u'区域预复核通过')
 		if not rs:
 			self.log.error("风控-区域预复核失败")
 			raise AssertionError('风控-区域预复核失败')
@@ -189,7 +190,7 @@ class XHD(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 审批审核
-		result = common.approval_to_review(page, self.apply_code, u'高级审批经理审批')
+		result = self.PT.approval_to_review(page, self.apply_code, u'高级审批经理审批')
 		if not result:
 			self.log.error("风控-高级审批经理审批失败")
 			raise AssertionError('风控-高级审批经理审批失败')
@@ -218,7 +219,8 @@ class XHD(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 签约
-		rs = common.make_signing(page, self.apply_code, rec_bank_info)
+		# rs = common.make_signing(page, self.apply_code, rec_bank_info)
+		rs = Cts.ContractSign(page, self.apply_code, rec_bank_info).execute_sign()
 		if not rs:
 			self.log.error("签约失败")
 			raise AssertionError('签约失败')
@@ -238,7 +240,7 @@ class XHD(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 合规审查
-		res = common.compliance_audit(page, self.apply_code)
+		res = self.PT.compliance_audit(page, self.apply_code)
 		if not res:
 			self.log.error("合规审查失败")
 			raise AssertionError("合规审查失败")
@@ -254,7 +256,7 @@ class XHD(unittest.TestCase, base.Base):
 		# 权证员登录
 		page = Login(self.company["authority_member"]["user"])
 		# 权证员上传权证信息
-		res = common.authority_card_transact(page, self.apply_code, self.env)
+		res = self.WM.authority_card_transact(page, self.apply_code, self.env)
 		if not res:
 			self.log.error("权证员上传资料失败")
 			raise AssertionError('权证员上传资料失败')
@@ -271,7 +273,7 @@ class XHD(unittest.TestCase, base.Base):
 		self.test_xhd_14_authority_card_member_transact()
 		page = Login(self.next_user_id)
 		# 权证请款
-		res = common.warrant_apply(page, self.apply_code)
+		res = self.WM.warrant_apply(page, self.apply_code)
 		if not res:
 			self.log.error("权证请款失败")
 			raise AssertionError('权证请款失败')
@@ -286,7 +288,7 @@ class XHD(unittest.TestCase, base.Base):
 		self.test_xhd_15_warrant_apply()
 		# 业务助理登录
 		page = Login(self.company["business_assistant"]["user"])
-		result = common.finace_transact(page, self.apply_code)
+		result = self.FA.finace_transact(page, self.apply_code)
 		if not result:
 			self.log.error("财务办理失败")
 			raise AssertionError('财务办理失败')
@@ -296,7 +298,7 @@ class XHD(unittest.TestCase, base.Base):
 		# 查看下一步处理人
 		self.next_user_id = common.get_next_user(page, self.apply_code, 1)
 	
-	def test_xhd_17_finace_approve_branch_manager(self):
+	def test_xhd_17_finace_approval_branch_manager(self):
 		"""财务分公司经理审批"""
 		
 		remark = u"财务分公司经理审批"
@@ -304,20 +306,20 @@ class XHD(unittest.TestCase, base.Base):
 		# 下一个处理人
 		self.test_xhd_16_finace_transact()
 		page = Login(self.next_user_id)
-		result = common.finace_approve(page, self.apply_code, remark)
+		result = self.FA.finace_approval(page, self.apply_code, remark)
 		if not result:
 			raise AssertionError('审批失败！')
 		# 查看下一步处理人
 		self.next_user_id = common.get_next_user(page, self.apply_code, 1)
 	
-	def test_xhd_18_finace_approve_risk_control_manager(self):
+	def test_xhd_18_finace_approval_risk_control_manager(self):
 		"""财务风控经理审批"""
 		
 		remark = u'风控经理审批'
 		
-		self.test_xhd_17_finace_approve_branch_manager()
+		self.test_xhd_17_finace_approval_branch_manager()
 		page = Login(self.next_user_id)
-		result = common.finace_approve(page, self.apply_code, remark)
+		result = self.FA.finace_approval(page, self.apply_code, remark)
 		if not result:
 			self.log.error("财务-风控经理审批出错")
 			raise AssertionError('财务-风控经理审批出错')
@@ -327,14 +329,14 @@ class XHD(unittest.TestCase, base.Base):
 		# 查看下一步处理人
 		self.next_user_id = common.get_next_user(page, self.apply_code, 1)
 	
-	def test_xhd_19_finace_approve_financial_accounting(self):
+	def test_xhd_19_finace_approval_financial_accounting(self):
 		"""财务会计审批"""
 		
 		remark = u'财务会计审批'
 		
-		self.test_xhd_18_finace_approve_risk_control_manager()
+		self.test_xhd_18_finace_approval_risk_control_manager()
 		page = Login(self.next_user_id)
-		result = common.finace_approve(page, self.apply_code, remark)
+		result = self.FA.finace_approval(page, self.apply_code, remark)
 		if not result:
 			self.log.error("财务-财务会计审批出错！")
 			raise AssertionError('财务-财务会计审批出错')
@@ -344,14 +346,14 @@ class XHD(unittest.TestCase, base.Base):
 		# 查看下一步处理人
 		self.next_user_id = common.get_next_user(page, self.apply_code, 1)
 	
-	def test_xhd_20_finace_approve_financial_manager(self):
+	def test_xhd_20_finace_approval_financial_manager(self):
 		"""财务经理审批"""
 		
 		remark = u'财务经理审批'
 		
-		self.test_xhd_19_finace_approve_financial_accounting()
+		self.test_xhd_19_finace_approval_financial_accounting()
 		page = Login(self.next_user_id)
-		res = common.finace_approve(page, self.apply_code, remark)
+		res = self.FA.finace_approval(page, self.apply_code, remark)
 		if not res:
 			self.log.error("财务-财务经理审批出错！")
 			raise AssertionError('财务-财务经理审批出错')
@@ -364,9 +366,9 @@ class XHD(unittest.TestCase, base.Base):
 		
 		remark = u'资金主管审批'
 		
-		self.test_xhd_20_finace_approve_financial_manager()
+		self.test_xhd_20_finace_approval_financial_manager()
 		page = Login(self.treasurer)
-		res = common.funds_raise(page, self.apply_code, remark)
+		res = self.RA.funds_raise(page, self.apply_code, remark)
 		if not res:
 			self.log.error("募资-资金主管审批出错！")
 			raise AssertionError('募资-资金主管审批出错!')

@@ -2,10 +2,13 @@
 
 import logging
 import inspect
-import random
 import json
-import os
 import datetime
+import config
+import random
+import os
+import yaml
+from stdnum import luhn
 
 
 def print_env_info(env, company):
@@ -152,22 +155,28 @@ def get_current_function_name():
 	return inspect.stack()[1][3]
 
 
-def hello():
-	pwd = os.getcwd()
-	father_path = os.path.abspath(os.path.dirname(pwd) + os.path.sep + ".")
-	with open(father_path + "/config/env.json", 'r', encoding='utf-8') as f1:
-		env = json.load(f1)
-		print(env)
-	
-	dir = os.path.dirname(os.getcwd())
-	print(dir + "/config/env.json")
-
-
 def get_current_day():
 	"""获取当前日期"""
 	c_time = str(datetime.datetime.now())
 	c_d = str(datetime.date.today())
 	return c_time, c_d
+
+
+def get_bankcard_number():
+	"""获取真是银行卡号"""
+	
+	r_dir = config.__path__[0]
+	f1 = os.path.join(r_dir, 'bankNum')
+	with open(f1, 'r', encoding='utf-8') as f:
+		temp = yaml.load(f)
+		while True:
+			res = random.choice(temp['Number'])
+			# 判断银行卡号是否有效
+			if luhn.is_valid(res):
+				break
+		f.close()
+	return res
+
 
 
 if __name__ == '__main__':
@@ -180,7 +189,7 @@ if __name__ == '__main__':
 	# logger.info('This is info message')
 	# logger.warning('This is warning message')
 	
-	# hello()
 	
 	res = get_current_day()
 	print(res)
+	print(get_bankcard_number())

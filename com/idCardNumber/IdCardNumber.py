@@ -28,7 +28,7 @@ from com.idCardNumber.addr import addr
 """
 
 
-def getValidateCheckout(id17):
+def get_validate_checkout(id17):
 	"""获得校验码算法"""
 	
 	weight = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2]  # 十七位数字本体码权重
@@ -68,7 +68,7 @@ def getRandomIdNumber(sex=1):
 	idNumber = idNumber + str(sexId)
 	
 	# 校验码
-	checkOut = getValidateCheckout(idNumber)
+	checkOut = get_validate_checkout(idNumber)
 	idNumber = idNumber + str(checkOut)
 	return idNumber, addrName, addrId, birthDays, sex, checkOut
 
@@ -92,7 +92,7 @@ def getInfoFromId(id18):
 
 
 # 随机生成手机号码
-def createPhone():
+def create_phone():
 	prelist = [
 		"130", "131", "132", "133", "134", "135", "136", "137", "138", "139", "147", "150", "151", "152", "153",
 		"155", "156", "157", "158", "159", "186", "187", "188"]
@@ -100,7 +100,7 @@ def createPhone():
 
 
 if __name__ == '__main__':
-	print(getValidateCheckout("11111111111111111"))  # 该身份证校验码：0
+	print(get_validate_checkout("11111111111111111"))  # 该身份证校验码：0
 	print(getRandomIdNumber(0))
 	print(getInfoFromId('220201195601070727'))
-	print(createPhone())
+	print(create_phone())

@@ -28,7 +28,7 @@ http://www.cnblogs.com/xudong-bupt/p/3293838.html
 
 这里把原文的js语言转为python语言以备将来使用：
 ```
-def getValidateCheckout(id17):
+def get_validate_checkout(id17):
     """获得校验码算法"""
     weight=[7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2] #十七位数字本体码权重   
     validate=['1','0','X','9','8','7','6','5','4','3','2'] #mod11,对应校验码字符值   
@@ -63,7 +63,7 @@ def getRandomIdNumber(sex = 1):
     sexId = random.randrange(sex,10,step = 2) #性别码
     idNumber = idNumber + str(sexId)
     # 校验码
-    checkOut = getValidateCheckout(idNumber)
+    checkOut = get_validate_checkout(idNumber)
     idNumber = idNumber + str(checkOut)
     return idNumber,addrName,addrId,birthDays,sex,checkOut
 ```
