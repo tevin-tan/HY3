@@ -346,7 +346,7 @@ class FallBack(unittest.TestCase, base.Base):
 			raise AssertionError('主管拒绝失败')
 		else:
 			self.log.info('主管拒绝结束！')
-		page.driver.close()
+			page.driver.quit()
 		
 		# 高级审批经理登录
 		page = Login(self.senior_manager)
@@ -355,7 +355,7 @@ class FallBack(unittest.TestCase, base.Base):
 		value = self.HRL.reconsideration(page, self.apply_code)
 		if value:
 			self.log.info(u'主管拒绝成功，拒绝单已处于拒绝队列！')
-			self.page.driver.quit()
+			page.driver.quit()
 		else:
 			self.log.error(u'主管拒绝失败，拒绝队列未找到该笔单！')
 			raise AssertionError('主管拒绝失败，拒绝队列未找到该笔单！')
@@ -380,7 +380,7 @@ class FallBack(unittest.TestCase, base.Base):
 			raise AssertionError('主管拒绝失败')
 		else:
 			self.log.info(u'主管拒绝！')
-		page.driver.close()
+			page.driver.quit()
 		
 		# 高级审批经理登录
 		page = Login(self.senior_manager)
@@ -389,7 +389,7 @@ class FallBack(unittest.TestCase, base.Base):
 		r1 = self.HRL.reconsideration(page, self.apply_code, 1)
 		if r1:
 			self.log.info(u'主管拒绝成功，复议通过！')
-			self.page.driver.quit()
+			page.driver.quit()
 		else:
 			self.log.error(u'主管拒绝失败，复议出错！')
 			raise AssertionError('主管拒绝失败，复议出错！')
@@ -418,7 +418,7 @@ class FallBack(unittest.TestCase, base.Base):
 			raise AssertionError('主管拒绝失败，复议出错！')
 		else:
 			self.log.info(u'主管拒绝！')
-		page.driver.close()
+			page.driver.quit()
 		
 		# 高级审批经理登录
 		page = Login(self.senior_manager)
@@ -427,7 +427,7 @@ class FallBack(unittest.TestCase, base.Base):
 		r1 = self.HRL.reconsideration(page, self.apply_code, 2)
 		if r1:
 			self.log.info(u'主管拒绝成功，复议不通过成功！')
-			self.page.driver.quit()
+			page.driver.quit()
 		else:
 			self.log.error(u'主管拒绝失败，复议不通过出错！')
 			raise AssertionError('主管拒绝失败，复议不通过出错！')
@@ -490,7 +490,8 @@ class FallBack(unittest.TestCase, base.Base):
 			raise AssertionError('高级经理拒绝失败！')
 		else:
 			self.log.info(u'高级经理拒绝成功！')
-		
+			page.driver.quit()
+			
 		# 高级审批经理登录
 		page = Login(self.senior_manager)
 		
@@ -498,7 +499,7 @@ class FallBack(unittest.TestCase, base.Base):
 		value = self.HRL.reconsideration(page, self.apply_code)
 		if value:
 			self.log.info(u'分公司经理拒成功，拒绝单已处于拒绝队列！')
-			self.page.driver.quit()
+			page.driver.quit()
 		else:
 			self.log.error(u'分公司经理拒绝失败，拒绝队列未找到该笔单！')
 			raise AssertionError('分公司经理拒绝失败，拒绝队列未找到该笔单！')
@@ -566,7 +567,7 @@ class FallBack(unittest.TestCase, base.Base):
 		r1 = self.HRL.reconsideration(page, self.apply_code, 1)
 		if r1:
 			self.log.info(u'分公司经理拒绝成功，复议通过！')
-			self.page.driver.quit()
+			page.driver.quit()
 		else:
 			self.log.error(u'分公司经理拒绝失败，复议出错！')
 			raise AssertionError('分公司经理拒绝失败，复议出错！')
@@ -629,6 +630,7 @@ class FallBack(unittest.TestCase, base.Base):
 			raise AssertionError('高级经理拒绝失败！')
 		else:
 			self.log.info(u'高级经理拒绝成功！')
+			page.driver.quit()
 		
 		# 高级审批经理登录
 		page = Login(self.senior_manager)
@@ -699,7 +701,7 @@ class FallBack(unittest.TestCase, base.Base):
 		value = self.HRL.reconsideration(page, self.apply_code)
 		if value:
 			self.log.info(u'区域拒绝成功，拒绝单已处于拒绝队列！')
-			self.page.driver.quit()
+			page.driver.quit()
 		else:
 			self.log.error(u'区域失败，拒绝队列未找到该笔单！')
 			raise AssertionError('区域失败，拒绝队列未找到该笔单！')
@@ -760,7 +762,7 @@ class FallBack(unittest.TestCase, base.Base):
 		r1 = self.HRL.reconsideration(page, self.apply_code, 1)
 		if r1:
 			self.log.info(u'区域拒绝成功！复议通过！')
-			self.page.driver.quit()
+			page.driver.quit()
 		else:
 			self.log.error(u'区域拒绝失败，复议出错！')
 			raise AssertionError('区域拒绝失败，复议出错！')
@@ -821,7 +823,7 @@ class FallBack(unittest.TestCase, base.Base):
 		r1 = self.HRL.reconsideration(page, self.apply_code, 2)
 		if r1:
 			self.log.info(u'区域拒绝成功，复议不通过成功！')
-			self.page.driver.quit()
+			page.driver.quit()
 		else:
 			self.log.error(u'区域拒绝成功，复议不通过出错！')
 			raise AssertionError('区域拒绝成功，复议不通过出错！')
@@ -865,7 +867,7 @@ class FallBack(unittest.TestCase, base.Base):
 		value = self.HRL.reconsideration(page, self.apply_code)
 		if value:
 			self.log.info(u'审批经理拒绝成功，拒绝单已处于拒绝队列！')
-			self.page.driver.quit()
+			page.driver.quit()
 		else:
 			self.log.error(u'审批经理拒绝失败，拒绝队列未找到该笔单！')
 			raise AssertionError(u'审批经理拒绝失败，拒绝队列未找到该笔单！')
@@ -910,7 +912,7 @@ class FallBack(unittest.TestCase, base.Base):
 		r1 = self.HRL.reconsideration(page, self.apply_code, 1)
 		if r1:
 			self.log.info(u'复议通过！')
-			self.page.driver.quit()
+			page.driver.quit()
 		else:
 			self.log.error(u'复议出错！')
 			raise AssertionError('复议出错！')
