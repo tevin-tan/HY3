@@ -180,15 +180,6 @@ def get_bankcard_number():
 
 
 if __name__ == '__main__':
-	# dr = webdriver.Chrome()
-	# dr.get("http://www.baidu.com")
-	# dr.quit()
-	#
-	# logger = log_to()
-	# logger.debug('This is debug message')
-	# logger.info('This is info message')
-	# logger.warning('This is warning message')
-	
 	
 	res = get_current_day()
 	print(res)

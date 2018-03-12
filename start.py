@@ -45,7 +45,6 @@ if __name__ == "__main__":
 			for i in temp[element]:
 				suite.addTest(case(i))
 	
-	
 	# 按照一定格式获取当前时间
 	now = time.strftime("%Y-%m-%d %H_%M_%S")
 	PT = set_reporter_path()

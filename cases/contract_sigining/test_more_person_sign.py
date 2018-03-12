@@ -30,7 +30,7 @@ class ContractSign(unittest.TestCase, base.Base):
 		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		apply_code = self.AQ.get_applycode(self.page, self.custName)
+		apply_code = self.AQ.get_applycode(self.page, self.cust_name)
 		if apply_code:
 			self.apply_code = apply_code
 			self.log.info("申请件查询完成")

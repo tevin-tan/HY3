@@ -1,6 +1,6 @@
 import unittest
 from com.login import Login
-from com import custom, base
+from com import base
 from com.pobj.ContractSign import ContractSign as Cts
 
 

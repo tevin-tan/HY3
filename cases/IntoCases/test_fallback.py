@@ -5,7 +5,7 @@
 	date: 2018-1-15
 """
 import unittest
-from com import custom, base
+from com import custom, base, common
 from com.login import Login
 
 
@@ -18,7 +18,7 @@ class FallBack(unittest.TestCase, base.Base):
 		base.Base.__init__(self, self.env_file, self.data_file)
 	
 	def tearDown(self):
-		pass
+		self.page.driver.quit()
 	
 	def get_next_user(self, page, applycode):
 		next_id = self.PM.process_monitor(page, applycode)
@@ -61,22 +61,12 @@ class FallBack(unittest.TestCase, base.Base):
 	def test_02_branch_manager_fallback(self):
 		"""分公司经理回退到申请录入"""
 		
-		"""
-			---------------------------------------------------------------------
-									1. 申请基本信息录入
-			---------------------------------------------------------------------
-		"""
-		
+		# 1. 进件
 		custom.print_product_info(self.product_info)
 		custom.print_person_info(self.person_info)
-		
 		self.before_application_entry()
 		
-		"""
-			------------------------------------------------------------
-								2. 风控审批回退
-			------------------------------------------------------------
-		"""
+		# 审批
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
@@ -105,37 +95,17 @@ class FallBack(unittest.TestCase, base.Base):
 		
 		custom.print_product_info(self.product_info)
 		custom.print_person_info(self.person_info)
-		
 		self.before_application_entry()
-		"""
-			------------------------------------------------------------
-								2. 风控审批回退
-			------------------------------------------------------------
-		"""
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
 		
-		# 分公司主管审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司主管审批通过', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info(u'分公司主管审批通过！')
-			self.get_next_user(page, self.apply_code)
+		# ----------- 审批--------------
+		user_list = ['分公司主管', '分公司经理']
+		for i in user_list:
+			# 下一个处理人重新登录
+			page = Login(self.next_user_id)
+			res = self.PT.approval_to_review(page, self.apply_code, i, 0)
+			self.risk_approval_result(res, i, page, self.apply_code)
 		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 分公司经理审批通过
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司经理回退到申请录入', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info(u'分公司经理审批通过！')
-			self.get_next_user(page, self.apply_code)
-		
+		# ----------回退-----------
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
@@ -153,49 +123,18 @@ class FallBack(unittest.TestCase, base.Base):
 		
 		custom.print_product_info(self.product_info)
 		custom.print_person_info(self.person_info)
-		
+		# 1. 申请录入
 		self.before_application_entry()
-		"""
-			------------------------------------------------------------
-								2. 风控审批回退
-			------------------------------------------------------------
-		"""
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
 		
-		# 分公司主管审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司主管审批通过', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info(u'分公司主管审批通过！')
-			self.get_next_user(page, self.apply_code)
+		# 2. 审批
+		user_list = ['分公司主管', '分公司经理', '区域经理']
+		for i in user_list:
+			# 下一个处理人重新登录
+			page = Login(self.next_user_id)
+			res = self.PT.approval_to_review(page, self.apply_code, i, 0)
+			self.risk_approval_result(res, i, page, self.apply_code)
 		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 分公司经理审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司经理审批通过', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info(u'分公司经理审批通过！')
-			self.get_next_user(page, self.apply_code)
-		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 区域预复核审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'区域预复核审批通过', 0)
-		if not res:
-			self.log.error("区域预复核审批失败！")
-			raise AssertionError('区域预复核审批失败！')
-		else:
-			self.log.info(u'区域预复核审批通过!')
-			self.get_next_user(page, self.apply_code)
-		
+		# 3. 回退
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
@@ -217,44 +156,15 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_person_info(self.person_info)
 		self.before_application_entry()
 		
-		"""
-			------------------------------------------------------------
-								2. 风控审批回退
-			------------------------------------------------------------
-		"""
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		# 分公司主管审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司主管审批通过', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info(u'分公司主管审批通过！')
-			self.get_next_user(page, self.apply_code)
+		# 2. 风控审批
+		user_list = ['分公司主管', '分公司经理', '区域经理', '高级审批经理']
+		for i in user_list:
+			# 下一个处理人重新登录
+			page = Login(self.next_user_id)
+			res = self.PT.approval_to_review(page, self.apply_code, i, 0)
+			self.risk_approval_result(res, i, page, self.apply_code)
 		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		# 分公司经理审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司经理审批通过', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info(u'分公司经理审批通过！')
-			self.get_next_user(page, self.apply_code)
-		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		# 区域预复核审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'区域预复核审批通过', 0)
-		if not res:
-			self.log.error("区域预复核审批失败！")
-			raise AssertionError('区域预复核审批失败！')
-		else:
-			self.log.info(u'区域预复核审批通过！')
-			self.get_next_user(page, self.apply_code)
-		
+		# 3. 逐级回退
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		# 审批经理回退到区域预复核
@@ -307,8 +217,8 @@ class FallBack(unittest.TestCase, base.Base):
 		"""
 		custom.print_product_info(self.product_info)
 		custom.print_person_info(self.person_info)
-		
 		self.before_application_entry()
+		
 		"""
 			2. 风控取消
 		"""
@@ -327,15 +237,12 @@ class FallBack(unittest.TestCase, base.Base):
 	def test_02_branch_manager_cancel(self):
 		"""分公司经理取消"""
 		
+		# 1. 进件
 		custom.print_product_info(self.product_info)
 		custom.print_person_info(self.person_info)
-		
 		self.before_application_entry()
-		"""
-			------------------------------------------------------------
-								2. 风控审批回退
-			------------------------------------------------------------
-		"""
+		
+		# 2. 审批
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
@@ -348,9 +255,10 @@ class FallBack(unittest.TestCase, base.Base):
 			self.log.info(u'分公司主管审批通过!')
 			self.get_next_user(page, self.apply_code)
 		
+		# 3. 取消
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
-		# 分公司经理回退
+		# 分公司经理取消
 		res = self.PT.approval_to_review(page, self.apply_code, u'分公司经理取消', 2)
 		if not res:
 			self.log.error("分公司经理取消失败！")
@@ -362,39 +270,20 @@ class FallBack(unittest.TestCase, base.Base):
 	def test_03_regional_cancel(self):
 		"""区域复核取消"""
 		
+		# 1. 进件
 		custom.print_product_info(self.product_info)
 		custom.print_person_info(self.person_info)
-		
 		self.before_application_entry()
-		"""
-			------------------------------------------------------------
-								2. 风控审批取消
-			------------------------------------------------------------
-		"""
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
 		
-		# 分公司主管审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司主管审批通过', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info(u'分公司主管审批通过！')
-			self.get_next_user(page, self.apply_code, )
+		# 2. 审批
+		user_list = ['分公司主管', '分公司经理']
+		for i in user_list:
+			# 下一个处理人重新登录
+			page = Login(self.next_user_id)
+			res = self.PT.approval_to_review(page, self.apply_code, i, 0)
+			self.risk_approval_result(res, i, page, self.apply_code)
 		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 分公司经理审批通过
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司经理审批通过!', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info(u'分公司经理审批通过！')
-			self.get_next_user(page, self.apply_code)
-		
+		# 3. 取消
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
@@ -410,50 +299,18 @@ class FallBack(unittest.TestCase, base.Base):
 	def test_04_manage_cancel(self):
 		"""审批经理取消"""
 		
+		# 1. 进件
 		custom.print_product_info(self.product_info)
 		custom.print_person_info(self.person_info)
-		
 		self.before_application_entry()
-		"""
-			------------------------------------------------------------
-								2. 风控审批回退
-			------------------------------------------------------------
-		"""
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
 		
-		# 分公司主管审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司主管审批通过', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info(u'分公司主管审批通过！')
-			self.get_next_user(page, self.apply_code)
-		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 分公司经理审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司经理审批通过', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info(u'分公司经理审批通过！')
-			self.get_next_user(page, self.apply_code)
-		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 区域预复核审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'区域预复核审批通过', 0)
-		if not res:
-			self.log.error("区域预复核审批失败！")
-			raise AssertionError('区域预复核审批失败！')
-		else:
-			self.log.info(u'区域预复核审批通过！')
-			self.get_next_user(page, self.apply_code)
+		# 2. 审批
+		user_list = ['分公司主管', '分公司经理', '区域经理']
+		for i in user_list:
+			# 下一个处理人重新登录
+			page = Login(self.next_user_id)
+			res = self.PT.approval_to_review(page, self.apply_code, i, 0)
+			self.risk_approval_result(res, i, page, self.apply_code)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
@@ -475,7 +332,6 @@ class FallBack(unittest.TestCase, base.Base):
 		"""
 		custom.print_product_info(self.product_info)
 		custom.print_person_info(self.person_info)
-		
 		self.before_application_entry()
 		"""
 			2. 风控拒绝
@@ -513,9 +369,7 @@ class FallBack(unittest.TestCase, base.Base):
 		custom.print_product_info(self.product_info)
 		self.before_application_entry()
 		
-		# --------------------------------------------------------------
-		#               2. 风控拒绝
-		# --------------------------------------------------------------
+		# 2. 进件
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
@@ -652,20 +506,12 @@ class FallBack(unittest.TestCase, base.Base):
 	def test_02_branch_manager_reject_pass(self):
 		"""分公司经理拒绝,并复议通过"""
 		
-		"""
-			---------------------------------------------------------------------
-									1. 申请基本信息录入
-			---------------------------------------------------------------------
-		"""
+		# 1. 进件
 		custom.print_product_info(self.product_info)
 		custom.print_person_info(self.person_info)
-		
 		self.before_application_entry()
-		"""
-			------------------------------------------------------------
-								2. 风控审批拒绝
-			------------------------------------------------------------
-		"""
+		
+		# 2. 审批
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
@@ -813,30 +659,16 @@ class FallBack(unittest.TestCase, base.Base):
 								2. 风控审批拒绝
 			------------------------------------------------------------
 		"""
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
 		
-		# 分公司主管审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司主管审批通过', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info("分公司主管审批通过")
-			self.get_next_user(page, self.apply_code)
+		# 2. 审批
+		user_list = ['分公司主管', '分公司经理']
+		for i in user_list:
+			# 下一个处理人重新登录
+			page = Login(self.next_user_id)
+			res = self.PT.approval_to_review(page, self.apply_code, i, 0)
+			self.risk_approval_result(res, i, page, self.apply_code)
 		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 分公司经理审批通过
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司经理审批通过!', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info(u'分公司经理审批通过！')
-			self.get_next_user(page, self.apply_code)
-		
+		# 3. 拒绝
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
@@ -890,29 +722,13 @@ class FallBack(unittest.TestCase, base.Base):
 								2. 风控审批取消
 			------------------------------------------------------------
 		"""
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 分公司主管审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司主管审批通过', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info(u'分公司主管审批通过！')
-			self.get_next_user(page, self.apply_code)
-		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 分公司经理审批通过
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司经理审批通过!', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info(u'分公司经理审批通过！')
-			self.get_next_user(page, self.apply_code, )
+		# 2. 审批
+		user_list = ['分公司主管', '分公司经理']
+		for i in user_list:
+			# 下一个处理人重新登录
+			page = Login(self.next_user_id)
+			res = self.PT.approval_to_review(page, self.apply_code, i, 0)
+			self.risk_approval_result(res, i, page, self.apply_code)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
@@ -967,29 +783,13 @@ class FallBack(unittest.TestCase, base.Base):
 								2. 风控审批拒绝
 			------------------------------------------------------------
 		"""
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 分公司主管审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司主管审批通过', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info(u'分公司主管审批通过！')
-		self.get_next_user(page, self.apply_code)
-		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 分公司经理审批通过
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司经理审批通过!', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info(u'分公司经理审批通过！')
-			self.get_next_user(page, self.apply_code)
+		# 2. 审批
+		user_list = ['分公司主管', '分公司经理']
+		for i in user_list:
+			# 下一个处理人重新登录
+			page = Login(self.next_user_id)
+			res = self.PT.approval_to_review(page, self.apply_code, i, 0)
+			self.risk_approval_result(res, i, page, self.apply_code)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
@@ -1038,44 +838,17 @@ class FallBack(unittest.TestCase, base.Base):
 		# 2. 风控审批拒绝
 		# ------------------------------------------------------------
 		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 分公司主管审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司主管审批通过', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info(u'分公司主管审批通过！')
-			self.get_next_user(page, self.apply_code)
+		# 2. 审批
+		user_list = ['分公司主管', '分公司经理', '区域经理']
+		for i in user_list:
+			# 下一个处理人重新登录
+			page = Login(self.next_user_id)
+			res = self.PT.approval_to_review(page, self.apply_code, i, 0)
+			self.risk_approval_result(res, i, page, self.apply_code)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
-		# 分公司经理审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司经理审批通过', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info(u'分公司经理审批通过！')
-			self.get_next_user(page, self.apply_code)
-		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 区域预复核审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'区域预复核审批通过', 0)
-		if not res:
-			self.log.error("区域预复核审批失败！")
-			raise AssertionError('区域预复核审批失败！')
-		else:
-			self.log.info(u'区域预复核审批通过！')
-			self.get_next_user(page, self.apply_code, )
-		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
 		# 高级经理拒绝
 		res = self.PT.approval_to_review(page, self.apply_code, u'高级经理拒绝', 3)
 		if not res:
@@ -1109,41 +882,14 @@ class FallBack(unittest.TestCase, base.Base):
 								2. 风控审批回退
 			------------------------------------------------------------
 		"""
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
 		
-		# 分公司主管审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司主管审批通过', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info(u'分公司主管审批通过！')
-			self.get_next_user(page, self.apply_code, )
-		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 分公司经理审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司经理审批通过', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info(u'分公司经理审批通过！')
-			self.get_next_user(page, self.apply_code, )
-		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 区域预复核审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'区域预复核审批通过', 0)
-		if not res:
-			self.log.error("区域预复核审批失败！")
-			raise AssertionError('区域预复核审批失败！')
-		else:
-			self.log.info(u'区域预复核审批通过!')
-			self.get_next_user(page, self.apply_code)
+		# 2. 审批
+		user_list = ['分公司主管', '分公司经理', '区域经理']
+		for i in user_list:
+			# 下一个处理人重新登录
+			page = Login(self.next_user_id)
+			res = self.PT.approval_to_review(page, self.apply_code, i, 0)
+			self.risk_approval_result(res, i, page, self.apply_code)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
@@ -1182,41 +928,14 @@ class FallBack(unittest.TestCase, base.Base):
 								2. 风控审批拒绝
 			------------------------------------------------------------
 		"""
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
 		
-		# 分公司主管审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司主管审批通过', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info(u'分公司主管审批通过！')
-			self.get_next_user(page, self.apply_code, )
-		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 分公司经理审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司经理审批通过', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info(u'分公司经理审批通过！')
-			self.get_next_user(page, self.apply_code)
-		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 区域预复核审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'区域预复核审批通过', 0)
-		if not res:
-			self.log.error("区域预复核审批失败！")
-			raise AssertionError('区域预复核审批失败！')
-		else:
-			self.log.info(u'区域预复核审批通过！')
-			self.get_next_user(page, self.apply_code)
+		# 2. 审批
+		user_list = ['分公司主管', '分公司经理', '区域经理']
+		for i in user_list:
+			# 下一个处理人重新登录
+			page = Login(self.next_user_id)
+			res = self.PT.approval_to_review(page, self.apply_code, i, 0)
+			self.risk_approval_result(res, i, page, self.apply_code)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)

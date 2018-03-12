@@ -69,7 +69,7 @@ class EYT(unittest.TestCase, base.Base):
 		"""申请件查询"""
 		
 		self.test_eyt_04_applydata()
-		applycode = self.AQ.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.cust_name)
 		if applycode:
 			self.log.info("申请件查询完成")
 			self.apply_code = applycode

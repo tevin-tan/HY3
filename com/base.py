@@ -125,7 +125,7 @@ class Base(object):
 		# 自动赋值
 		self.set_value(data_source)
 		self.data = data_source[0]
-		self.custName = self.data['custInfoVo'][0]['custName']
+		self.cust_name = self.data['custInfoVo'][0]['custName']
 		self.company = data_source[1]
 	
 	@staticmethod
@@ -173,7 +173,7 @@ class Base(object):
 		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		applycode = self.AQ.get_applycode(self.page, self.custName)
+		applycode = self.AQ.get_applycode(self.page, self.cust_name)
 		if applycode:
 			self.apply_code = applycode
 			self.log.info("申请件查询完成")
@@ -206,7 +206,7 @@ class Base(object):
 		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
 		
-		apply_code = self.AQ.get_applycode(self.page, self.custName)
+		apply_code = self.AQ.get_applycode(self.page, self.cust_name)
 		if apply_code:
 			self.apply_code = apply_code
 			self.log.info("申请件查询完成")
