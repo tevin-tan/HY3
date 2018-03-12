@@ -16,42 +16,6 @@ class AddContract(unittest.TestCase, base.Base):
 	def tearDown(self):
 		self.page.driver.quit()
 	
-	def before_application_entry(self):
-		""" 申请件录入"""
-		
-		# 贷款产品信息
-		custom.print_product_info(self.product_info)
-		
-		# 1 客户信息-业务基本信息
-		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
-			self.log.info("录入基本信息完成")
-		
-		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
-		
-		# 3 物业信息
-		self.HAE.input_all_bbi_property_info(
-				self.page,
-				self.data['applyPropertyInfoVo'][0],
-				self.data['applyCustCreditInfoVo'][0])
-		# 提交
-		self.HAE.submit(self.page)
-		self.log.info("申请件录入完成提交")
-		
-		applycode = self.AQ.get_applycode(self.page, self.custName)
-		if applycode:
-			self.apply_code = applycode
-			self.log.info("申请件查询完成")
-			print("applycode:" + self.apply_code)
-		# 流程监控
-		result = self.PM.process_monitor(self.page, self.apply_code)
-		if result is not None:
-			self.next_user_id = result
-			self.log.info("完成流程监控查询")
-		else:
-			self.log.error("流程监控查询出错！")
-			raise AssertionError('流程监控查询出错！')
-	
 	def before_risk_approval(self, amount):
 		"""风控审批"""
 		
@@ -147,23 +111,10 @@ class AddContract(unittest.TestCase, base.Base):
 		self.before_application_entry()
 		self.before_risk_approval(200000)
 		
-		# -----------------------------------------------------------------------------
-		# 	                        3. 合同打印
-		# -----------------------------------------------------------------------------
-		
-		rec_bank_info = dict(
-				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
-				recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
-				recBankProvince=self.data['houseCommonLoanInfoList'][0]['recBankProvince'],
-				recBankDistrict=self.data['houseCommonLoanInfoList'][0]['recBankDistrict'],
-				recBank=self.data['houseCommonLoanInfoList'][0]['recBank'],
-				recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
-				)
-		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
-		Cts.ContractSign(page, self.apply_code, rec_bank_info).execute_sign()
+		Cts.ContractSign(page, self.apply_code, self.rec_bank_info).execute_sign()
 	
 	def test_02_2Person_contract(self):
 		"""双人签约"""
@@ -173,23 +124,10 @@ class AddContract(unittest.TestCase, base.Base):
 		self.before_application_entry()
 		self.before_risk_approval(400000)
 		
-		# -----------------------------------------------------------------------------
-		# 	                        3. 合同打印
-		# -----------------------------------------------------------------------------
-		
-		rec_bank_info = dict(
-				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
-				recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
-				recBankProvince=self.data['houseCommonLoanInfoList'][0]['recBankProvince'],
-				recBankDistrict=self.data['houseCommonLoanInfoList'][0]['recBankDistrict'],
-				recBank=self.data['houseCommonLoanInfoList'][0]['recBank'],
-				recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
-				)
-		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
-		Cts.ContractSign(page, self.apply_code, rec_bank_info, 2)
+		Cts.ContractSign(page, self.apply_code, self.rec_bank_info, 2)
 	
 	def test_03_3Person_contract(self):
 		"""三人签约"""
@@ -198,22 +136,10 @@ class AddContract(unittest.TestCase, base.Base):
 		self.before_application_entry()
 		self.before_risk_approval(600000)
 		
-		# -----------------------------------------------------------------------------
-		# 	                        3. 合同打印
-		# -----------------------------------------------------------------------------
-		rec_bank_info = dict(
-				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
-				recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
-				recBankProvince=self.data['houseCommonLoanInfoList'][0]['recBankProvince'],
-				recBankDistrict=self.data['houseCommonLoanInfoList'][0]['recBankDistrict'],
-				recBank=self.data['houseCommonLoanInfoList'][0]['recBank'],
-				recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
-				)
-		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
-		Cts.ContractSign(page, self.apply_code, rec_bank_info, 3)
+		Cts.ContractSign(page, self.apply_code, self.rec_bank_info, 3)
 	
 	def test_04_4Person_contract(self):
 		"""四人签约"""
@@ -223,22 +149,10 @@ class AddContract(unittest.TestCase, base.Base):
 		self.before_application_entry()
 		self.before_risk_approval(800000)
 		
-		# -----------------------------------------------------------------------------
-		# 	                        3. 合同打印
-		# -----------------------------------------------------------------------------
-		rec_bank_info = dict(
-				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
-				recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
-				recBankProvince=self.data['houseCommonLoanInfoList'][0]['recBankProvince'],
-				recBankDistrict=self.data['houseCommonLoanInfoList'][0]['recBankDistrict'],
-				recBank=self.data['houseCommonLoanInfoList'][0]['recBank'],
-				recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
-				)
-		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
-		Cts.ContractSign(page, self.apply_code, rec_bank_info, 4).execute_sign()
+		Cts.ContractSign(page, self.apply_code, self.rec_bank_info, 4).execute_sign()
 	
 	def test_05_5Person_contract(self):
 		"""五人签约"""
@@ -247,22 +161,11 @@ class AddContract(unittest.TestCase, base.Base):
 		self.update_product_amount(1000000)
 		self.before_application_entry()
 		self.before_risk_approval(1000000)
-		# -----------------------------------------------------------------------------
-		# 	                        3. 合同打印
-		# -----------------------------------------------------------------------------
-		rec_bank_info = dict(
-				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
-				recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
-				recBankProvince=self.data['houseCommonLoanInfoList'][0]['recBankProvince'],
-				recBankDistrict=self.data['houseCommonLoanInfoList'][0]['recBankDistrict'],
-				recBank=self.data['houseCommonLoanInfoList'][0]['recBank'],
-				recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
-				)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
-		Cts.ContractSign(page, self.apply_code, rec_bank_info, 5).execute_sign()
+		Cts.ContractSign(page, self.apply_code, self.rec_bank_info, 5).execute_sign()
 	
 	def test_06_6Person_contract(self):
 		"""六人签约"""
@@ -271,22 +174,11 @@ class AddContract(unittest.TestCase, base.Base):
 		self.update_product_amount(1200000)
 		self.before_application_entry()
 		self.before_risk_approval(1200000)
-		# -----------------------------------------------------------------------------
-		# 	                        3. 合同打印
-		# -----------------------------------------------------------------------------
-		rec_bank_info = dict(
-				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
-				recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
-				recBankProvince=self.data['houseCommonLoanInfoList'][0]['recBankProvince'],
-				recBankDistrict=self.data['houseCommonLoanInfoList'][0]['recBankDistrict'],
-				recBank=self.data['houseCommonLoanInfoList'][0]['recBank'],
-				recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
-				)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
-		Cts.ContractSign(page, self.apply_code, rec_bank_info, 6).execute_sign()
+		Cts.ContractSign(page, self.apply_code, self.rec_bank_info, 6).execute_sign()
 	
 	def test_07_7Person_contract(self):
 		"""七人签约"""
@@ -296,22 +188,10 @@ class AddContract(unittest.TestCase, base.Base):
 		self.before_application_entry()
 		self.before_risk_approval(1400000)
 		
-		# -----------------------------------------------------------------------------
-		# 	                        3. 合同打印
-		# -----------------------------------------------------------------------------
-		rec_bank_info = dict(
-				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
-				recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
-				recBankProvince=self.data['houseCommonLoanInfoList'][0]['recBankProvince'],
-				recBankDistrict=self.data['houseCommonLoanInfoList'][0]['recBankDistrict'],
-				recBank=self.data['houseCommonLoanInfoList'][0]['recBank'],
-				recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
-				)
-		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
-		Cts.ContractSign(page, self.apply_code, rec_bank_info, 7).execute_sign()
+		Cts.ContractSign(page, self.apply_code, self.rec_bank_info, 7).execute_sign()
 	
 	def test_08_10Person_contract(self):
 		"""10人签约"""
@@ -321,23 +201,10 @@ class AddContract(unittest.TestCase, base.Base):
 		self.before_application_entry()
 		self.before_risk_approval(2000000)
 		
-		# -----------------------------------------------------------------------------
-		# 	                        3. 合同打印
-		# -----------------------------------------------------------------------------
-		
-		rec_bank_info = dict(
-				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
-				recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
-				recBankProvince=self.data['houseCommonLoanInfoList'][0]['recBankProvince'],
-				recBankDistrict=self.data['houseCommonLoanInfoList'][0]['recBankDistrict'],
-				recBank=self.data['houseCommonLoanInfoList'][0]['recBank'],
-				recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
-				)
-		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
-		res = Cts.ContractSign(page, self.apply_code, rec_bank_info, 10)
+		res = Cts.ContractSign(page, self.apply_code, self.rec_bank_info, 10)
 		res.execute_sign()
 	
 	def test_09_20Person_contract(self):
@@ -349,21 +216,8 @@ class AddContract(unittest.TestCase, base.Base):
 		self.before_application_entry()
 		self.before_risk_approval(4000000)
 		
-		# -----------------------------------------------------------------------------
-		# 	                        3. 合同打印
-		# -----------------------------------------------------------------------------
-		
-		rec_bank_info = dict(
-				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
-				recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
-				recBankProvince=self.data['houseCommonLoanInfoList'][0]['recBankProvince'],
-				recBankDistrict=self.data['houseCommonLoanInfoList'][0]['recBankDistrict'],
-				recBank=self.data['houseCommonLoanInfoList'][0]['recBank'],
-				recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
-				)
-		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
-		res = Cts.ContractSign(page, self.apply_code, rec_bank_info, 20)
+		res = Cts.ContractSign(page, self.apply_code, self.rec_bank_info, 20)
 		res.execute_sign()

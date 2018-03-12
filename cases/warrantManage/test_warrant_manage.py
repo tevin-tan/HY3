@@ -17,62 +17,13 @@ class WarrantManage(unittest.TestCase, base.Base):
 	def tearDown(self):
 		self.page.driver.quit()
 	
-	def risk_approval_result(self, res, mark, page, apply_code):
-		"""
-		校验风控审批结果
-		:param res: 返回值传入
-		:param page: 页面对象
-		:param apply_code: 申请件code
-		:return:
-		"""
-		if not res:
-			self.log.error(mark + ",审批失败")
-			raise ValueError(mark + ",审批失败")
-		else:
-			self.log.info(mark + ",审批通过")
-			self.next_user_id = common.get_next_user(page, apply_code)
-	
 	def test_01_warrantManage_original(self):
 		"""权证原件请款"""
 		
 		self.update_product_amount(2000000)
-		# ---------------------------------------------------------------------------------
-		#                   1. 申请录入
-		# ---------------------------------------------------------------------------------
-		# 1 客户信息-业务基本信息
-		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
-			self.log.info("录入基本信息完成")
-		
-		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
-		
-		# 3 物业信息
-		self.HAE.input_all_bbi_property_info(
-				self.page,
-				self.data['applyPropertyInfoVo'][0],
-				self.data['applyCustCreditInfoVo'][0])
-		# 提交
-		self.HAE.submit(self.page)
-		self.log.info("申请件录入完成提交")
-		
-		apply_code = self.AQ.get_applycode(self.page, self.custName)
-		if apply_code:
-			self.apply_code = apply_code
-			self.log.info("申请件查询完成")
-			print("apply_code:" + self.apply_code)
-		# 流程监控
-		result = self.PM.process_monitor(self.page, apply_code)
-		if result is not None:
-			self.next_user_id = result
-			self.log.info("完成流程监控查询")
-		else:
-			self.log.error("流程监控查询出错！")
-			raise AssertionError('流程监控查询出错！')
-		
-		# ---------------------------------------------------------------------------------------
-		# 	                        2. 风控审批流程
-		# ---------------------------------------------------------------------------------------
-		
+		# 1. 申请录入
+		self.before_application_entry()
+		# 2. 风控审批
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
@@ -85,8 +36,8 @@ class WarrantManage(unittest.TestCase, base.Base):
 			]
 		
 		for e in list_mark:
-			res = self.PT.approval_to_review(page, apply_code, e, 0)
-			self.risk_approval_result(res, e, page, apply_code)
+			res = self.PT.approval_to_review(page, self.apply_code, e, 0)
+			self.risk_approval_result(res, e, page, self.apply_code)
 			# 下一个处理人重新登录
 			page = Login(self.next_user_id)
 		
@@ -94,24 +45,14 @@ class WarrantManage(unittest.TestCase, base.Base):
 		# 	                        3. 合同打印
 		# -----------------------------------------------------------------------------
 		
-		rec_bank_info = dict(
-				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
-				recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
-				recBankProvince=self.data['houseCommonLoanInfoList'][0]['recBankProvince'],
-				recBankDistrict=self.data['houseCommonLoanInfoList'][0]['recBankDistrict'],
-				recBank=self.data['houseCommonLoanInfoList'][0]['recBank'],
-				recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
-				)
-		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
-		res = ContractSign.ContractSign(page, self.apply_code, rec_bank_info, 10)
+		res = ContractSign.ContractSign(page, self.apply_code, self.rec_bank_info, 10)
 		res.execute_sign()
 		
 		self.next_user_id = common.get_next_user(page, self.apply_code)
 		
-		# 合规审查
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
@@ -143,73 +84,15 @@ class WarrantManage(unittest.TestCase, base.Base):
 	def test_02_warrantManage_part(self):
 		"""部分权证请款"""
 		
-		# ---------------------------------------------------------------------------------
-		#                   1. 申请录入
-		# ---------------------------------------------------------------------------------
-		
 		self.update_product_amount(400000)
-		
-		# 1 客户信息-业务基本信息
-		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
-			self.log.info("录入基本信息完成")
-		
-		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
-		
-		# 3 物业信息
-		self.HAE.input_all_bbi_property_info(
-				self.page, self.data['applyPropertyInfoVo'][0],
-				self.data['applyCustCreditInfoVo'][0]
-				)
-		# 提交
-		self.HAE.submit(self.page)
-		self.log.info("申请件录入完成提交")
-		
-		apply_code = self.AQ.get_applycode(self.page, self.custName)
-		if apply_code:
-			self.apply_code = apply_code
-			self.log.info("申请件查询完成")
-			print("apply_code:" + self.apply_code)
-		# 流程监控
-		result = self.PM.process_monitor(self.page, apply_code)
-		if result is not None:
-			self.next_user_id = result
-			self.log.info("完成流程监控查询")
-		else:
-			raise ValueError("流程监控查询出错！")
-		
-		# ---------------------------------------------------------------------------------------
-		# 	                        2. 风控审批流程
-		# ---------------------------------------------------------------------------------------
+		self.before_contract_sign()
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
-		list_mark = [
-			"分公司主管审批",
-			"分公司经理审批",
-			"区域预复核审批",
-			"高级审批经理审批"
-			]
-		
-		for e in list_mark:
-			res = self.PT.approval_to_review(page, apply_code, e, 0)
-			self.risk_approval_result(res, e, page, apply_code)
-			# 下一个处理人重新登录
-			page = Login(self.next_user_id)
-		
 		# -----------------------------------------------------------------------------
 		# 	                        3. 合同打印
 		# -----------------------------------------------------------------------------
-		
-		rec_bank_info = dict(
-				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
-				recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
-				recBankProvince=self.data['houseCommonLoanInfoList'][0]['recBankProvince'],
-				recBankDistrict=self.data['houseCommonLoanInfoList'][0]['recBankDistrict'],
-				recBank=self.data['houseCommonLoanInfoList'][0]['recBank'],
-				recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
-				)
 		# next transcat person
 		self.next_user_id = common.get_next_user(page, self.apply_code)
 		
@@ -217,11 +100,11 @@ class WarrantManage(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 两个人签约
-		res = ContractSign.ContractSign(page, self.apply_code, rec_bank_info, 2).execute_sign()
+		res = ContractSign.ContractSign(page, self.apply_code, self.rec_bank_info, 2).execute_sign()
 		if res:
 			self.log.info("合同打印完成！")
 			# 查看下一步处理人
-			self.next_user_id = common.get_next_user(page, apply_code)
+			self.next_user_id = common.get_next_user(page, self.apply_code)
 		
 		# -----------------------------------------------------------------------------
 		#                                合规审查

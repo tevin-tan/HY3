@@ -16,21 +16,6 @@ class UploadImageData(unittest.TestCase, base.Base):
 	def tearDown(self):
 		self.page.driver.quit()
 	
-	def risk_approval_result(self, res, mark, page, apply_code):
-		"""
-		校验风控审批结果
-		:param res: 返回值传入
-		:param page: 页面对象
-		:param apply_code: 申请件code
-		:return:
-		"""
-		if not res:
-			self.log.error(mark + ",审批失败")
-			raise ValueError(mark + ",审批失败")
-		else:
-			self.log.info(mark + ",审批通过")
-			self.next_user_id = common.get_next_user(page, apply_code)
-	
 	def test_01_upload_image(self):
 		"""房贷专员:上传权证资料"""
 		
@@ -277,19 +262,10 @@ class UploadImageData(unittest.TestCase, base.Base):
 		# 	                        3. 合同打印
 		# -----------------------------------------------------------------------------
 		
-		rec_bank_info = dict(
-				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
-				recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
-				recBankProvince=self.data['houseCommonLoanInfoList'][0]['recBankProvince'],
-				recBankDistrict=self.data['houseCommonLoanInfoList'][0]['recBankDistrict'],
-				recBank=self.data['houseCommonLoanInfoList'][0]['recBank'],
-				recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
-				)
-		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
-		res = ContractSign.ContractSign(page, self.apply_code, rec_bank_info, 10)
+		res = ContractSign.ContractSign(page, self.apply_code, self.rec_bank_info, 10)
 		res.execute_sign()
 		
 		self.next_user_id = common.get_next_user(page, self.apply_code)

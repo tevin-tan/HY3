@@ -13,21 +13,6 @@ class PartRaise(unittest.TestCase, base.Base):
 		self.data_file = "data_cwd.json"
 		base.Base.__init__(self, self.env_file, self.data_file)
 	
-	def risk_approval_result(self, res, mark, page, apply_code):
-		"""
-		校验风控审批结果
-		:param res: 返回值传入
-		:param page: 页面对象
-		:param apply_code: 申请件code
-		:return:
-		"""
-		if not res:
-			self.log.error(mark + ",审批失败")
-			raise ValueError(mark + ",审批失败")
-		else:
-			self.log.info(mark + ",审批通过")
-			self.next_user_id = common.get_next_user(page, apply_code)
-	
 	def tearDown(self):
 		self.page.driver.quit()
 	
@@ -38,8 +23,7 @@ class PartRaise(unittest.TestCase, base.Base):
 		#                   1. 申请录入
 		# ---------------------------------------------------------------------------------
 		
-		self.data['applyVo']['applyAmount'] = 400000
-		self.product_info.update(amount=self.data['applyVo']['applyAmount'])
+		self.update_product_amount(400000)
 		
 		# 打印贷款产品信息
 		custom.print_product_info(self.product_info)

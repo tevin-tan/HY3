@@ -21,7 +21,6 @@ class IntoCase(unittest.TestCase, base.Base):
 		name = custom.get_current_function_name()
 		print("当前用例编号:" + name)
 		# 录入一个借款人
-		
 		custom.print_product_info(self.product_info)
 		
 		# 1 客户信息-业务基本信息
@@ -152,6 +151,7 @@ class IntoCase(unittest.TestCase, base.Base):
 		custom.print_product_info(self.product_info)
 		name = custom.get_current_function_name()
 		print("当前用例编号:" + name)
+		
 		# 录入基本信息
 		self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
 		# 录入借款人/共贷人信息

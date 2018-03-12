@@ -12,15 +12,6 @@ class ContractSign(unittest.TestCase, base.Base):
 		self.env_file = "env.json"
 		self.data_file = "data_xhd.json"
 		base.Base.__init__(self, self.env_file, self.data_file)
-		
-		self.rec_bank_info = dict(
-				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
-				recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
-				recBankProvince=self.data['houseCommonLoanInfoList'][0]['recBankProvince'],
-				recBankDistrict=self.data['houseCommonLoanInfoList'][0]['recBankDistrict'],
-				recBank=self.data['houseCommonLoanInfoList'][0]['recBank'],
-				recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
-				)
 	
 	def before_contract_sign(self):
 		
