@@ -157,7 +157,7 @@ class FallBack(unittest.TestCase, base.Base):
 		self.before_application_entry()
 		
 		# 2. 风控审批
-		user_list = ['分公司主管', '分公司经理', '区域经理', '高级审批经理']
+		user_list = ['分公司主管', '分公司经理', '区域经理']
 		for i in user_list:
 			# 下一个处理人重新登录
 			page = Login(self.next_user_id)
@@ -491,7 +491,7 @@ class FallBack(unittest.TestCase, base.Base):
 		else:
 			self.log.info(u'高级经理拒绝成功！')
 			page.driver.quit()
-			
+		
 		# 高级审批经理登录
 		page = Login(self.senior_manager)
 		
