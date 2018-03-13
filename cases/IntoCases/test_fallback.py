@@ -5,7 +5,7 @@
 	date: 2018-1-15
 """
 import unittest
-from com import custom, base, common
+from com import custom, base
 from com.login import Login
 
 

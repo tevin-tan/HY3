@@ -24,7 +24,8 @@ class FinancialApproval(object):
 		self.log.info("发起财务办理")
 		# 财务放款申请列表
 		try:
-			page.driver.find_element_by_id('1DBCBC52791800014989140019301189')
+			page.driver.find_element_by_id('1DBCBC52791800014989140019301189').click()
+			time.sleep(1)
 			page.driver.find_element_by_name('/house/commonIndex/financeManageList').click()
 			time.sleep(1)
 			page.driver.switch_to_frame('bTabs_tab_house_commonIndex_financeManageList')
@@ -73,7 +74,7 @@ class FinancialApproval(object):
 		self.log.info("发起财务审批")
 		# 财务待处理任务
 		try:
-			page.driver.find_element_by_id('1DBCBC52791800014989140019301189')
+			page.driver.find_element_by_id('1DBCBC52791800014989140019301189').click()
 			
 			time.sleep(1)
 			page.driver.find_element_by_name('/house/commonIndex/financial/toDoList').click()

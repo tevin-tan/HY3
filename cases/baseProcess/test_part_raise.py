@@ -96,7 +96,6 @@ class PartRaise(unittest.TestCase, base.Base):
 		page = Login(self.next_user_id)
 		
 		# 两个人签约
-		# res = common.make_signing(page, self.apply_code, rec_bank_info, 2)
 		res = Cts.ContractSign(page, self.apply_code, rec_bank_info, 2).execute_sign()
 		if res:
 			self.log.info("合同打印完成！")
