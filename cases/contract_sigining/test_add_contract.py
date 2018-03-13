@@ -67,7 +67,7 @@ class AddContract(unittest.TestCase, base.Base):
 			self.log.info("审批经理审批通过成功！")
 			self.get_next_user(page, self.apply_code)
 		
-		if amount > 1500000 & amount <= 2000000:
+		if 1500000 < amount < 2000000:
 			# 下一个处理人重新登录
 			page = Login(self.next_user_id)
 			
