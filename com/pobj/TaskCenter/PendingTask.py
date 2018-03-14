@@ -105,7 +105,7 @@ class PendingTask(object):
 				page.driver.find_element_by_xpath("//*[@id=\"remarkable\"]").send_keys(remark)
 				if image:
 					self.HAE.upload_image_file(
-							page, "E:\\HouseLoanAutoPy3\\lib\\uploadtool.exe",
+							page, "E:\\HouseLoanAutoPy3\\bin\\uploadtool.exe",
 							"E:\\HouseLoanAutoPy3\\image\\2.jpg")
 			elif action == 1:
 				# 回退
@@ -367,7 +367,7 @@ class PendingTask(object):
 				# upload
 				page.driver.find_element_by_class_name('img_upload_area').click()
 				page.driver.find_element_by_id('browse').click()
-				os.system("E:\\HouseLoanAutoPy3\\lib\\uploadtool.exe" + " " + "E:\\HouseLoanAutoPy3\\image\\2.jpg")
+				os.system("E:\\HouseLoanAutoPy3\\bin\\uploadtool.exe" + " " + "E:\\HouseLoanAutoPy3\\image\\2.jpg")
 			except ec.NoSuchElementException as msg:
 				raise ValueError(msg)
 			finally:

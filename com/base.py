@@ -188,7 +188,7 @@ class Base(object):
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
 	
-	def before_contract_sign(self):
+	def before_contract_sign(self, amount=1000000):
 		"""签约前操作"""
 		
 		# 1 客户信息-业务基本信息
@@ -233,14 +233,29 @@ class Base(object):
 			"分公司经理审批",
 			"区域预复核审批",
 			"高级审批经理审批",
-			# "风控总监审批"
+			"风控总监审批",
+			"首席风控官"
 			]
 		
-		for e in list_mark:
-			res = self.PT.approval_to_review(self.page, self.apply_code, e, 0)
-			self.risk_approval_result(res, e, self.page, self.apply_code)
-			# 下一个处理人重新登录
-			self.page = login.Login(self.next_user_id)
+		if amount > 2000000:
+			for e in list_mark:
+				res = self.PT.approval_to_review(self.page, self.apply_code, e, 0)
+				self.risk_approval_result(res, e, self.page, self.apply_code)
+				# 下一个处理人重新登录
+				self.page = login.Login(self.next_user_id)
+		elif 1500000 < amount <= 2000000:
+			for e in list_mark[:5]:
+				res1 = self.PT.approval_to_review(self.page, self.apply_code, e, 0)
+				self.risk_approval_result(res1, e, self.page, self.apply_code)
+				# 下一个处理人重新登录
+				self.page = login.Login(self.next_user_id)
+		else:
+			for e in list_mark[:4]:
+				res1 = self.PT.approval_to_review(self.page, self.apply_code, e, 0)
+				self.risk_approval_result(res1, e, self.page, self.apply_code)
+				# 下一个处理人重新登录
+				self.page = login.Login(self.next_user_id)
+				
 	
 	def risk_approval_result(self, res, mark, page, apply_code):
 		"""

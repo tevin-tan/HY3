@@ -16,84 +16,6 @@ class AddContract(unittest.TestCase, base.Base):
 	def tearDown(self):
 		self.page.driver.quit()
 	
-	def before_risk_approval(self, amount):
-		"""风控审批"""
-		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 分公司主管审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司主管审批通过', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info("分公司主管审批通过！")
-			self.get_next_user(page, self.apply_code)
-		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 分公司经理审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'分公司经理审批通过', 0)
-		if not res:
-			self.log.error("审批失败")
-			raise AssertionError('审批失败')
-		else:
-			self.log.info("分公司经理审批通过！")
-			self.get_next_user(page, self.apply_code)
-		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 区域预复核审批
-		res = self.PT.approval_to_review(page, self.apply_code, u'区域预复核审批通过', 0)
-		if not res:
-			self.log.error("区域预复核审批失败！")
-			raise AssertionError('区域预复核审批失败！')
-		else:
-			self.log.info("区域预复核审批通过")
-			self.get_next_user(page, self.apply_code)
-		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 审批经理审批通过
-		res = self.PT.approval_to_review(page, self.apply_code, u'审批经理审批通过', 0)
-		if not res:
-			self.log.error("审批经理审批失败！")
-			raise AssertionError('审批经理审批失败!')
-		else:
-			self.log.info("审批经理审批通过成功！")
-			self.get_next_user(page, self.apply_code)
-		
-		if 1500000 < amount < 2000000:
-			# 下一个处理人重新登录
-			page = Login(self.next_user_id)
-			
-			# 风控总监
-			res = self.PT.approval_to_review(page, self.apply_code, u'风控总监审批通过', 0)
-			if not res:
-				self.log.error("审风控总监审批失败！")
-				raise AssertionError('审风控总监审批失败!')
-			else:
-				self.log.info("风控总监审批通过成功！")
-				self.get_next_user(page, self.apply_code)
-		
-		if amount > 2000000:
-			
-			# 下一个处理人重新登录
-			page = Login(self.next_user_id)
-			
-			# 风控总监
-			res = self.PT.approval_to_review(page, self.apply_code, u'首席风控官审批通过', 0)
-			if not res:
-				self.log.error("首席风控官审批失败！")
-				raise AssertionError('首席风控官审批失败!')
-			else:
-				self.log.info("首席风控官审批通过成功!")
-				self.get_next_user(page, self.apply_code)
-	
 	def get_next_user(self, page, applycode):
 		next_id = self.PM.process_monitor(page, applycode)
 		if next_id is None:
@@ -108,8 +30,7 @@ class AddContract(unittest.TestCase, base.Base):
 	def test_01_1person_contract(self):
 		"""单人签约"""
 		
-		self.before_application_entry()
-		self.before_risk_approval(200000)
+		self.before_contract_sign(200000)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
@@ -121,8 +42,7 @@ class AddContract(unittest.TestCase, base.Base):
 		
 		# 贷款金额
 		self.update_product_amount(400000)
-		self.before_application_entry()
-		self.before_risk_approval(400000)
+		self.before_contract_sign(400000)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
@@ -133,8 +53,7 @@ class AddContract(unittest.TestCase, base.Base):
 		"""三人签约"""
 		# 贷款金额
 		self.update_product_amount(600000)
-		self.before_application_entry()
-		self.before_risk_approval(600000)
+		self.before_contract_sign(600000)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
@@ -146,8 +65,7 @@ class AddContract(unittest.TestCase, base.Base):
 		
 		# 贷款金额
 		self.update_product_amount(800000)
-		self.before_application_entry()
-		self.before_risk_approval(800000)
+		self.before_contract_sign(800000)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
@@ -159,8 +77,7 @@ class AddContract(unittest.TestCase, base.Base):
 		
 		# 贷款金额
 		self.update_product_amount(1000000)
-		self.before_application_entry()
-		self.before_risk_approval(1000000)
+		self.before_contract_sign(1000000)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
@@ -172,8 +89,7 @@ class AddContract(unittest.TestCase, base.Base):
 		
 		# 贷款金额
 		self.update_product_amount(1200000)
-		self.before_application_entry()
-		self.before_risk_approval(1200000)
+		self.before_contract_sign(1200000)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
@@ -185,8 +101,7 @@ class AddContract(unittest.TestCase, base.Base):
 		
 		# 贷款金额
 		self.update_product_amount(1400000)
-		self.before_application_entry()
-		self.before_risk_approval(1400000)
+		self.before_contract_sign(1400000)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
@@ -198,8 +113,7 @@ class AddContract(unittest.TestCase, base.Base):
 		
 		# 贷款金额
 		self.update_product_amount(2000000)
-		self.before_application_entry()
-		self.before_risk_approval(2000000)
+		self.before_contract_sign(2000000)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
@@ -213,8 +127,7 @@ class AddContract(unittest.TestCase, base.Base):
 		
 		# 贷款金额
 		self.update_product_amount(4000000)
-		self.before_application_entry()
-		self.before_risk_approval(4000000)
+		self.before_contract_sign(4000000)
 		
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)

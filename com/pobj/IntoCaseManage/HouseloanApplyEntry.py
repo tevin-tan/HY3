@@ -346,7 +346,7 @@ class HouseLoanApplyEntry(object):
 			page.driver.find_element_by_class_name('img_upload_area').click()
 			page.driver.find_element_by_id('browse').click()
 			os.system(exe + " " + image)
-			# os.system('E:\\HouseLoanAutoPy3\\lib\\uploadtool.exe "E:\\HouseLoanAutoPy3\\image\\2.jpg"')
+			# os.system('E:\\HouseLoanAutoPy3\\bin\\uploadtool.exe "E:\\HouseLoanAutoPy3\\image\\2.jpg"')
 			
 			# Todo 图片名称随机变动，不好处理
 			if delete:
