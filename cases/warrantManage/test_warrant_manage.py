@@ -70,6 +70,7 @@ class WarrantManage(unittest.TestCase, base.Base):
 		page = Login(self.company["authority_member"]["user"])
 		# 权证员上传权证信息
 		self.WM.authority_card_transact(page, self.apply_code, self.env)
+		self.next_user_id = common.get_next_user(page, self.apply_code)
 		
 		page = Login(self.next_user_id)
 		# 权证请款
