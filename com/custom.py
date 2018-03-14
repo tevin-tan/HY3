@@ -8,6 +8,7 @@ import config
 import random
 import os
 import yaml
+import paramiko
 from stdnum import luhn
 
 
@@ -120,7 +121,8 @@ def logout(driver):
 
 def enviroment_change(filename, number=0, enviroment="SIT"):
 	"""
-		环境切换
+	环境切换
+	:param filename
 	:param enviroment: SIT/UAT
 	:param number:  "0" 广州分公司; "1" 长沙分公司
 	:return:    录入的数据， 所选分公司
@@ -135,11 +137,13 @@ def enviroment_change(filename, number=0, enviroment="SIT"):
 		
 		with open(data_config, 'r', encoding='utf-8') as fd:
 			data = json.load(fd)
+			fd.close()
 		
 		# 环境变量, 切换分公司
 		with open(env_config, 'r', encoding='utf-8') as f1:
 			env = json.load(f1)
 			company = env[enviroment]["company"][number]
+			f1.close()
 		
 		return data, company
 	except Exception as e:
@@ -177,6 +181,18 @@ def get_bankcard_number():
 		f.close()
 	return res
 
+
+def ssh_cmd(hostname, port, username, password, execmd):
+	paramiko.util.log_to_file("paramiko.log")
+	
+	s = paramiko.SSHClient()
+	s.set_missing_host_key_policy(paramiko.AutoAddPolicy())  # 跳过了远程连接中选择‘是’的环节,
+	
+	s.connect(hostname=hostname, port=port, username=username, password=password)
+	stdin, stdout, stderr = s.exec_command(execmd)
+	# stdin.write("Y")  # Generally speaking, the first connection, need a simple interaction.
+	ot = stdout.read()
+	print(str(ot, encoding='utf-8'))  # 字节转化为字符串
 
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 import time
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.action_chains import ActionChains
-from com import custom
+from com import custom, ssh
 from com.pobj.TaskCenter import PendingTask
 from selenium.common import exceptions as ec
 from com.idCardNumber import IdCardNumber as Icn
@@ -254,7 +254,6 @@ class ContractSign(object):
 		
 		self.input_personal_info(personform, bankform)
 	
-	
 	def contract_save(self):
 		# 保存
 		self.page.driver.switch_to.parent_frame()  # 切换到父iframe
@@ -326,3 +325,41 @@ class ContractSign(object):
 		self.contract_save()
 		self.contract_submit()
 		return True
+	
+	def get_message_info(self, ip, port, name, password, execmd):
+		
+		# 获取短信验证码
+		result = ssh.sshclient_execmd(ip, port, name, password, execmd)
+		return result
+	
+	def send_message(self, ip, port, name, password, execmd):
+		# 1. 借款人银行信息
+		self.personal_information()
+		self.contract_save()
+		
+		try:
+			self.page.driver.switch_to_frame("myIframeImage1")  # 切换iframe
+		except ec.NoSuchFrameException as e:
+			raise e.msg
+		
+		# 2. 切换至合同打印页面
+		self.page.driver.find_element_by_link_text("合同签约").click()
+		self.page.driver.find_element_by_xpath(
+				'//*[@id="apply_electronSign_info"]/div[3]/div/table/tbody/tr[2]/td[5]/a[1]').click()
+		time.sleep(3)
+		# 3. 处理弹窗
+		# 同意签署勾选
+		self.page.driver.find_element_by_xpath(
+				'//*[@id="electronSignDetails"]/div/div/div[3]/div[1]/p[1]/input').click()
+		# 发送短信验证码
+		self.page.driver.find_element_by_xpath('//*[@id="sentCodeMessage"]').click()
+		# 获取短信验证码
+		res = self.get_message_info(ip, port, name, password, execmd)
+		# 填入验证码
+		self.page.driver.find_element_by_xpath('//*[@id="checkcodeInput"]').send_keys(res)
+		
+		# 确认
+		self.page.driver.find_element_by_xpath(
+				'//*[@id="electronSignDetails"]/div/div/div[3]/div[1]/p[4]/button[1]').click()
+		# Todo 关闭弹框未实现（定位不到弹框）
+		self.page.driver.quit()

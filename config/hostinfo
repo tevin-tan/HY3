@@ -1,0 +1,11 @@
+SIT:
+ IP: '10.15.14.48'
+ port:  22
+ username: 'root'
+ password: '@xiaoniu66'
+
+UAT:
+ IP: '10.18.4.57'
+ port:  22
+ username: 'root'
+ password: 'xiaoniu@66'

@@ -216,6 +216,7 @@ class Base(object):
 		if result is not None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
+			self.page.driver.quit()
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
@@ -225,7 +226,7 @@ class Base(object):
 		# ---------------------------------------------------------------------------------------
 		
 		# 下一个处理人重新登录
-		page = login.Login(self.next_user_id)
+		self.page = login.Login(self.next_user_id)
 		
 		list_mark = [
 			"分公司主管审批",
@@ -236,10 +237,10 @@ class Base(object):
 			]
 		
 		for e in list_mark:
-			res = self.PT.approval_to_review(page, self.apply_code, e, 0)
-			self.risk_approval_result(res, e, page, self.apply_code)
+			res = self.PT.approval_to_review(self.page, self.apply_code, e, 0)
+			self.risk_approval_result(res, e, self.page, self.apply_code)
 			# 下一个处理人重新登录
-			page = login.Login(self.next_user_id)
+			self.page = login.Login(self.next_user_id)
 	
 	def risk_approval_result(self, res, mark, page, apply_code):
 		"""
