@@ -179,3 +179,4 @@ UploadImageData:
 
 Message:
  - test_01_contract_sgin
+ - test_02_delete_contract_sign

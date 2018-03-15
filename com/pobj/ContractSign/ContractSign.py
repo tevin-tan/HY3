@@ -1,10 +1,12 @@
 import time
-from selenium.webdriver.support.ui import Select
-from selenium.webdriver.common.action_chains import ActionChains
-from com import custom, ssh
-from com.pobj.TaskCenter import PendingTask
+
 from selenium.common import exceptions as ec
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import Select
+
+from com import custom, ssh
 from com.idCardNumber import IdCardNumber as Icn
+from com.pobj.TaskCenter import PendingTask
 
 
 class ContractSign(object):
@@ -27,7 +29,7 @@ class ContractSign(object):
 			try:
 				self.page.driver.switch_to_frame("myIframeImage1")  # 切换iframe
 			except ec.NoSuchFrameException as e:
-				raise e.msg
+				raise e
 			# ----------------------------------------------------------------------------------------
 			#                                 合同信息录入
 			# ----------------------------------------------------------------------------------------
@@ -36,7 +38,7 @@ class ContractSign(object):
 				Select(self.page.driver.find_element_by_name("signAddressCity")).select_by_visible_text(u"咸阳市")
 				Select(self.page.driver.find_element_by_name("signAddressDistinct")).select_by_visible_text(u"武功县")
 			except ec.ElementNotSelectableException as e:
-				raise e.msg
+				raise e
 			try:
 				self.page.driver.find_element_by_xpath('//*[@id="sign_module_form"]/div/div[3]/div[2]/input').send_keys(
 						u"爱在心口难开")
@@ -47,7 +49,7 @@ class ContractSign(object):
 						'//*[@id="sign_module_form"]/div/div[5]/div[2]/textarea').send_keys(
 						u'签约备注信息')
 			except ec.NoSuchElementException as e:
-				raise e.msg
+				raise e
 	
 	def personal_information(self):
 		"""主借人基本信息"""
@@ -178,73 +180,6 @@ class ContractSign(object):
 		
 		self.input_personal_info(personform, bankform)
 	
-	# # name
-	# self.page.driver.find_element_by_xpath(
-	# 		'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[2]/input').send_keys(cust_name)
-	# # phone
-	# self.page.driver.find_element_by_xpath(
-	# 		'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[4]/input').send_keys(Icn.create_phone())
-	# # ID
-	# self.page.driver.find_element_by_xpath(
-	# 		'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[6]/input').send_keys(
-	# 		Icn.getRandomIdNumber()[0])
-	# # age
-	# self.page.driver.find_element_by_xpath(
-	# 		'//*[@id="' + str(personform) + '"]/table/tbody/tr[1]/td[8]/input').send_keys("30")
-	#
-	# Select(self.page.driver.find_element_by_xpath(
-	# 		'//*[@id="' + str(personform) + '"]/table/tbody/tr[2]/td[2]/select')).select_by_visible_text(u'已婚')
-	#
-	# Select(self.page.driver.find_element_by_xpath(
-	# 		'//*[@id="' + str(personform) + '"]/table/tbody/tr[2]/td[4]/select')).select_by_visible_text(u'本科')
-	#
-	# Select(self.page.driver.find_element_by_xpath(
-	# 		'//*[@id="' + str(personform) + '"]/table/tbody/tr[2]/td[6]/select')).select_by_visible_text(u'建筑业')
-	# # 工作地点
-	# self.page.driver.find_element_by_xpath(
-	# 		'//*[@id="' + str(personform) + '"]/table/tbody/tr[2]/td[8]/input').send_keys(u"深圳")
-	# # 公司规模
-	# Select(self.page.driver.find_element_by_xpath(
-	# 		'//*[@id="' + str(personform) + '"]/table/tbody/tr[3]/td[2]/select')).select_by_visible_text(
-	# 		'100-300人')
-	# # 工作职位
-	# self.page.driver.find_element_by_xpath(
-	# 		'//*[@id="' + str(personform) + '"]/table/tbody/tr[3]/td[4]/input').send_keys(u"工程师")
-	# # 入职日期
-	# self.page.driver.find_element_by_xpath(
-	# 		'//*[@id="' + str(personform) + '"]/table/tbody/tr[3]/td[6]/input').send_keys("2017-08-21")
-	# # 工作年限
-	# self.page.driver.find_element_by_xpath(
-	# 		'//*[@id="' + str(personform) + '"]/table/tbody/tr[3]/td[8]/input').send_keys(10)
-	# # 月均收入
-	# self.page.driver.find_element_by_xpath(
-	# 		'//*[@id="' + str(personform) + '"]/table/tbody/tr[4]/td[2]/input').send_keys(100000)
-	# # 拆借金额
-	# self.page.driver.find_element_by_xpath(
-	# 		'//*[@id="' + str(personform) + '"]/table/tbody/tr[4]/td[4]/input').clear()
-	# self.page.driver.find_element_by_xpath(
-	# 		'//*[@id="' + str(personform) + '"]/table/tbody/tr[4]/td[4]/input').send_keys('200000')
-	#
-	# # 收扣款银行信息录入
-	# # self.page.driver.find_element_by_id('loanApartBankForm0').click()
-	# self.page.driver.find_element_by_xpath(
-	# 		'//*[@id="' + str(bankform) + '"]/section[1]/div[2]/div[6]/input').send_keys(
-	# 		custom.get_bankcard_number())
-	# self.page.driver.find_element_by_xpath(
-	# 		'//*[@id="' + str(bankform) + '"]/section[1]/div[2]/div[8]/input').send_keys(
-	# 		Icn.create_phone())
-	# self.page.driver.find_element_by_xpath(
-	# 		'//*[@id="' + str(bankform) + '"]/section[1]/div[3]/div[2]/input[3]').send_keys(u'深圳支行')
-	# self.page.driver.find_element_by_xpath(
-	# 		'//*[@id="' + str(bankform) + '"]/section[1]/div[3]/div[4]/input').send_keys(
-	# 		u'湖南省')
-	# self.page.driver.find_element_by_xpath(
-	# 		'//*[@id="' + str(bankform) + '"]/section[1]/div[3]/div[6]/input').send_keys(
-	# 		u'长沙市')
-	#
-	# # 扣款银行
-	# self.page.driver.find_element_by_xpath('//*[@id="' + str(bankform) + '"]/section[2]/div[1]/div/button').click()
-	
 	# 添加其他拆借人
 	def add_other_person(self, personform, bankform):
 		"""填写第二个拆借人信息"""
@@ -340,7 +275,7 @@ class ContractSign(object):
 		try:
 			self.page.driver.switch_to_frame("myIframeImage1")  # 切换iframe
 		except ec.NoSuchFrameException as e:
-			raise e.msg
+			raise e
 		
 		# 2. 切换至合同打印页面
 		self.page.driver.find_element_by_link_text("合同签约").click()
@@ -363,3 +298,29 @@ class ContractSign(object):
 				'//*[@id="electronSignDetails"]/div/div/div[3]/div[1]/p[4]/button[1]').click()
 		# Todo 关闭弹框未实现（定位不到弹框）
 		self.page.driver.quit()
+	
+	def delete_contract_sign(self, page, apply_code):
+		"""删除电子签章"""
+		
+		# 2. 切换至合同打印页面
+		self.page.driver.find_element_by_link_text("合同签约").click()
+		# 点击详情
+		time.sleep(1)
+		self.page.driver.find_element_by_xpath(
+				'//*[@id="apply_electronSign_info"]/div[3]/div/table/tbody/tr[2]/td[5]/a[2]').click()
+		time.sleep(2)
+		# 删除签名
+		self.page.driver.find_element_by_xpath(
+				'//*[@id="electronSignDetails"]/div/div/div[3]/div[2]/p[3]/button').click()
+		# 确认
+		self.page.driver.find_element_by_xpath('/html/body/div[3]/div[3]/a[1]').click()
+	
+	# 确认
+	# Todo 确认弹窗定位不了
+	# try:
+	# 	Alert = alert.Alert(page.driver)
+	# 	if Alert is not None:
+	# 		Alert.accept()
+	# except ec.NoAlertPresentException as e:
+	# 	raise e
+	# self.page.driver.find_element_by_xpath('/html/body/div[5]/div[3]/a').click()

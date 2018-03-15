@@ -1,10 +1,12 @@
 # coding:utf-8
 
-import unittest
-from com import base, ssh
-import config
-import yaml
 import os
+import unittest
+
+import yaml
+
+import config
+from com import base, login
 from com.pobj.ContractSign import ContractSign as Cts
 
 
@@ -42,3 +44,16 @@ class ElectronicContract(unittest.TestCase, base.Base):
 		# 3. 短信签约
 		rs = Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info)
 		rs.send_message(self.host_ip, self.port, self.host_name, self.host_password, execmd)
+	
+	def test_02_delete_contract_sign(self):
+		"""删除电子签约"""
+		
+		# 1. 签约
+		self.test_01_contract_sgin()
+		
+		# 2. 删除
+		page = login.Login(self.next_user_id)
+		# 删除电子签章
+		rs = Cts.ContractSign(page, self.apply_code, self.rec_bank_info)
+		rs.delete_contract_sign(page, self.apply_code)
+		page.driver.quit()
