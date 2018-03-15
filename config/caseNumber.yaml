@@ -180,3 +180,6 @@ UploadImageData:
 Message:
  - test_01_contract_sgin
  - test_02_delete_contract_sign
+
+DoneList:
+ - test_01_query_done_list

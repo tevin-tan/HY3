@@ -5,6 +5,7 @@ import os
 import config
 from com import login, custom, common
 from com.idCardNumber import IdCardNumber as IDCard
+from com.pobj.DoneListTask import ProcessedTask
 from com.pobj.FinancialPendingTask import (
 	FinancialApproval as Fa,
 	RaiseApproval as Ra,
@@ -95,6 +96,8 @@ class Base(object):
 		self.RA = Ra.FinancialApproval()
 		# 房贷拒绝队列
 		self.HRL = RefuseList.HouseRefuseLIst()
+		# 已处理任务列表：
+		self.DL = ProcessedTask.ProcessedTask()
 	
 	def __init_env(self):
 		"""环境初始化"""

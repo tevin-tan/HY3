@@ -9,7 +9,8 @@ import config
 from cases.IntoCases import (
 	test_into_case,
 	test_fallback,
-	test_special_approval
+	test_special_approval,
+	test_done_task_list,
 	)
 from cases.baseProcess import (
 	test_suite_cwd,
@@ -70,6 +71,7 @@ if __name__ == "__main__":
 		"WarrantManage",  # 权证请款
 		"UploadImageData",  # 上传影像资料
 		"Message",  # 电子签约短信验证
+		"DoneList",
 		]
 	
 	try:
@@ -104,6 +106,8 @@ if __name__ == "__main__":
 					run_case(e, test_upload_image_file.UploadImageData)
 				elif e == 'Message':
 					run_case(e, test_contract_message_auth.ElectronicContract)
+				elif e == 'DoneList':
+					run_case(e, test_done_task_list.DoneList)
 		print("f1:", f1)
 		f.close()
 	except Exception as e:
