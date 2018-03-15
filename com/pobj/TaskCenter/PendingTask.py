@@ -1,11 +1,13 @@
 # coding:utf-8
-import time
 import os
-from com import custom
+import time
+
 from selenium.common import exceptions as ec
 from selenium.webdriver.common.action_chains import ActionChains
-from com.pobj.IntoCaseManage import HouseloanApplyEntry as Hae
 from selenium.webdriver.support.ui import Select
+
+from com import custom
+from com.pobj.IntoCaseManage import HouseloanApplyEntry as Hae
 
 
 class PendingTask(object):
@@ -35,7 +37,7 @@ class PendingTask(object):
 			try:
 				page.driver.switch_to_frame("bTabs_tab_house_commonIndex_todoList")
 			except ec.NoSuchFrameException as e:
-				raise e.msg
+				raise e
 			# 打开表单
 			time.sleep(2)
 			page.driver.find_element_by_id("frmQuery").click()
@@ -52,7 +54,7 @@ class PendingTask(object):
 			else:
 				return True
 		except ec.NoSuchFrameException as e:
-			raise e.msg
+			raise e
 		finally:
 			page.driver.quit()
 	
@@ -161,7 +163,7 @@ class PendingTask(object):
 			try:
 				page.driver.switch_to.frame("bTabs_tab_house_commonIndex_todoList")
 			except ec.NoSuchFrameException as e:
-				raise e.msg
+				raise e
 			
 			# 打开表单
 			time.sleep(1)
@@ -207,7 +209,7 @@ class PendingTask(object):
 				page.driver.find_element_by_xpath("/html/body/div[5]/div[3]/a").click()
 				return True
 		except ec.NoSuchElementException as e:
-			raise e.msg
+			raise e
 	
 	def risk_approval_fallback(self, page, condition, option, remark):
 		"""
@@ -230,7 +232,7 @@ class PendingTask(object):
 			try:
 				page.driver.switch_to.frame("bTabs_tab_house_commonIndex_todoList")
 			except ec.NoSuchFrameException as e:
-				raise e.msg
+				raise e
 			# 打开表单
 			time.sleep(1)
 			page.driver.find_element_by_id("frmQuery").click()
@@ -245,7 +247,7 @@ class PendingTask(object):
 			t1 = page.driver.find_element_by_xpath("//*[@id='datagrid-row-r2-2-0']/td[3]")
 			time.sleep(2)
 		except ec.NoSuchElementException as e:
-			raise e.msg
+			raise e
 		if not t1.text:
 			return False
 		else:
@@ -276,7 +278,7 @@ class PendingTask(object):
 				page.driver.find_element_by_xpath("/html/body/div[5]/div[3]/a").click()
 				return True
 			except ec.NoSuchElementException as e:
-				raise e.msg
+				raise e
 	
 	@staticmethod
 	def task_search(page, condition):
@@ -295,11 +297,11 @@ class PendingTask(object):
 			page.driver.find_element_by_name("/house/commonIndex/todoList").click()
 			time.sleep(2)
 		except ec.NoSuchElementException as e:
-			raise e.msg
+			raise e
 		try:
 			page.driver.switch_to_frame('bTabs_tab_house_commonIndex_todoList')
 		except ec.NoSuchFrameException as e:
-			raise e.msg
+			raise e
 		try:
 			page.driver.find_element_by_id("frmQuery").click()
 			time.sleep(1)
@@ -314,7 +316,7 @@ class PendingTask(object):
 			res = page.driver.find_element_by_xpath("//*[@id='datagrid-row-r2-2-0']/td[3]")
 			return res
 		except ec.NoSuchElementException as e:
-			raise e.msg
+			raise e
 	
 	def compliance_audit(self, page, condition, upload=False):
 		"""
@@ -410,7 +412,7 @@ class PendingTask(object):
 			try:
 				page.driver.switch_to_frame("myIframeImage1")  # 切换iframe
 			except ec.NoSuchFrameException as e:
-				raise e.msg
+				raise e
 			
 			try:
 				if flag == 0:
@@ -451,7 +453,7 @@ class PendingTask(object):
 				
 				return True
 			except ec.NoSuchElementException as e:
-				raise e.msg
+				raise e
 	
 	def receipt_return(self, page, apply_code):
 		"""
@@ -470,7 +472,7 @@ class PendingTask(object):
 			try:
 				page.driver.switch_to_frame("myIframeImage1")  # 切换iframe
 			except ec.NoSuchFrameException as e:
-				raise e.msg
+				raise e
 		page.driver.find_element_by_xpath('//*[@id="checkOpinion"]/textarea').send_keys("回执提放审批")
 		# save
 		page.driver.switch_to.parent_frame()

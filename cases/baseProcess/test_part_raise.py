@@ -1,5 +1,6 @@
 # coding:utf-8
 import unittest
+
 from com import common, base, custom
 from com.login import Login
 from com.pobj.ContractSign import ContractSign as Cts
@@ -267,14 +268,14 @@ class PartRaise(unittest.TestCase, base.Base):
 		remark = u'资金主管审批'
 		
 		self.test_08_part_finace_approval_financial_manager()
-		page = Login('xn0007533')
+		page = Login(self.treasurer)
 		res = self.RA.funds_raise(page, self.apply_code, remark)
 		if not res:
 			self.log.error("募资-资金主管审批失败")
 			raise AssertionError('募资-资金主管审批失败')
 		else:
 			self.log.info("募资-资金主管审批完成!")
-			self.page.driver.quit()
+			page.driver.quit()
 	
 	def test_10_part_authority_card_second_deal(self):
 		"""第二次权证办理"""

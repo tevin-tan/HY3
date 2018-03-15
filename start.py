@@ -2,10 +2,15 @@
 import os
 import time
 import unittest
+
 import yaml
+
 import config
-# from lib.HTMLTestRunner import HTMLTestRunner
-from lib.HTMLTestRunnerCN import HTMLTestRunner
+from cases.IntoCases import (
+	test_into_case,
+	test_fallback,
+	test_special_approval
+	)
 from cases.baseProcess import (
 	test_suite_cwd,
 	test_eyt_input_data,
@@ -13,19 +18,15 @@ from cases.baseProcess import (
 	test_gqt_input_data,
 	test_part_raise
 	)
-from cases.IntoCases import (
-	test_into_case,
-	test_fallback,
-	test_special_approval
-	)
-
 from cases.contract_sigining import (
 	test_more_person_sign,
 	test_add_contract
 	)
-
-from cases.warrantManage import test_warrant_manage
+from cases.message_authentication import test_contract_message_auth
 from cases.upload_image_data import test_upload_image_file
+from cases.warrantManage import test_warrant_manage
+# from lib.HTMLTestRunner import HTMLTestRunner
+from lib.HTMLTestRunnerCN import HTMLTestRunner
 
 if __name__ == "__main__":
 	
@@ -44,6 +45,7 @@ if __name__ == "__main__":
 		if element is not None:
 			for i in temp[element]:
 				suite.addTest(case(i))
+	
 	
 	# 按照一定格式获取当前时间
 	now = time.strftime("%Y-%m-%d %H_%M_%S")
@@ -67,6 +69,7 @@ if __name__ == "__main__":
 		"PartRaise",  # 部分募资
 		"WarrantManage",  # 权证请款
 		"UploadImageData",  # 上传影像资料
+		"Message",  # 电子签约短信验证
 		]
 	
 	try:
@@ -99,6 +102,8 @@ if __name__ == "__main__":
 					run_case(e, test_warrant_manage.WarrantManage)
 				elif e == 'UploadImageData':
 					run_case(e, test_upload_image_file.UploadImageData)
+				elif e == 'Message':
+					run_case(e, test_contract_message_auth.ElectronicContract)
 		print("f1:", f1)
 		f.close()
 	except Exception as e:

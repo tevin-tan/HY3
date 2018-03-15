@@ -176,3 +176,6 @@ UploadImageData:
  - test_06_area_manage_upload_image
  - test_07_senior_manager_upload_image
  - test_08_compliance_Officer_original
+
+Message:
+ - test_01_contract_sgin

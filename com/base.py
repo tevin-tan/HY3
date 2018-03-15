@@ -1,9 +1,15 @@
 # coding:utf-8
 import json
-import config
 import os
+
+import config
 from com import login, custom, common
 from com.idCardNumber import IdCardNumber as IDCard
+from com.pobj.FinancialPendingTask import (
+	FinancialApproval as Fa,
+	RaiseApproval as Ra,
+	)
+from com.pobj.HouseRefuseList import RefuseList
 from com.pobj.IntoCaseManage import HouseloanApplyEntry as Hae
 from com.pobj.TaskCenter import (
 	ApplicationQuery as Aq,
@@ -11,11 +17,6 @@ from com.pobj.TaskCenter import (
 	ProcessMonitor as Pm,
 	)
 from com.pobj.WarrantManage import WarrantManageList as Wm
-from com.pobj.FinancialPendingTask import (
-	FinancialApproval as Fa,
-	RaiseApproval as Ra,
-	)
-from com.pobj.HouseRefuseList import RefuseList
 
 
 class Base(object):
@@ -118,7 +119,6 @@ class Base(object):
 	def __init_data(self):
 		"""
 		数据初始化
-		:return: data, company
 		"""
 		filename = self.data_file
 		data_source = custom.enviroment_change(filename, self.number, self.env)
@@ -255,7 +255,6 @@ class Base(object):
 				self.risk_approval_result(res1, e, self.page, self.apply_code)
 				# 下一个处理人重新登录
 				self.page = login.Login(self.next_user_id)
-				
 	
 	def risk_approval_result(self, res, mark, page, apply_code):
 		"""
