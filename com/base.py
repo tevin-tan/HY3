@@ -2,7 +2,7 @@
 import json
 import os
 
-import config
+import config.source_data
 from com import login, custom, common
 from com.idCardNumber import IdCardNumber as IDCard
 from com.pobj.DoneListTask import ProcessedTask
@@ -29,6 +29,10 @@ class Base(object):
 		:param env_file:  环境配置文件
 		:param data_file: 数据配置文件
 		"""
+		
+		# 版本信息
+		custom.print_version_info()
+		
 		self.page = login.Login()
 		self.log = custom.mylog()
 		
@@ -36,6 +40,7 @@ class Base(object):
 		self.next_user_id = None
 		self.data_file = data_file
 		self.env_file = env_file
+		
 		# 环境初始化,解析环境
 		self.__init_env()
 		
@@ -71,6 +76,7 @@ class Base(object):
 		self.__user_define()
 	
 	def __user_define(self):
+		# 设置角色
 		self.treasurer = 'xn0007533'  # 资金主管账号
 		self.senior_manager = 'xn003625'  # 高级审批经理
 	
@@ -102,7 +108,7 @@ class Base(object):
 	def __init_env(self):
 		"""环境初始化"""
 		try:
-			r_dir = config.__path__[0]
+			r_dir = config.source_data.__path__[0]
 			config_env = os.path.join(r_dir, self.env_file)
 			try:
 				with open(config_env, 'r', encoding='utf-8') as f:
@@ -118,31 +124,37 @@ class Base(object):
 		self.env = env_data["enviroment"]
 		self.exe = env_data['upload_exe']
 		self.image = env_data["image_jpg"]
+		self.company = env_data[self.env]["company"][self.number]
 	
 	def __init_data(self):
 		"""
-		数据初始化
+		数据初始化, 根据产品的不同，读取不同的配置文件
 		"""
 		filename = self.data_file
-		data_source = custom.enviroment_change(filename, self.number, self.env)
+		rd = config.source_data.__path__[0]
+		data_config = os.path.join(rd, filename)
+		
+		with open(data_config, 'r', encoding='utf-8') as fd:
+			data_source = json.load(fd)
+			fd.close()
+		
 		# 自动赋值
 		self.set_value(data_source)
-		self.data = data_source[0]
+		self.data = data_source
 		self.cust_name = self.data['custInfoVo'][0]['custName']
-		self.company = data_source[1]
 	
 	@staticmethod
 	def set_value(data_source):
 		"""
-		借款人信息自动赋值
+		获取配置数据文件数据，并自动赋给任意值
 		:param data_source:
 		:return:
 		"""
 		if type(data_source) is tuple:
-			data_source[0]['custInfoVo'][0]['custName'] = custom.get_name()
-			data_source[0]['custInfoVo'][0]['idNum'] = IDCard.getRandomIdNumber()[0]
-			data_source[0]['custInfoVo'][0]['phone'] = IDCard.create_phone()
-			data_source[0]['custInfoVo'][0]['address'] = IDCard.getRandomIdNumber()[1]
+			data_source['custInfoVo'][0]['custName'] = custom.get_name()
+			data_source['custInfoVo'][0]['idNum'] = IDCard.getRandomIdNumber()[0]
+			data_source['custInfoVo'][0]['phone'] = IDCard.create_phone()
+			data_source['custInfoVo'][0]['address'] = IDCard.getRandomIdNumber()[1]
 	
 	def update_product_amount(self, amount):
 		"""
@@ -263,6 +275,7 @@ class Base(object):
 		"""
 		校验风控审批结果
 		:param res: 返回值传入
+		:param mark: 角色
 		:param page: 页面对象
 		:param apply_code: 申请件code
 		:return:

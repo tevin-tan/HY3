@@ -10,10 +10,13 @@
 	3. 实现分公司切换
 	*****************************************
 """
-import time
+
 import json
 import os
+import time
+
 from selenium.common import exceptions as ec
+
 from com import common
 
 
@@ -29,9 +32,9 @@ class Login(object):
 		:param env: 环境选择 SIT/UAT
 		"""
 		
-		base_dir = os.path.dirname(os.path.dirname(__file__))
-		self.conf_path = base_dir + "/config/env.json"
-		# print(self.conf_path)
+		import config.source_data
+		self.conf_path = os.path.join(config.source_data.__path__[0], "env.json")
+		
 		with open(self.conf_path, 'r', encoding='utf-8') as f:
 			self.data = json.load(f)
 			self.number = self.data["number"]

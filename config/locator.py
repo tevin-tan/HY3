@@ -48,7 +48,7 @@ loc_borrower = dict(
 		rzrq='//*[@id="datagrid-row-r1-2-0"]/td[17]/div/table/tbody/tr/td/input',  # 入职日期
 		gzyx="_easyui_textbox_input10",  # 工作年限
 		yjsr="_easyui_textbox_input11",  # 月均收入
-		sfysb="input[type=\"checkbox\"]",  # 是否有社保 Todo
+		sfysb="input[type=\"checkbox\"]",  # 是否有社保
 		)
 
 # 物业信息
@@ -81,4 +81,3 @@ loc_property = {
 	"name_pgqkms": "evaluationCaseDescrip",  # 评估情况描述
 	
 	}
-

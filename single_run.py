@@ -1,18 +1,13 @@
 # coding:utf-8
+import os
 import time
 import unittest
-import os
-# from HTMLTestRunner import HTMLTestRunner
-from lib.HTMLTestRunnerCN import HTMLTestRunner
 
 from cases.baseProcess import (
-	test_gqt_input_data,
-	test_eyt_input_data,
-	test_xhd_input_data,
 	test_suite_cwd
 	)
-from cases.IntoCases import test_into_case, test_fallback
-from cases.contract_sigining import test_more_person_sign
+# from HTMLTestRunner import HTMLTestRunner
+from lib.HTMLTestRunnerCN import HTMLTestRunner
 
 if __name__ == "__main__":
 	def set_reporter_path():

@@ -1,7 +1,7 @@
 # coding:utf-8
 import unittest
 
-from com import common, base, custom
+from com import common, base
 from com.login import Login
 from com.pobj.ContractSign import ContractSign as Cts
 
@@ -25,9 +25,6 @@ class PartRaise(unittest.TestCase, base.Base):
 		# ---------------------------------------------------------------------------------
 		
 		self.update_product_amount(400000)
-		
-		# 打印贷款产品信息
-		custom.print_product_info(self.product_info)
 		
 		# 1 客户信息-业务基本信息
 		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
@@ -90,11 +87,6 @@ class PartRaise(unittest.TestCase, base.Base):
 				recBank=self.data['houseCommonLoanInfoList'][0]['recBank'],
 				recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
 				)
-		# next transcat person
-		self.next_user_id = common.get_next_user(page, self.apply_code)
-		
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
 		
 		# 两个人签约
 		res = Cts.ContractSign(page, self.apply_code, rec_bank_info, 2).execute_sign()

@@ -30,6 +30,7 @@ class PendingTask(object):
 		try:
 			page.driver.switch_to_default_content()
 			# 打开任务中心
+			time.sleep(1)
 			page.driver.find_element_by_id('1DBCBC52791800014989140019301189').click()
 			time.sleep(1)
 			page.driver.find_element_by_name("/house/commonIndex/todoList").click()
@@ -292,7 +293,7 @@ class PendingTask(object):
 		try:
 			# 打开任务中心
 			page.driver.find_element_by_id('1DBCBC52791800014989140019301189').click()
-			time.sleep(1)
+			time.sleep(2)
 			# 待处理任务
 			page.driver.find_element_by_name("/house/commonIndex/todoList").click()
 			time.sleep(2)
@@ -377,8 +378,10 @@ class PendingTask(object):
 				page.driver.switch_to.parent_frame()
 		# 保存
 		self.save(page)
+		time.sleep(2)
 		# 提交
 		self.submit(page)
+		time.sleep(2)
 		page.driver.quit()
 		return True
 	

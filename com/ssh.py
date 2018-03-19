@@ -1,4 +1,9 @@
+import os
+
 import paramiko
+import yaml
+
+import config
 
 
 def sshclient_execmd(hostname, port, username, password, execmd):
@@ -22,17 +27,23 @@ def sshclient_execmd(hostname, port, username, password, execmd):
 
 
 def main():
-	hostname = '10.15.14.48'
-	port = 22
-	username = 'root'
-	password = '@xiaoniu66'
+	rdir = config.__path__[0]
+	pth = os.path.join(rdir, 'hostinfo')
+	with open(pth, 'r', encoding='utf-8') as f:
+		temp = yaml.load(f)
+		host_ip = temp['SIT']['IP']
+		port = temp['SIT']['port']
+		host_name = temp['SIT']['username']
+		host_password = temp['SIT']['password']
+	f.close()
+	
 	execmd = ' cd /web/apache-tomcat-7.0.69/logs; tail -10 catalina.out  > 1.txt ; ' \
 	         'cat 1.txt | grep "短信" | awk -F"验证码：" \'{print $2}\' ' \
 	         '| awk -F\'，\' \'{print $1}\' | tail -1'
 	
 	# execmd = 'cd /web/apache-tomcat-7.0.69/logs; tail -10 catalina.out  > 1.txt ; cat 1.txt '
 	print(execmd)
-	sshclient_execmd(hostname, port, username, password, execmd)
+	sshclient_execmd(host_ip, port, host_name, host_password, execmd)
 
 # if __name__ == "__main__":
 # 	main()

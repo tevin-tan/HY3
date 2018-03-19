@@ -2,10 +2,10 @@
 	生成身份证号
 	生成手机号
 """
+import os
 import random
 from datetime import date
 from datetime import timedelta
-import os
 
 base_dir = os.path.dirname(os.path.dirname(__file__))
 DC_PATH = base_dir + "/common/districtcode.txt"
@@ -84,7 +84,6 @@ def gennerator():
 print(create_phone())
 print(gennerator())
 
-# Todo
 """
 
 def getRandomIdNumber(sex=1):

@@ -1,6 +1,7 @@
 # coding:utf-8
-import unittest
 import time
+import unittest
+
 from com import custom, base
 
 

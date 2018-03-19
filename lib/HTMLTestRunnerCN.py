@@ -1,4 +1,11 @@
 # coding=utf-8
+
+import datetime
+import io
+import sys
+import unittest
+from xml.sax import saxutils
+
 """
 A TestRunner for use with the Python unit testing framework. It
 generates a HTML report to show the result at a glance.
@@ -97,19 +104,6 @@ Version in 0.7.1
 # TODO: color stderr
 # TODO: simplify javascript using ,ore than 1 class in the class attribute?
 
-import datetime
-import io
-import sys
-import time
-import unittest
-from xml.sax import saxutils
-import sys
-
-
-# reload(sys)
-# sys.setdefaultencoding('utf-8')
-
-
 # ------------------------------------------------------------------------
 # The redirectors below are used to capture output during testing. Output
 # sent to sys.stdout and sys.stderr are automatically captured. However
@@ -139,7 +133,6 @@ class OutputRedirector(object):
 
 stdout_redirector = OutputRedirector(sys.stdout)
 stderr_redirector = OutputRedirector(sys.stderr)
-
 
 # ----------------------------------------------------------------------
 # Template
@@ -299,8 +292,8 @@ function html_escape(s) {
 </body>
 </html>
 """
-	# variables: (title, generator, stylesheet, heading, report, ending)
 	
+	# variables: (title, generator, stylesheet, heading, report, ending)
 	
 	# ------------------------------------------------------------------------
 	# Stylesheet
@@ -450,9 +443,7 @@ table       { font-size: 100%; }
     </span></a></div>
     """
 
-
 # -------------------- The end of the Template class -------------------
-
 
 TestResult = unittest.TestResult
 

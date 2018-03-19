@@ -1,15 +1,29 @@
 # coding:utf-8
 
-import logging
+import datetime
 import inspect
 import json
-import datetime
-import config
-import random
+import logging
 import os
-import yaml
+import random
+
 import paramiko
+import yaml
 from stdnum import luhn
+
+import config
+import config.source_data
+from lib.release_info import version, author, url, author_email
+
+
+def print_version_info():
+	"""版本信息"""
+	print('*' * 100)
+	print(' ' * 40 + '版本号:' + 'V' + version)
+	print(' ' * 40 + '开发人员:' + author)
+	print("版本信息:" + ' ' * 32 + '开发者邮箱:' + author_email)
+	print(' ' * 40 + '代码链接:' + url)
+	print('*' * 100)
 
 
 def print_env_info(env, company):
@@ -129,8 +143,7 @@ def enviroment_change(filename, number=0, enviroment="SIT"):
 	"""
 	
 	try:
-		import config
-		rd = config.__path__[0]
+		rd = config.source_data.__path__[0]
 		data_config = os.path.join(rd, filename)
 		env_config = os.path.join(rd, 'env.json')
 		print("data_config:" + data_config)
@@ -146,6 +159,7 @@ def enviroment_change(filename, number=0, enviroment="SIT"):
 			f1.close()
 		
 		return data, company
+	
 	except Exception as e:
 		print("config error:" + str(e))
 		raise

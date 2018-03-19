@@ -30,7 +30,7 @@ class ElectronicContract(unittest.TestCase, base.Base):
 		self.page.driver.quit()
 	
 	def test_01_contract_sgin(self):
-		"""单人签约"""
+		"""电子签约"""
 		# 1. 签约前步骤
 		self.before_contract_sign()
 		

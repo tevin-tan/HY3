@@ -4,10 +4,12 @@
 #     系统操作通用方法
 # ----------------------------
 import time
+
 from selenium import webdriver
-from selenium.webdriver.support.ui import Select
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common import exceptions as ec
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import Select
+
 from com.custom import get_name, mylog
 
 
@@ -53,7 +55,6 @@ def input_bbi_property_info(page):
 		page.driver.find_element_by_name("propertyNo").clear()
 		page.driver.find_element_by_name("propertyNo").send_keys("gqt0132546")  # 房产证号
 		
-		# Todo
 		time.sleep(3)
 		page.driver.find_element_by_name("propertyStatus").click()  # 是否涉贷物业
 		
@@ -553,6 +554,7 @@ def process_monitor(page, condition, stage=0):
 	finally:
 		page.driver.quit()
 	return next_user_id
+
 
 def get_next_user(page, applycode, stage=0):
 	"""

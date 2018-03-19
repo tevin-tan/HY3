@@ -1,5 +1,6 @@
-import cx_Oracle
 from pprint import pprint
+
+import cx_Oracle
 
 connection = cx_Oracle.connect('xndb', 'L6vz5vFwcWur', '10.15.14.89:1521/xndev')
 # pprint(connection)
