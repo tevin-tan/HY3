@@ -1,36 +1,63 @@
 # coding:utf-8
+import datetime
+import time
 import unittest
+
+from cases import SET, v_l
+from com import custom, run_time, base
 from com.login import Login
-from com import custom, base
 from com.pobj.ContractSign import ContractSign as Cts
 
 
-class EYT(unittest.TestCase, base.Base):
+class EYT(unittest.TestCase, base.Base, SET):
 	"""E押通募资流程"""
 	
 	def setUp(self):
+		
 		self.env_file = "env.json"
 		self.data_file = "data_eyt.json"
 		base.Base.__init__(self, self.env_file, self.data_file)
+		SET.__init__(self)
+		self.se = SET()
+		self.se.start_run()
 	
 	def tearDown(self):
+		self.end_time = time.clock()
+		self.case_using_time(self.begin_time, self.end_time)
+		print(self.using_time)
+		v_l.append({
+			"name": self.case_name,
+			"result": self.run_result,
+			"u_time": self.using_time,
+			"s_time": self.s_time,
+			"e_time": str(datetime.datetime.now()).split('.')[0]
+			})
+		self.se.end_run(v_l)
 		self.page.driver.quit()
 	
 	"""
 		E押通案件数据录入
 	"""
 	
+	@run_time.TimeOut()
 	def test_eyt_01_base_info(self):
 		"""客户基本信息录入"""
+		self.case_name = custom.get_current_function_name()
+		try:
+			# 打印贷款产品信息
+			custom.print_product_info(self.product_info)
+			self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
 		
-		# 打印贷款产品信息
-		custom.print_product_info(self.product_info)
-		self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
+		except Exception as e:
+			self.run_result = False
+			raise e
 	
-	def test_ety_02_borrowr_info(self):
+	@run_time.TimeOut()
+	def test_eyt_02_borrowr_info(self):
 		"""借款人/共贷人/担保人信息"""
 		
 		self.test_eyt_01_base_info()
+		self.case_name = custom.get_current_function_name()
 		
 		try:
 			res = self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
@@ -38,13 +65,15 @@ class EYT(unittest.TestCase, base.Base):
 				self.log.info("录入借款人信息结束")
 		except Exception as e:
 			self.log.error("进件失败！:", e)
+			self.run_result = False
 			raise e
 	
+	@run_time.TimeOut()
 	def test_eyt_03_Property_info(self):
 		"""物业信息录入"""
 		
-		self.test_ety_02_borrowr_info()
-		
+		self.test_eyt_02_borrowr_info()
+		self.case_name = custom.get_current_function_name()
 		try:
 			res = self.HAE.input_all_bbi_property_info(
 					self.page,
@@ -57,18 +86,26 @@ class EYT(unittest.TestCase, base.Base):
 			else:
 				self.log.error('进件失败：录入物业信息出错！')
 		except Exception as e:
+			self.run_result = False
 			raise e
 	
+	@run_time.TimeOut()
 	def test_eyt_04_applydata(self):
 		"""申请件录入,提交"""
 		
-		self.test_eyt_03_Property_info()
-		self.HAE.submit(self.page)
+		try:
+			self.test_eyt_03_Property_info()
+			self.case_name = custom.get_current_function_name()
+			self.HAE.submit(self.page)
+		except Exception as e:
+			raise e
 	
+	@run_time.TimeOut()
 	def test_eyt_05_get_applyCode(self):
 		"""申请件查询"""
 		
 		self.test_eyt_04_applydata()
+		self.case_name = custom.get_current_function_name()
 		applycode = self.AQ.get_applycode(self.page, self.cust_name)
 		if applycode:
 			self.log.info("申请件查询完成")
@@ -77,10 +114,12 @@ class EYT(unittest.TestCase, base.Base):
 			self.log.error("can't get applyCode!")
 			raise ValueError("can't get applyCode!")
 	
+	@run_time.TimeOut()
 	def test_eyt_06_show_task(self):
 		"""查看待处理任务列表"""
 		
 		self.test_eyt_05_get_applyCode()
+		self.case_name = custom.get_current_function_name()
 		next_id = self.PM.process_monitor(self.page, self.apply_code)
 		if next_id:
 			self.log.info("下一个处理人:" + next_id)
@@ -98,10 +137,12 @@ class EYT(unittest.TestCase, base.Base):
 			self.log.error("待处理任务列表中不存在该笔案件！")
 			raise ValueError("查询失败")
 	
+	@run_time.TimeOut()
 	def test_eyt_07_process_monitor(self):
 		"""流程监控"""
 		
 		self.test_eyt_05_get_applyCode()  # 申请件查询
+		self.case_name = custom.get_current_function_name()
 		res = self.PM.process_monitor(self.page, self.apply_code)  # l流程监控
 		if not res:
 			raise ValueError("流程监控错误！")
@@ -110,12 +151,13 @@ class EYT(unittest.TestCase, base.Base):
 			self.next_user_id = res
 			self.log.info("next deal User: " + self.next_user_id)
 	
+	@run_time.TimeOut()
 	def test_eyt_08_branch_supervisor_approval(self):
 		"""分公司主管审批"""
 		
 		# 获取分公司登录ID
 		self.test_eyt_07_process_monitor()
-		
+		self.case_name = custom.get_current_function_name()
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
@@ -132,17 +174,13 @@ class EYT(unittest.TestCase, base.Base):
 			# 当前用户退出系统
 			self.page.driver.quit()
 	
-	def test_quit_system(self):
-		"""退出系统"""
-		custom.logout(self.page.driver)
-		self.page.driver.close()  # 关闭浏览器
-	
+	@run_time.TimeOut()
 	def test_eyt_09_branch_manager_approval(self):
 		"""分公司经理审批"""
 		
 		# 获取分公司经理登录ID
 		self.test_eyt_08_branch_supervisor_approval()
-		
+		self.case_name = custom.get_current_function_name()
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
@@ -159,12 +197,13 @@ class EYT(unittest.TestCase, base.Base):
 			# 当前用户退出系统
 			self.page.driver.quit()
 	
+	@run_time.TimeOut()
 	def test_eyt_10_regional_prereview(self):
 		"""区域预复核审批"""
 		
 		# 获取区域预复核员ID
 		self.test_eyt_09_branch_manager_approval()
-		
+		self.case_name = custom.get_current_function_name()
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
@@ -187,12 +226,13 @@ class EYT(unittest.TestCase, base.Base):
 			# 当前用户退出系统
 			self.page.driver.quit()
 	
+	@run_time.TimeOut()
 	def test_eyt_11_manager_approval(self):
 		"""高级审批经理审批"""
 		
 		# 获取审批经理ID
 		self.test_eyt_10_regional_prereview()
-		
+		self.case_name = custom.get_current_function_name()
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
@@ -210,6 +250,7 @@ class EYT(unittest.TestCase, base.Base):
 			# 当前用户退出系统
 			self.page.driver.quit()
 	
+	@run_time.TimeOut()
 	def test_eyt_12_contract_signing(self):
 		"""签约"""
 		
@@ -225,13 +266,15 @@ class EYT(unittest.TestCase, base.Base):
 		
 		# 获取合同打印专员ID
 		self.test_eyt_11_manager_approval()
-		
+		self.case_name = custom.get_current_function_name()
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
 		# 签约
-		res = Cts.ContractSign(page, self.apply_code, rec_bank_info)
-		res.execute_sign()
+		rc = Cts.ContractSign(page, self.apply_code, rec_bank_info)
+		res = rc.execute_sign()
+		if res:
+			rc.contract_submit()
 		
 		# 查看下一步处理人
 		res = self.PM.process_monitor(page, self.apply_code)
@@ -243,12 +286,13 @@ class EYT(unittest.TestCase, base.Base):
 			# 当前用户退出系统
 			self.page.driver.quit()
 	
+	@run_time.TimeOut()
 	def test_eyt_13_compliance_audit(self):
 		"""合规审查"""
 		
 		# 获取下一步合同登录ID
 		self.test_eyt_12_contract_signing()
-		
+		self.case_name = custom.get_current_function_name()
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
@@ -261,11 +305,13 @@ class EYT(unittest.TestCase, base.Base):
 			raise AssertionError('合规审查失败')
 		page.driver.quit()
 	
+	@run_time.TimeOut()
 	def test_eyt_14_authority_card_member_transact(self):
 		"""权证办理"""
 		
 		# 合规审查
 		self.test_eyt_13_compliance_audit()
+		self.case_name = custom.get_current_function_name()
 		# 权证员登录
 		page = Login(self.company["authority_member"]["user"])
 		# 权证员上传权证信息
@@ -285,11 +331,13 @@ class EYT(unittest.TestCase, base.Base):
 			# 当前用户退出系统
 			self.page.driver.quit()
 	
+	@run_time.TimeOut()
 	def test_eyt_15_warrant_apply(self):
 		"""权证请款-原件请款"""
 		
 		# 获取合同打印专员ID
 		self.test_eyt_14_authority_card_member_transact()
+		self.case_name = custom.get_current_function_name()
 		page = Login(self.next_user_id)
 		# 权证请款
 		res = self.WM.warrant_apply(page, self.apply_code)
@@ -300,11 +348,13 @@ class EYT(unittest.TestCase, base.Base):
 			self.log.error("权证请款失败")
 			raise AssertionError('权证请款失败')
 	
+	@run_time.TimeOut()
 	def test_eyt_16_finace_transact(self):
 		"""财务办理"""
 		
 		# 权证请款
 		self.test_eyt_15_warrant_apply()
+		self.case_name = custom.get_current_function_name()
 		# 业务助理登录
 		page = Login(self.company["business_assistant"]["user"])
 		rs = self.FA.finace_transact(page, self.apply_code)
@@ -323,6 +373,7 @@ class EYT(unittest.TestCase, base.Base):
 			# 当前用户退出系统
 			self.page.driver.quit()
 	
+	@run_time.TimeOut()
 	def test_eyt_17_finace_approval_branch_manager(self):
 		"""财务分公司经理审批"""
 		
@@ -330,6 +381,7 @@ class EYT(unittest.TestCase, base.Base):
 		
 		# 下一个处理人
 		self.test_eyt_16_finace_transact()
+		self.case_name = custom.get_current_function_name()
 		page = Login(self.next_user_id)
 		result = self.FA.finace_approval(page, self.apply_code, remark)
 		if not result:
@@ -346,12 +398,14 @@ class EYT(unittest.TestCase, base.Base):
 			# 当前用户退出系统
 			self.page.driver.quit()
 	
+	@run_time.TimeOut()
 	def test_eyt_18_finace_approval_risk_control_manager(self):
 		"""财务风控经理审批"""
 		
 		remark = u'风控经理审批'
 		
 		self.test_eyt_17_finace_approval_branch_manager()
+		self.case_name = custom.get_current_function_name()
 		page = Login(self.next_user_id)
 		result = self.FA.finace_approval(page, self.apply_code, remark)
 		if not result:
@@ -371,12 +425,14 @@ class EYT(unittest.TestCase, base.Base):
 			# 当前用户退出系统
 			self.page.driver.quit()
 	
+	@run_time.TimeOut()
 	def test_eyt_19_finace_approval_financial_accounting(self):
 		"""财务会计审批"""
 		
 		remark = u'财务会计审批'
 		
 		self.test_eyt_18_finace_approval_risk_control_manager()
+		self.case_name = custom.get_current_function_name()
 		page = Login(self.next_user_id)
 		rs = self.FA.finace_approval(page, self.apply_code, remark)
 		if not rs:
@@ -396,12 +452,15 @@ class EYT(unittest.TestCase, base.Base):
 			# 当前用户退出系统
 			self.page.driver.quit()
 	
+	@run_time.TimeOut()
 	def test_eyt_20_finace_approval_financial_manager(self):
 		"""财务经理审批"""
 		
 		remark = u'财务经理审批'
 		
 		self.test_eyt_19_finace_approval_financial_accounting()
+		
+		self.case_name = custom.get_current_function_name()
 		page = Login(self.next_user_id)
 		res = self.FA.finace_approval(page, self.apply_code, remark)
 		if not res:
@@ -411,12 +470,14 @@ class EYT(unittest.TestCase, base.Base):
 			self.log.info("财务流程-财务经理审批完成")
 			self.page.driver.quit()
 	
+	@run_time.TimeOut()
 	def test_eyt_21_funds_raise(self):
 		"""募资-资金主管募资审批"""
 		
 		remark = u'资金主管审批'
 		
 		self.test_eyt_20_finace_approval_financial_manager()
+		self.case_name = custom.get_current_function_name()
 		page = Login(self.treasurer)
 		res = self.RA.funds_raise(page, self.apply_code, remark)
 		if not res:

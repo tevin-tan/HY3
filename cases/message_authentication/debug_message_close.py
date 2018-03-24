@@ -1,9 +1,12 @@
+from selenium.webdriver.common.action_chains import ActionChains
+
+import config
+import os
+import time
+import yaml
+from com import ssh
 from com.login import Login
 from com.pobj.TaskCenter import PendingTask
-from selenium.webdriver.common.action_chains import ActionChains
-from com.pobj.ContractSign import ContractSign
-import config, os, yaml, time
-from com import ssh
 
 rdir = config.__path__[0]
 pth = os.path.join(rdir, 'hostinfo')
@@ -13,7 +16,6 @@ with open(pth, 'r', encoding='utf-8') as f:
 	port = temp['SIT']['port']
 	host_name = temp['SIT']['username']
 	host_password = temp['SIT']['password']
-f.close()
 
 page = Login('xn018170')
 task_search = PendingTask.PendingTask.task_search(page, 'GZ20180314X01')

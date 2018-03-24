@@ -258,10 +258,11 @@ class ContractSign(object):
 				count = count + 1
 		
 		self.contract_save()
-		self.contract_submit()
+		# self.contract_submit()
 		return True
 	
-	def get_message_info(self, ip, port, name, password, execmd):
+	@staticmethod
+	def get_message_info(ip, port, name, password, execmd):
 		
 		# 获取短信验证码
 		result = ssh.sshclient_execmd(ip, port, name, password, execmd)

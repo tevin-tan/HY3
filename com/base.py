@@ -32,10 +32,14 @@ class Base(object):
 		
 		# 版本信息
 		custom.print_version_info()
+		# 写excel报告
+		# self.xlsx = xlsx.XLS()
+		# self.v_l = []
 		
 		self.page = login.Login()
 		self.log = custom.mylog()
 		
+		self.using_time = None  # 执行时长
 		self.apply_code = None
 		self.next_user_id = None
 		self.data_file = data_file
@@ -113,7 +117,6 @@ class Base(object):
 			try:
 				with open(config_env, 'r', encoding='utf-8') as f:
 					env_data = json.load(f)
-				f.close()
 			except IOError as e:
 				raise e
 		except Exception as e:
@@ -136,7 +139,6 @@ class Base(object):
 		
 		with open(data_config, 'r', encoding='utf-8') as fd:
 			data_source = json.load(fd)
-			fd.close()
 		
 		# 自动赋值
 		self.set_value(data_source)
@@ -150,7 +152,7 @@ class Base(object):
 		:param data_source:
 		:return:
 		"""
-		if type(data_source) is tuple:
+		if type(data_source) is dict:
 			data_source['custInfoVo'][0]['custName'] = custom.get_name()
 			data_source['custInfoVo'][0]['idNum'] = IDCard.getRandomIdNumber()[0]
 			data_source['custInfoVo'][0]['phone'] = IDCard.create_phone()
@@ -286,3 +288,16 @@ class Base(object):
 		else:
 			self.log.info(mark + ",审批通过")
 			self.next_user_id = common.get_next_user(page, apply_code)
+	
+	def case_using_time(self, begin_time, end_time):
+		run_time = end_time - begin_time
+		m, s = divmod(run_time, 60)
+		h, m = divmod(m, 60)
+		if h != 0:
+			self.using_time = str(h).split('.')[0] + 'h' + str(m).split('.')[0] + 'm' + str(s).split('.')[0] + 's'
+		elif h == 0 and m != 0:
+			self.using_time = str(m).split('.')[0] + 'm' + str(s).split('.')[0] + 's'
+		elif h == 0 and m == 0:
+			self.using_time = str(s)[:4] + 's'
+		# self.using_time = str(run_time)[:5]
+		return self.using_time

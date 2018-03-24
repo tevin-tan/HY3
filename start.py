@@ -29,24 +29,24 @@ from cases.warrantManage import test_warrant_manage
 # from lib.HTMLTestRunner import HTMLTestRunner
 from lib.HTMLTestRunnerCN import HTMLTestRunner
 
+
+def set_reporter_path():
+	# 定义报告存放路径以及格式
+	local_dir = os.getcwd()
+	print("local_dir: %s " % local_dir)
+	# path = local_dir + "\\report\\" + now + "-result.html"
+	path = local_dir + "\\report\\" + "index.html"
+	return local_dir, path
+
+
+# 执行用例
+def run_case(element, case):
+	if element is not None:
+		for i in temp[element]:
+			suite.addTest(case(i))
+
+
 if __name__ == "__main__":
-	
-	def set_reporter_path():
-		# 定义报告存放路径以及格式
-		# local_dir = os.path.dirname(os.getcwd())
-		local_dir = os.getcwd()
-		print("local_dir: %s " % local_dir)
-		# path = local_dir + "\\report\\" + now + "-result.html"
-		path = local_dir + "\\report\\" + "index.html"
-		return local_dir, path
-	
-	
-	# 执行用例
-	def run_case(element, case):
-		if element is not None:
-			for i in temp[element]:
-				suite.addTest(case(i))
-	
 	
 	# 按照一定格式获取当前时间
 	now = time.strftime("%Y-%m-%d %H_%M_%S")
@@ -61,17 +61,17 @@ if __name__ == "__main__":
 		'cwd',  # 车位贷
 		'eyt',  # E押通
 		'xhd',  # 循环贷
-		'gqt',  # 过桥通
-		'IntoCase',  # 申请录入进件场景
-		'fallback',  # 回退场景
-		'contract',  # 合同签约
+		# 'gqt',  # 过桥通
+		# 'IntoCase',  # 申请录入进件场景
+		# 'fallback',  # 回退场景
+		# 'contract',  # 合同签约
 		'AddContract',  # 添加拆借人签约
 		"SPA",  # 特批
-		"PartRaise",  # 部分募资
-		"WarrantManage",  # 权证请款
-		"UploadImageData",  # 上传影像资料
-		"Message",  # 电子签约短信验证
-		"DoneList",
+		# "PartRaise",  # 部分募资
+		# "WarrantManage",  # 权证请款
+		# "UploadImageData",  # 上传影像资料
+		# "Message",  # 电子签约短信验证
+		# "DoneList",
 		]
 	
 	try:
@@ -83,6 +83,7 @@ if __name__ == "__main__":
 				if e == 'cwd':
 					run_case(e, test_suite_cwd.CWD)
 				elif e == 'eyt':
+					time.sleep(1)
 					run_case(e, test_eyt_input_data.EYT)
 				elif e == 'xhd':
 					run_case(e, test_xhd_input_data.XHD)
@@ -109,7 +110,6 @@ if __name__ == "__main__":
 				elif e == 'DoneList':
 					run_case(e, test_done_task_list.DoneList)
 		print("f1:", f1)
-		f.close()
 	except Exception as e:
 		print("Error: can't load file")
 		raise e

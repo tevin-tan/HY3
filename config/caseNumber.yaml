@@ -4,92 +4,92 @@ cwd:
  - test_cwd_03_Property_info
  - test_cwd_04_applydata
  - test_cwd_05_get_applyCode
- - test_cwd_06_show_task
- - test_cwd_07_process_monitor
- - test_cwd_08_branch_supervisor_approval
- - test_cwd_09_branch_manager_approval
- - test_cwd_10_regional_prereview
- - test_cwd_11_manager_approval
- - test_cwd_12_contract_signing
- - test_cwd_13_compliance_audit
- - test_cwd_14_authority_card_member_transact
- - test_cwd_15_warrant_apply
- - test_cwd_16_finace_transact
- - test_cwd_17_finace_approval_branch_manager
- - test_cwd_18_finace_approval_risk_control_manager
- - test_cwd_19_finace_approval_financial_accounting
- - test_cwd_20_finace_approval_financial_manager
- - test_cwd_21_funds_raise
+# - test_cwd_06_show_task
+# - test_cwd_07_process_monitor
+# - test_cwd_08_branch_supervisor_approval
+# - test_cwd_09_branch_manager_approval
+# - test_cwd_10_regional_prereview
+# - test_cwd_11_manager_approval
+# - test_cwd_12_contract_signing
+# - test_cwd_13_compliance_audit
+# - test_cwd_14_authority_card_member_transact
+# - test_cwd_15_warrant_apply
+# - test_cwd_16_finace_transact
+# - test_cwd_17_finace_approval_branch_manager
+# - test_cwd_18_finace_approval_risk_control_manager
+# - test_cwd_19_finace_approval_financial_accounting
+# - test_cwd_20_finace_approval_financial_manager
+# - test_cwd_21_funds_raise
 
 eyt:
  - test_eyt_01_base_info
- - test_ety_02_borrowr_info
+ - test_eyt_02_borrowr_info
  - test_eyt_03_Property_info
  - test_eyt_04_applydata
  - test_eyt_05_get_applyCode
- - test_eyt_06_show_task
- - test_eyt_07_process_monitor
- - test_eyt_08_branch_supervisor_approval
- - test_eyt_09_branch_manager_approval
- - test_eyt_10_regional_prereview
- - test_eyt_11_manager_approval
- - test_eyt_12_contract_signing
- - test_eyt_13_compliance_audit
- - test_eyt_14_authority_card_member_transact
- - test_eyt_15_warrant_apply
- - test_eyt_16_finace_transact
- - test_eyt_17_finace_approval_branch_manager
- - test_eyt_18_finace_approval_risk_control_manager
- - test_eyt_19_finace_approval_financial_accounting
- - test_eyt_20_finace_approval_financial_manager
- - test_eyt_21_funds_raise
+# - test_eyt_06_show_task
+# - test_eyt_07_process_monitor
+# - test_eyt_08_branch_supervisor_approval
+# - test_eyt_09_branch_manager_approval
+# - test_eyt_10_regional_prereview
+# - test_eyt_11_manager_approval
+# - test_eyt_12_contract_signing
+# - test_eyt_13_compliance_audit
+# - test_eyt_14_authority_card_member_transact
+# - test_eyt_15_warrant_apply
+# - test_eyt_16_finace_transact
+# - test_eyt_17_finace_approval_branch_manager
+# - test_eyt_18_finace_approval_risk_control_manager
+# - test_eyt_19_finace_approval_financial_accounting
+# - test_eyt_20_finace_approval_financial_manager
+# - test_eyt_21_funds_raise
 
 xhd:
  - test_xhd_01_base_info
  - test_xhd_02_borrowr_info
- - test_xhd_03_Property_info
- - test_xhd_04_applydata
- - test_xhd_05_get_applyCode
- - test_xhd_06_show_task
- - test_xhd_07_process_monitor
- - test_xhd_08_branch_supervisor_approval
- - test_xhd_09_branch_manager_approval
- - test_xhd_10_regional_prereview
- - test_xhd_11_manager_approval
- - test_xhd_12_contract_signing
- - test_xhd_13_compliance_audit
- - test_xhd_14_authority_card_member_transact
- - test_xhd_15_warrant_apply
- - test_xhd_16_finace_transact
- - test_xhd_17_finace_approval_branch_manager
- - test_xhd_18_finace_approval_risk_control_manager
- - test_xhd_19_finace_approval_financial_accounting
- - test_xhd_20_finace_approval_financial_manager
- - test_xhd_21_funds_raise
+# - test_xhd_03_Property_info
+# - test_xhd_04_applydata
+# - test_xhd_05_get_applyCode
+# - test_xhd_06_show_task
+# - test_xhd_07_process_monitor
+# - test_xhd_08_branch_supervisor_approval
+# - test_xhd_09_branch_manager_approval
+# - test_xhd_10_regional_prereview
+# - test_xhd_11_manager_approval
+# - test_xhd_12_contract_signing
+# - test_xhd_13_compliance_audit
+# - test_xhd_14_authority_card_member_transact
+# - test_xhd_15_warrant_apply
+# - test_xhd_16_finace_transact
+# - test_xhd_17_finace_approval_branch_manager
+# - test_xhd_18_finace_approval_risk_control_manager
+# - test_xhd_19_finace_approval_financial_accounting
+# - test_xhd_20_finace_approval_financial_manager
+# - test_xhd_21_funds_raise
 
 gqt:
  - test_gqt_01_base_info
  - test_gqt_02_input
  - test_gqt_03_Property_info
  - test_gqt_04_applydata
- - test_gqt_05_get_applyCode
- - test_gqt_06_show_task
- - test_gqt_07_process_monitor
- - test_gqt_08_branch_supervisor_approval
- - test_gqt_09_branch_manager_approval
- - test_gqt_10_regional_prereview
- - test_gqt_11_manager_approval
- - test_gqt_12_contract_signing
- - test_gqt_13_compliance_audit
- - test_gqt_14_authority_card_member_transact
- - test_gqt_15_warrant_apply
- - test_gqt_16_finace_transact
- - test_gqt_17_finace_approval_branch_manager
- - test_gqt_18_finace_approval_risk_control_manager
- - test_gqt_19_funds_approval
- - test_gqt_20_finace_approval_financial_accounting
- - test_gqt_21_finace_approval_financial_manager
- - test_gqt_22_funds_raise
+# - test_gqt_05_get_applyCode
+# - test_gqt_06_show_task
+# - test_gqt_07_process_monitor
+# - test_gqt_08_branch_supervisor_approval
+# - test_gqt_09_branch_manager_approval
+# - test_gqt_10_regional_prereview
+# - test_gqt_11_manager_approval
+# - test_gqt_12_contract_signing
+# - test_gqt_13_compliance_audit
+# - test_gqt_14_authority_card_member_transact
+# - test_gqt_15_warrant_apply
+# - test_gqt_16_finace_transact
+# - test_gqt_17_finace_approval_branch_manager
+# - test_gqt_18_finace_approval_risk_control_manager
+# - test_gqt_19_funds_approval
+# - test_gqt_20_finace_approval_financial_accounting
+# - test_gqt_21_finace_approval_financial_manager
+# - test_gqt_22_funds_raise
 
 IntoCase:
  - test_01_one_borrower
@@ -106,27 +106,27 @@ fallback:
  - test_02_branch_manager_cancel
  - test_03_regional_cancel
  - test_04_manage_cancel
- - test_01_branch_director_reject_pass
- - test_01_branch_director_reject_fail
- - test_02_branch_manager_reject
- - test_03_regional_reject
- - test_04_manage_reject
- - test_02_branch_manager_reject_pass
- - test_02_branch_manager_reject_fail
- - test_03_regional_reject
- - test_03_regional_reject_pass
- - test_03_regional_reject_fail
- - test_04_manage_reject
- - test_04_manage_reject_pass
- - test_04_manage_reject_fail
+# - test_01_branch_director_reject_pass
+# - test_01_branch_director_reject_fail
+# - test_02_branch_manager_reject
+# - test_03_regional_reject
+# - test_04_manage_reject
+# - test_02_branch_manager_reject_pass
+# - test_02_branch_manager_reject_fail
+# - test_03_regional_reject
+# - test_03_regional_reject_pass
+# - test_03_regional_reject_fail
+# - test_04_manage_reject
+# - test_04_manage_reject_pass
+# - test_04_manage_reject_fail
 
 
 contract:
  - test_one_person_sign
  - test_two_person_sign
- - test_03_three_person_sign
- - test_04_four_person_sign
- - test_05_five_person_sign
+# - test_03_three_person_sign
+# - test_04_four_person_sign
+# - test_05_five_person_sign
 
 SPA:
  - test_01_region_special_approval
@@ -138,11 +138,11 @@ AddContract:
  - test_02_2Person_contract
  - test_03_3Person_contract
  - test_04_4Person_contract
- - test_05_5Person_contract
- - test_06_6Person_contract
- - test_07_7Person_contract
- - test_08_10Person_contract
- - test_09_20Person_contract
+# - test_05_5Person_contract
+# - test_06_6Person_contract
+# - test_07_7Person_contract
+# - test_08_10Person_contract
+# - test_09_20Person_contract
 
 PartRaise:
  - test_01_part_receipt_director_approval
@@ -170,12 +170,12 @@ WarrantManage:
 UploadImageData:
  - test_01_upload_image
  - test_02_upload_image_delete
- - test_03_upload_many_image
- - test_04_branch_director_upload_image
- - test_05_branch_manage_upload_image
- - test_06_area_manage_upload_image
- - test_07_senior_manager_upload_image
- - test_08_compliance_Officer_original
+# - test_03_upload_many_image
+# - test_04_branch_director_upload_image
+# - test_05_branch_manage_upload_image
+# - test_06_area_manage_upload_image
+# - test_07_senior_manager_upload_image
+# - test_08_compliance_Officer_original
 
 Message:
  - test_01_contract_sgin

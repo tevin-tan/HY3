@@ -150,13 +150,11 @@ def enviroment_change(filename, number=0, enviroment="SIT"):
 		
 		with open(data_config, 'r', encoding='utf-8') as fd:
 			data = json.load(fd)
-			fd.close()
 		
 		# 环境变量, 切换分公司
 		with open(env_config, 'r', encoding='utf-8') as f1:
 			env = json.load(f1)
 			company = env[enviroment]["company"][number]
-			f1.close()
 		
 		return data, company
 	
@@ -192,7 +190,6 @@ def get_bankcard_number():
 			# 判断银行卡号是否有效
 			if luhn.is_valid(res):
 				break
-		f.close()
 	return res
 
 
@@ -207,6 +204,33 @@ def ssh_cmd(hostname, port, username, password, execmd):
 	# stdin.write("Y")  # Generally speaking, the first connection, need a simple interaction.
 	ot = stdout.read()
 	print(str(ot, encoding='utf-8'))  # 字节转化为字符串
+
+
+def delete_duplicated_element_from_list(list):
+	"""删除列表重复元素"""
+	result_list = []
+	for item in list:
+		if not item in result_list:
+			result_list.append(item)
+	return result_list
+
+
+# 根据列表中某一特定元素删除重复数据
+def delete_duplicated_element_from_mix_list(arg_list):
+	tl = []
+	if arg_list is not []:
+		tl.append(arg_list[0])
+		for e in arg_list:
+			k = 0
+			for i in tl:
+				if e['name'] != i['name']:
+					k = k + 1
+				else:
+					break
+				if k == len(tl):
+					tl.append(e)
+	
+	return tl
 
 
 if __name__ == '__main__':

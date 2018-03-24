@@ -1,20 +1,37 @@
 # coding:utf-8
+import datetime
+import time
 import unittest
 
-from com import common, base
+from cases import SET, v_l
+from com import common, base, custom
 from com.login import Login
 from com.pobj.ContractSign import ContractSign as Cts
 
 
-class PartRaise(unittest.TestCase, base.Base):
+class PartRaise(unittest.TestCase, base.Base, SET):
 	"""部分请款募资"""
 	
 	def setUp(self):
 		self.env_file = "env.json"
 		self.data_file = "data_cwd.json"
 		base.Base.__init__(self, self.env_file, self.data_file)
+		SET.__init__(self)
+		self.se = SET()
+		self.se.start_run()
 	
 	def tearDown(self):
+		self.end_time = time.clock()
+		self.case_using_time(self.begin_time, self.end_time)
+		print(self.using_time)
+		v_l.append({
+			"name": self.case_name,
+			"result": self.run_result,
+			"u_time": self.using_time,
+			"s_time": self.s_time,
+			"e_time": str(datetime.datetime.now()).split('.')[0]
+			})
+		self.se.end_run(v_l)
 		self.page.driver.quit()
 	
 	def test_01_part_receipt_director_approval(self):
@@ -23,7 +40,7 @@ class PartRaise(unittest.TestCase, base.Base):
 		# ---------------------------------------------------------------------------------
 		#                   1. 申请录入
 		# ---------------------------------------------------------------------------------
-		
+		self.case_name = custom.get_current_function_name()
 		self.update_product_amount(400000)
 		
 		# 1 客户信息-业务基本信息
@@ -89,8 +106,10 @@ class PartRaise(unittest.TestCase, base.Base):
 				)
 		
 		# 两个人签约
-		res = Cts.ContractSign(page, self.apply_code, rec_bank_info, 2).execute_sign()
+		rc = Cts.ContractSign(page, self.apply_code, rec_bank_info, 2)
+		res = rc.execute_sign()
 		if res:
+			rc.contract_submit()
 			self.log.info("合同打印完成！")
 			# 查看下一步处理人
 			self.next_user_id = common.get_next_user(page, apply_code)
@@ -153,7 +172,7 @@ class PartRaise(unittest.TestCase, base.Base):
 		"""回执分公司经理审批"""
 		
 		self.test_01_part_receipt_director_approval()
-		
+		self.case_name = custom.get_current_function_name()
 		page = Login(self.next_user_id)
 		rec = self.PT.receipt_return(page, self.apply_code)
 		if not rec:
@@ -166,7 +185,7 @@ class PartRaise(unittest.TestCase, base.Base):
 	def test_03_receipt_first_approval(self):
 		"""第一次回执放款申请"""
 		self.test_02_part_receipt_manage_approval()
-		
+		self.case_name = custom.get_current_function_name()
 		page = Login(self.next_user_id)
 		rec = self.PT.receipt_return(page, self.apply_code)
 		if not rec:
@@ -181,6 +200,7 @@ class PartRaise(unittest.TestCase, base.Base):
 		
 		# 权证请款
 		self.test_03_receipt_first_approval()
+		self.case_name = custom.get_current_function_name()
 		# 业务助理登录
 		page = Login(self.company["business_assistant"]["user"])
 		rs = self.FA.finace_transact(page, self.apply_code)
@@ -197,6 +217,7 @@ class PartRaise(unittest.TestCase, base.Base):
 		remark = u"财务分公司经理审批"
 		
 		self.test_04_part_finace_transact()
+		self.case_name = custom.get_current_function_name()
 		page = Login(self.next_user_id)
 		result = self.FA.finace_approval(page, self.apply_code, remark)
 		if not result:
@@ -211,6 +232,7 @@ class PartRaise(unittest.TestCase, base.Base):
 		remark = u'风控经理审批'
 		
 		self.test_05_part_finace_branch_manage_aproval()
+		self.case_name = custom.get_current_function_name()
 		page = Login(self.next_user_id)
 		result = self.FA.finace_approval(page, self.apply_code, remark)
 		if not result:
@@ -228,6 +250,7 @@ class PartRaise(unittest.TestCase, base.Base):
 		remark = u'财务会计审批'
 		
 		self.test_06_part_finace_approval_risk_control_manager()
+		self.case_name = custom.get_current_function_name()
 		page = Login(self.next_user_id)
 		rs = self.FA.finace_approval(page, self.apply_code, remark)
 		if not rs:
@@ -245,6 +268,7 @@ class PartRaise(unittest.TestCase, base.Base):
 		remark = u'财务经理审批'
 		
 		self.test_07_part_finace_approval_financial_accounting()
+		self.case_name = custom.get_current_function_name()
 		page = Login(self.next_user_id)
 		res = self.FA.finace_approval(page, self.apply_code, remark)
 		if not res:
@@ -260,6 +284,7 @@ class PartRaise(unittest.TestCase, base.Base):
 		remark = u'资金主管审批'
 		
 		self.test_08_part_finace_approval_financial_manager()
+		self.case_name = custom.get_current_function_name()
 		page = Login(self.treasurer)
 		res = self.RA.funds_raise(page, self.apply_code, remark)
 		if not res:
@@ -272,6 +297,7 @@ class PartRaise(unittest.TestCase, base.Base):
 	def test_10_part_authority_card_second_deal(self):
 		"""第二次权证办理"""
 		self.test_09_part_funds_raise()
+		self.case_name = custom.get_current_function_name()
 		page = Login(self.company["authority_member"]["user"])
 		# 权证员上传权证信息
 		res = self.WM.authority_card_transact(page, self.apply_code, self.env)
@@ -286,6 +312,7 @@ class PartRaise(unittest.TestCase, base.Base):
 		"""第二次权证请款"""
 		
 		self.test_10_part_authority_card_second_deal()
+		self.case_name = custom.get_current_function_name()
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		# 部分请款
@@ -301,6 +328,7 @@ class PartRaise(unittest.TestCase, base.Base):
 		"""第二次财务办理"""
 		
 		self.test_11_part_warrent_request_money()
+		self.case_name = custom.get_current_function_name()
 		# 业务助理登录
 		page = Login(self.company["business_assistant"]["user"])
 		rs = self.FA.finace_transact(page, self.apply_code)
@@ -317,6 +345,7 @@ class PartRaise(unittest.TestCase, base.Base):
 		remark = u"财务分公司经理审批"
 		
 		self.test_12_part_finace_transact_second()
+		self.case_name = custom.get_current_function_name()
 		page = Login(self.next_user_id)
 		result = self.FA.finace_approval(page, self.apply_code, remark)
 		if not result:
@@ -330,6 +359,7 @@ class PartRaise(unittest.TestCase, base.Base):
 		remark = u'风控经理审批'
 		
 		self.test_13_part_finace_branch_manage_aproval_second()
+		self.case_name = custom.get_current_function_name()
 		page = Login(self.next_user_id)
 		result = self.FA.finace_approval(page, self.apply_code, remark)
 		if not result:
@@ -347,6 +377,7 @@ class PartRaise(unittest.TestCase, base.Base):
 		remark = u'财务会计审批'
 		
 		self.test_14_part_finace_approval_risk_control_manager()
+		self.case_name = custom.get_current_function_name()
 		page = Login(self.next_user_id)
 		rs = self.FA.finace_approval(page, self.apply_code, remark)
 		if not rs:
@@ -364,6 +395,7 @@ class PartRaise(unittest.TestCase, base.Base):
 		remark = u'财务经理审批'
 		
 		self.test_15_part_finace_approval_financial_accounting_second()
+		self.case_name = custom.get_current_function_name()
 		page = Login(self.next_user_id)
 		res = self.FA.finace_approval(page, self.apply_code, remark)
 		if not res:
@@ -379,7 +411,8 @@ class PartRaise(unittest.TestCase, base.Base):
 		remark = u'资金主管审批'
 		
 		self.test_16_finace_approval_financial_manager_second()
-		page = Login('xn0007533')
+		self.case_name = custom.get_current_function_name()
+		page = Login(self.treasurer)
 		res = self.RA.funds_raise(page, self.apply_code, remark)
 		if not res:
 			self.log.error("募资-资金主管审批失败")

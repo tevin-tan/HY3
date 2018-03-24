@@ -4,7 +4,7 @@ import time
 import unittest
 
 from cases.baseProcess import (
-	test_suite_cwd
+	test_eyt_input_data,
 	)
 # from HTMLTestRunner import HTMLTestRunner
 from lib.HTMLTestRunnerCN import HTMLTestRunner
@@ -30,16 +30,14 @@ if __name__ == "__main__":
 	#
 	suite = unittest.TestSuite()
 	# 构造测试套件
-	# suite.addTest(test_eyt_input_data.EYT('test_eyt_01_base_info'))
-	# suite.addTest(test_eyt_input_data.EYT('test_eyt_21_funds_raise'))
-	# suite.addTest(test_eyt_input_data.EYT('test_eyt_01_base_info'))
+	suite.addTest(test_eyt_input_data.EYT('test_eyt_01_base_info'))
+	suite.addTest(test_eyt_input_data.EYT('test_ety_02_borrowr_info'))
+	suite.addTest(test_eyt_input_data.EYT('test_eyt_03_Property_info'))
 	# suite.addTest(test_xhd_input_data.XHD('test_xhd_21_funds_raise'))
 	
-	suite.addTest(test_suite_cwd.CWD('test_cwd_01_base_info'))
-	
+	# suite.addTest(test_suite_cwd.CWD('test_cwd_01_base_info'))
 	# suite.addTest(test_into_case.IntoCase('test_03_two_borrower'))
 	# suite.addTest(test_fallback.FallBack('test_02_branch_manager_reject'))
-	
 	# suite.addTest(test_more_person_sign.ContractSign('test_03_three_person_sign'))
 	
 	runner = unittest.TextTestRunner()

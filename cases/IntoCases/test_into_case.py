@@ -1,43 +1,63 @@
 # coding:utf-8
+import datetime
 import time
 import unittest
 
+from cases import SET, v_l
 from com import custom, base
 
 
-class IntoCase(unittest.TestCase, base.Base):
+class IntoCase(unittest.TestCase, base.Base, SET):
 	"""申请录入进件场景"""
 	
 	def setUp(self):
 		self.env_file = "env.json"
 		self.data_file = "data_xhd.json"
 		base.Base.__init__(self, self.env_file, self.data_file)
+		SET.__init__(self)
+		self.se = SET()
+		self.se.start_run()
 	
 	def tearDown(self):
+		self.end_time = time.clock()
+		self.case_using_time(self.begin_time, self.end_time)
+		print(self.using_time)
+		v_l.append({
+			"name": self.case_name,
+			"result": self.run_result,
+			"u_time": self.using_time,
+			"s_time": self.s_time,
+			"e_time": str(datetime.datetime.now()).split('.')[0]
+			})
+		self.se.end_run(v_l)
 		self.page.driver.quit()
 	
 	def test_01_one_borrower(self):
 		"""单借款人"""
 		
-		name = custom.get_current_function_name()
-		print("当前用例编号:" + name)
-		# 录入一个借款人
-		custom.print_product_info(self.product_info)
-		
-		# 1 客户信息-业务基本信息
-		self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
-		
-		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
-		
-		# 3 物业信息
-		self.HAE.input_all_bbi_property_info(
-				self.page, self.data['applyPropertyInfoVo'][0],
-				self.data['applyCustCreditInfoVo'][0])
-		
-		# 提交
-		self.HAE.submit(self.page)
-		self.countTestCases()
+		try:
+			self.case_name = custom.get_current_function_name()
+			print("当前用例编号:" + self.case_name)
+			# 录入一个借款人
+			custom.print_product_info(self.product_info)
+			
+			# 1 客户信息-业务基本信息
+			self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
+			
+			# 2 客户基本信息 - 借款人/共贷人/担保人信息
+			self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+			
+			# 3 物业信息
+			self.HAE.input_all_bbi_property_info(
+					self.page, self.data['applyPropertyInfoVo'][0],
+					self.data['applyCustCreditInfoVo'][0])
+			
+			# 提交
+			self.HAE.submit(self.page)
+			self.countTestCases()
+		except Exception as e:
+			self.run_result = False
+			raise e
 	
 	def test_02_two_borrower(self, n=2):
 		# 录入两个借款人
@@ -149,49 +169,58 @@ class IntoCase(unittest.TestCase, base.Base):
 	def test_03_two_borrower(self):
 		"""录入两个借款人"""
 		
-		custom.print_product_info(self.product_info)
-		name = custom.get_current_function_name()
-		print("当前用例编号:" + name)
-		
-		# 录入基本信息
-		self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
-		# 录入借款人/共贷人信息
-		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
-		self.HAE.input_more_borrower(self.page)
-		
-		# 录入业务基本信息
-		self.HAE.input_all_bbi_property_info(
-				self.page,
-				self.data['applyPropertyInfoVo'][0],
-				self.data['applyCustCreditInfoVo'][0]
-				)
-		
-		# 提交
-		self.HAE.submit(self.page)
+		try:
+			custom.print_product_info(self.product_info)
+			self.case_name = custom.get_current_function_name()
+			print("当前用例编号:" + self.case_name)
+			
+			# 录入基本信息
+			self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
+			# 录入借款人/共贷人信息
+			self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+			self.HAE.input_more_borrower(self.page)
+			
+			# 录入业务基本信息
+			self.HAE.input_all_bbi_property_info(
+					self.page,
+					self.data['applyPropertyInfoVo'][0],
+					self.data['applyCustCreditInfoVo'][0]
+					)
+			
+			# 提交
+			self.HAE.submit(self.page)
+		except Exception as e:
+			self.run_result = False
+			raise e
 	
 	def test_gqt_04_applydata(self):
 		"""过桥通申请件录入,提交"""
 		
-		custom.print_product_info(self.product_info)
-		data, _ = custom.enviroment_change("data_gqt.json", self.number, self.env)
-		self.data.update(data)
-		
-		# 1 客户信息-业务基本信息
-		self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
-		
-		# 2 客户基本信息 - 借款人/共贷人/担保人信息
-		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
-		self.HAE.input_more_borrower(self.page)
-		
-		# 3 物业信息
-		self.HAE.input_all_bbi_property_info(
-				self.page,
-				self.data['applyPropertyInfoVo'][0],
-				self.data['applyCustCreditInfoVo'][0],
-				True,
-				'gqt'
-				)
-		
-		# 提交
-		self.HAE.submit(self.page)
-		self.log.info("申请件录入完成提交")
+		try:
+			self.case_name = custom.get_current_function_name()
+			custom.print_product_info(self.product_info)
+			data, _ = custom.enviroment_change("data_gqt.json", self.number, self.env)
+			self.data.update(data)
+			
+			# 1 客户信息-业务基本信息
+			self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
+			
+			# 2 客户基本信息 - 借款人/共贷人/担保人信息
+			self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
+			self.HAE.input_more_borrower(self.page)
+			
+			# 3 物业信息
+			self.HAE.input_all_bbi_property_info(
+					self.page,
+					self.data['applyPropertyInfoVo'][0],
+					self.data['applyCustCreditInfoVo'][0],
+					True,
+					'gqt'
+					)
+			
+			# 提交
+			self.HAE.submit(self.page)
+			self.log.info("申请件录入完成提交")
+		except Exception as e:
+			self.run_result = False
+			raise e

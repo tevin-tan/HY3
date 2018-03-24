@@ -39,7 +39,6 @@ class Login(object):
 			self.data = json.load(f)
 			self.number = self.data["number"]
 			self.env = self.data["enviroment"]
-			f.close()
 		# 环境SIT/UAT
 		if self.data["enviroment"]:
 			self.env = self.data["enviroment"]
@@ -131,7 +130,6 @@ class Login(object):
 		with open(self.conf_path, 'r', encoding='utf-8') as fd:
 			data = json.load(fd)
 			company = data[env]["company"][n]  # 切换分公司
-		fd.close()
 		
 		user_info = {
 			'locate': {

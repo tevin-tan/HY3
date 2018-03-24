@@ -35,11 +35,11 @@ def main():
 		port = temp['SIT']['port']
 		host_name = temp['SIT']['username']
 		host_password = temp['SIT']['password']
-	f.close()
 	
-	execmd = ' cd /web/apache-tomcat-7.0.69/logs; tail -10 catalina.out  > 1.txt ; ' \
-	         'cat 1.txt | grep "短信" | awk -F"验证码：" \'{print $2}\' ' \
-	         '| awk -F\'，\' \'{print $1}\' | tail -1'
+	execmd = \
+		' cd /web/apache-tomcat-7.0.69/logs; tail -10 catalina.out  > 1.txt ; ' \
+		'cat 1.txt | grep "短信" | awk -F"验证码：" \'{print $2}\' ' \
+		'| awk -F\'，\' \'{print $1}\' | tail -1'
 	
 	# execmd = 'cd /web/apache-tomcat-7.0.69/logs; tail -10 catalina.out  > 1.txt ; cat 1.txt '
 	print(execmd)
