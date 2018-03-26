@@ -61,10 +61,10 @@ if __name__ == "__main__":
 		'cwd',  # 车位贷
 		'eyt',  # E押通
 		'xhd',  # 循环贷
-		# 'gqt',  # 过桥通
-		# 'IntoCase',  # 申请录入进件场景
-		# 'fallback',  # 回退场景
-		# 'contract',  # 合同签约
+		'gqt',  # 过桥通
+		'IntoCase',  # 申请录入进件场景
+		'fallback',  # 回退场景
+		'contract',  # 合同签约
 		'AddContract',  # 添加拆借人签约
 		"SPA",  # 特批
 		# "PartRaise",  # 部分募资

@@ -233,7 +233,7 @@ class XLS(object):
 			if i == 'A':
 				self.worksheet.set_column(i + ':' + i, 4)
 			elif i == 'B':
-				self.worksheet.set_column(i + ':' + i, 40)
+				self.worksheet.set_column(i + ':' + i, 50)
 			elif i == 'E' or i == 'F':
 				self.worksheet.set_column(i + ':' + i, 30)
 			else:
@@ -243,23 +243,13 @@ class XLS(object):
 	def _set_sheet_row(self):
 		self.worksheet.set_row(1, 25)
 		for i in range(2, 1000):
-			self.worksheet.set_row(i, 25)
+			self.worksheet.set_row(i, 20)
 	
 	def test_03(self, data):
 		# 设置列宽
-		# self.worksheet.set_column("A:A", 4)
-		# self.worksheet.set_column("B:B", 40)
-		# self.worksheet.set_column("C:C", 20)
-		# self.worksheet.set_column("D:D", 20)
-		# self.worksheet.set_column("E:E", 30)
-		# self.worksheet.set_column("F:F", 30)
-		
 		self._set_sheet_column()
 		
 		# 设置行高
-		# self.worksheet.set_row(1, 25)
-		# for i in range(2, 1000):
-		# 	self.worksheet.set_row(i, 20)
 		self._set_sheet_row()
 		
 		# 加粗处理

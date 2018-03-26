@@ -112,9 +112,6 @@ class WarrantManage(unittest.TestCase, base.Base, SET):
 			self.update_product_amount(400000)
 			self.before_contract_sign()
 			
-			# 下一个处理人重新登录
-			# page = Login(self.next_user_id)
-			#
 			# -----------------------------------------------------------------------------
 			# 	                        3. 合同打印
 			# -----------------------------------------------------------------------------

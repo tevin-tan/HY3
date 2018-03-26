@@ -6,7 +6,6 @@ import unittest
 
 from cases import SET, v_l
 from com import common, base, custom
-from com.login import Login
 
 
 class ContractSign(unittest.TestCase, base.Base, SET):
@@ -39,14 +38,12 @@ class ContractSign(unittest.TestCase, base.Base, SET):
 		try:
 			self.before_contract_sign()
 			self.case_name = custom.get_current_function_name()
-			# 下一个处理人重新登录
-			page = Login(self.next_user_id)
 			
 			# 签约
-			common.make_signing(page, self.apply_code, self.rec_bank_info)
+			common.make_signing(self.page, self.apply_code, self.rec_bank_info)
 			self.log.info("签约完成")
 			# 查看下一步处理人
-			self.next_user_id = common.get_next_user(page, self.apply_code)
+			self.next_user_id = common.get_next_user(self.page, self.apply_code)
 		except Exception as e:
 			self.run_result = False
 			raise e
@@ -59,15 +56,13 @@ class ContractSign(unittest.TestCase, base.Base, SET):
 			self.update_product_amount(400000)
 			self.before_contract_sign()
 			self.case_name = custom.get_current_function_name()
-			# 下一个处理人重新登录
-			page = Login(self.next_user_id)
 			
 			# 两个人签约
-			res = common.make_signing(page, self.apply_code, self.rec_bank_info, 2)
+			res = common.make_signing(self.page, self.apply_code, self.rec_bank_info, 2)
 			if res:
 				self.log.info("合同打印完成！")
 			# 查看下一步处理人
-			self.next_user_id = common.get_next_user(page, self.apply_code)
+			self.next_user_id = common.get_next_user(self.page, self.apply_code)
 		except Exception as e:
 			self.run_result = False
 			raise e
@@ -80,14 +75,12 @@ class ContractSign(unittest.TestCase, base.Base, SET):
 			self.update_product_amount(600000)
 			self.before_contract_sign()
 			self.case_name = custom.get_current_function_name()
-			# 下一个处理人重新登录
-			page = Login(self.next_user_id)
 			
 			# 两个人签约
-			common.make_signing(page, self.apply_code, self.rec_bank_info, 3)
+			common.make_signing(self.page, self.apply_code, self.rec_bank_info, 3)
 			self.log.info("合同打印完成")
 			# 查看下一步处理人
-			self.next_user_id = common.get_next_user(page, self.apply_code)
+			self.next_user_id = common.get_next_user(self.page, self.apply_code)
 		except Exception as e:
 			self.run_result = False
 			raise e
@@ -100,15 +93,13 @@ class ContractSign(unittest.TestCase, base.Base, SET):
 			self.update_product_amount(800000)
 			self.before_contract_sign()
 			self.case_name = custom.get_current_function_name()
-			# 下一个处理人重新登录
-			page = Login(self.next_user_id)
 			
 			# 两个人签约
-			common.make_signing(page, self.apply_code, self.rec_bank_info, 4)
+			common.make_signing(self.page, self.apply_code, self.rec_bank_info, 4)
 			self.log.info("合同打印完成")
 			
 			# 查看下一步处理人
-			self.next_user_id = common.get_next_user(page, self.apply_code)
+			self.next_user_id = common.get_next_user(self.page, self.apply_code)
 		except Exception as e:
 			self.run_result = False
 			raise e
@@ -122,15 +113,13 @@ class ContractSign(unittest.TestCase, base.Base, SET):
 			self.update_product_amount(1000000)
 			self.before_contract_sign()
 			self.case_name = custom.get_current_function_name()
-			# 下一个处理人重新登录
-			page = Login(self.next_user_id)
 			
 			# 5个人签约
-			common.make_signing(page, self.apply_code, self.rec_bank_info, 5)
+			common.make_signing(self.page, self.apply_code, self.rec_bank_info, 5)
 			self.log.info("合同打印完成")
 			
 			# 查看下一步处理人
-			self.next_user_id = common.get_next_user(page, self.apply_code)
+			self.next_user_id = common.get_next_user(self.page, self.apply_code)
 		except Exception as e:
 			self.run_result = False
 			raise e

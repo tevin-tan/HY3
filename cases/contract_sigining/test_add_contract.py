@@ -4,7 +4,6 @@ import unittest
 
 from cases import SET, v_l
 from com import base, custom
-from com.login import Login
 from com.pobj.ContractSign import ContractSign as Cts
 
 
@@ -51,10 +50,8 @@ class AddContract(unittest.TestCase, base.Base, SET):
 		try:
 			self.before_contract_sign(200000)
 			# self.case_name = custom.get_current_function_name()
-			# 下一个处理人重新登录
-			page = Login(self.next_user_id)
 			
-			rc = Cts.ContractSign(page, self.apply_code, self.rec_bank_info)
+			rc = Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info)
 			res = rc.execute_sign()
 			if res:
 				rc.contract_submit()
@@ -69,10 +66,8 @@ class AddContract(unittest.TestCase, base.Base, SET):
 			self.update_product_amount(400000)
 			self.before_contract_sign(400000)
 			self.case_name = custom.get_current_function_name()
-			# 下一个处理人重新登录
-			page = Login(self.next_user_id)
 			
-			Cts.ContractSign(page, self.apply_code, self.rec_bank_info, 2)
+			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 2)
 		except Exception as e:
 			self.run_result = False
 			raise e
@@ -85,10 +80,8 @@ class AddContract(unittest.TestCase, base.Base, SET):
 			self.update_product_amount(600000)
 			self.before_contract_sign(600000)
 			self.case_name = custom.get_current_function_name()
-			# 下一个处理人重新登录
-			page = Login(self.next_user_id)
 			
-			Cts.ContractSign(page, self.apply_code, self.rec_bank_info, 3)
+			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 3)
 		except Exception as e:
 			self.run_result = False
 			raise e
@@ -101,10 +94,8 @@ class AddContract(unittest.TestCase, base.Base, SET):
 			self.update_product_amount(800000)
 			self.before_contract_sign(800000)
 			self.case_name = custom.get_current_function_name()
-			# 下一个处理人重新登录
-			page = Login(self.next_user_id)
 			
-			Cts.ContractSign(page, self.apply_code, self.rec_bank_info, 4).execute_sign()
+			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 4).execute_sign()
 		except Exception as e:
 			self.run_result = False
 			raise e
@@ -117,10 +108,8 @@ class AddContract(unittest.TestCase, base.Base, SET):
 			self.update_product_amount(1000000)
 			self.before_contract_sign(1000000)
 			self.case_name = custom.get_current_function_name()
-			# 下一个处理人重新登录
-			page = Login(self.next_user_id)
 			
-			Cts.ContractSign(page, self.apply_code, self.rec_bank_info, 5).execute_sign()
+			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 5).execute_sign()
 		except Exception as e:
 			self.run_result = False
 			raise e
@@ -133,10 +122,8 @@ class AddContract(unittest.TestCase, base.Base, SET):
 			self.update_product_amount(1200000)
 			self.before_contract_sign(1200000)
 			self.case_name = custom.get_current_function_name()
-			# 下一个处理人重新登录
-			page = Login(self.next_user_id)
 			
-			Cts.ContractSign(page, self.apply_code, self.rec_bank_info, 6).execute_sign()
+			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 6).execute_sign()
 		except Exception as e:
 			self.run_result = False
 			raise e
@@ -150,10 +137,8 @@ class AddContract(unittest.TestCase, base.Base, SET):
 			self.update_product_amount(1400000)
 			self.before_contract_sign(1400000)
 			self.case_name = custom.get_current_function_name()
-			# 下一个处理人重新登录
-			page = Login(self.next_user_id)
 			
-			Cts.ContractSign(page, self.apply_code, self.rec_bank_info, 7).execute_sign()
+			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 7).execute_sign()
 		except Exception as e:
 			self.run_result = False
 			raise e
@@ -166,10 +151,8 @@ class AddContract(unittest.TestCase, base.Base, SET):
 			self.update_product_amount(2000000)
 			self.before_contract_sign(2000000)
 			self.case_name = custom.get_current_function_name()
-			# 下一个处理人重新登录
-			page = Login(self.next_user_id)
 			
-			res = Cts.ContractSign(page, self.apply_code, self.rec_bank_info, 10)
+			res = Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 10)
 			res.execute_sign()
 		except Exception as e:
 			self.run_result = False
@@ -184,10 +167,8 @@ class AddContract(unittest.TestCase, base.Base, SET):
 			self.update_product_amount(4000000)
 			self.before_contract_sign(4000000)
 			self.case_name = custom.get_current_function_name()
-			# 下一个处理人重新登录
-			page = Login(self.next_user_id)
 			
-			res = Cts.ContractSign(page, self.apply_code, self.rec_bank_info, 20)
+			res = Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 20)
 			res.execute_sign()
 		except Exception as e:
 			self.run_result = False
