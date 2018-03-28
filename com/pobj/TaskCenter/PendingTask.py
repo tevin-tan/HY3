@@ -337,6 +337,7 @@ class PendingTask(object):
 			t1.click()
 			# 双击该笔案件
 			ActionChains(page.driver).double_click(t1).perform()
+			time.sleep(2)
 			page.driver.switch_to_frame("myIframeImage1")
 			# 个人信息
 			for i in range(1, 4):
@@ -412,6 +413,7 @@ class PendingTask(object):
 			t1.click()
 			# 双击
 			ActionChains(page.driver).double_click(t1).perform()
+			time.sleep(1)
 			try:
 				page.driver.switch_to_frame("myIframeImage1")  # 切换iframe
 			except ec.NoSuchFrameException as e:
@@ -472,6 +474,7 @@ class PendingTask(object):
 		else:
 			t1.click()
 			ActionChains(page.driver).double_click(t1).perform()
+			time.sleep(1)
 			try:
 				page.driver.switch_to_frame("myIframeImage1")  # 切换iframe
 			except ec.NoSuchFrameException as e:
@@ -480,10 +483,12 @@ class PendingTask(object):
 		# save
 		page.driver.switch_to.parent_frame()
 		page.driver.find_element_by_id("warrant_request_save").click()
-		page.driver.find_element_by_xpath("/html/body/div[2]/div[3]/a").click()
+		# page.driver.find_element_by_xpath("/html/body/div[2]/div[3]/a").click()
+		page.driver.find_element_by_xpath("/html/body/div[4]/div[3]/a").click()
 		time.sleep(1)
 		# submit
 		page.driver.find_element_by_id('warrant_request_submit').click()
-		page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a[1]').click()
+		page.driver.find_element_by_xpath('/html/body/div[4]/div[3]/a[1]').click()
+		# page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a[1]').click()
 		time.sleep(1)
 		return True

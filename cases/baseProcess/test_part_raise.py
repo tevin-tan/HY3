@@ -134,7 +134,7 @@ class PartRaise(unittest.TestCase, base.Base, SET):
 		# -----------------------------------------------------------------------------
 		page = Login(self.company["authority_member"]["user"])
 		# 权证员上传权证信息
-		res = self.WM.authority_card_transact(page, self.apply_code, self.env)
+		res = self.WM.authority_card_transact_2(page, self.apply_code, 1, self.env)
 		if not res:
 			self.log.error("上传权证资料失败")
 			raise ValueError("上传权证资料失败")
@@ -300,7 +300,7 @@ class PartRaise(unittest.TestCase, base.Base, SET):
 		self.case_name = custom.get_current_function_name()
 		page = Login(self.company["authority_member"]["user"])
 		# 权证员上传权证信息
-		res = self.WM.authority_card_transact(page, self.apply_code, self.env)
+		res = self.WM.authority_card_transact_2(page, self.apply_code, 2, self.env)
 		if not res:
 			self.log.error("上传权证资料失败")
 			raise ValueError("上传权证资料失败")

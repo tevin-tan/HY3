@@ -4,7 +4,7 @@ name = "HouseLoanAutoPy3"
 description = "HouseLoanAutoPy3: 房贷UI自动化代码框架"
 
 _version_major = 4
-_version_minor = 1
+_version_minor = 2
 _version_patch = 0
 _version_extra = ''
 

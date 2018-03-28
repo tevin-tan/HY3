@@ -477,7 +477,7 @@ def process_monitor(page, condition, stage=0):
 	"""
 	try:
 		time.sleep(1)
-		page.driver.switch_to.default_content()
+		page.driver.switch_to_default_content()
 		# 打开任务中心
 		page._click_control(page.driver, "id", "1DBCBC52791800014989140019301189")
 		time.sleep(1)

@@ -314,6 +314,7 @@ class EYT(unittest.TestCase, base.Base, SET):
 		self.case_name = custom.get_current_function_name()
 		# 权证员登录
 		page = Login(self.company["authority_member"]["user"])
+		page = Login(self.company["authority_member"]["user"])
 		# 权证员上传权证信息
 		rs = self.WM.authority_card_transact(page, self.apply_code, self.env)
 		if not rs:
