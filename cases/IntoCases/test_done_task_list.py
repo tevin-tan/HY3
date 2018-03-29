@@ -49,7 +49,8 @@ class DoneList(unittest.TestCase, base.Base, SET):
 			self.HAE.input_all_bbi_property_info(
 					self.page,
 					self.data['applyPropertyInfoVo'][0],
-					self.data['applyCustCreditInfoVo'][0])
+				self.data['applyCustCreditInfoVo'][0],
+				self.cust_name)
 			# 提交
 			self.HAE.submit(self.page)
 			self.log.info("申请件录入完成提交")

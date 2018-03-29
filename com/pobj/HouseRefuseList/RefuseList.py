@@ -1,5 +1,6 @@
 # coding:utf-8
 import time
+
 from com import custom
 
 
@@ -23,6 +24,7 @@ class HouseRefuseLIst(object):
 		page.driver.find_element_by_name("/house/commonIndex/refuseList").click()
 		# iframe
 		page.driver.switch_to_frame('bTabs_tab_house_commonIndex_refuseList')
+		time.sleep(1)
 		page.driver.find_element_by_name('applyCode').send_keys(applycode)
 		time.sleep(1)
 		page.driver.find_element_by_xpath('/html/body/div[1]/div[1]/div[2]/a[1]').click()  # 查询

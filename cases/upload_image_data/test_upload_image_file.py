@@ -50,7 +50,8 @@ class UploadImageData(unittest.TestCase, base.Base, SET):
 			# 3 物业信息
 			self.HAE.input_all_bbi_property_info(
 					self.page, self.data['applyPropertyInfoVo'][0],
-					self.data['applyCustCreditInfoVo'][0]
+				self.data['applyCustCreditInfoVo'][0],
+				self.cust_name
 					)
 			# 上传影像资料
 			res = self.HAE.upload_image_file(self.page, self.exe, self.image)
@@ -89,7 +90,8 @@ class UploadImageData(unittest.TestCase, base.Base, SET):
 		# 3 物业信息
 		self.HAE.input_all_bbi_property_info(
 				self.page, self.data['applyPropertyInfoVo'][0],
-				self.data['applyCustCreditInfoVo'][0]
+			self.data['applyCustCreditInfoVo'][0],
+			self.cust_name
 				)
 		# 删除影像资料
 		res = self.HAE.upload_image_file(self.page, self.exe, self.image, True)
@@ -125,7 +127,8 @@ class UploadImageData(unittest.TestCase, base.Base, SET):
 			# 3 物业信息
 			self.HAE.input_all_bbi_property_info(
 					self.page, self.data['applyPropertyInfoVo'][0],
-					self.data['applyCustCreditInfoVo'][0]
+				self.data['applyCustCreditInfoVo'][0],
+				self.cust_name
 					)
 			# 上传影像资料
 			
@@ -168,7 +171,8 @@ class UploadImageData(unittest.TestCase, base.Base, SET):
 			# 3 物业信息
 			self.HAE.input_all_bbi_property_info(
 					self.page, self.data['applyPropertyInfoVo'][0],
-					self.data['applyCustCreditInfoVo'][0]
+				self.data['applyCustCreditInfoVo'][0],
+				self.cust_name
 					)
 			# 提交
 			self.HAE.submit(self.page)
@@ -275,7 +279,8 @@ class UploadImageData(unittest.TestCase, base.Base, SET):
 			# 3 物业信息
 			self.HAE.input_all_bbi_property_info(
 					self.page, self.data['applyPropertyInfoVo'][0],
-					self.data['applyCustCreditInfoVo'][0])
+				self.data['applyCustCreditInfoVo'][0],
+				self.cust_name)
 			# 提交
 			self.HAE.submit(self.page)
 			self.log.info("申请件录入完成提交")

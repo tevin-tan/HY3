@@ -76,6 +76,7 @@ class CWD(unittest.TestCase, base.Base, SET):
 					self.page,
 					self.data['applyPropertyInfoVo'][0],
 					self.data['applyCustCreditInfoVo'][0],
+				self.cust_name,
 					True
 					)
 			if res:

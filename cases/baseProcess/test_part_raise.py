@@ -53,7 +53,8 @@ class PartRaise(unittest.TestCase, base.Base, SET):
 		# 3 物业信息
 		self.HAE.input_all_bbi_property_info(
 				self.page, self.data['applyPropertyInfoVo'][0],
-				self.data['applyCustCreditInfoVo'][0]
+			self.data['applyCustCreditInfoVo'][0],
+			self.cust_name
 				)
 		# 提交
 		self.HAE.submit(self.page)

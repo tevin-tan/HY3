@@ -9,14 +9,14 @@ from com.pobj.DoneListTask import ProcessedTask
 from com.pobj.FinancialPendingTask import (
 	FinancialApproval as Fa,
 	RaiseApproval as Ra,
-	)
+)
 from com.pobj.HouseRefuseList import RefuseList
 from com.pobj.IntoCaseManage import HouseloanApplyEntry as Hae
 from com.pobj.TaskCenter import (
 	ApplicationQuery as Aq,
 	PendingTask as Pt,
 	ProcessMonitor as Pm,
-	)
+)
 from com.pobj.WarrantManage import WarrantManageList as Wm
 
 
@@ -185,7 +185,9 @@ class Base(object):
 		self.HAE.input_all_bbi_property_info(
 				self.page,
 				self.data['applyPropertyInfoVo'][0],
-				self.data['applyCustCreditInfoVo'][0])
+			self.data['applyCustCreditInfoVo'][0],
+			self.cust_name
+		)
 		# 提交
 		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -218,7 +220,8 @@ class Base(object):
 		# 3 物业信息
 		self.HAE.input_all_bbi_property_info(
 				self.page, self.data['applyPropertyInfoVo'][0],
-				self.data['applyCustCreditInfoVo'][0])
+			self.data['applyCustCreditInfoVo'][0],
+			self.cust_name)
 		# 提交
 		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")

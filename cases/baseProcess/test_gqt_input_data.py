@@ -78,6 +78,7 @@ class GQT(unittest.TestCase, base.Base, SET):
 					self.page,
 					self.data['applyPropertyInfoVo'][0],
 					self.data['applyCustCreditInfoVo'][0],
+				self.cust_name,
 					True,
 					'gqt'  # 过桥通产品需填写垫资情况
 					)

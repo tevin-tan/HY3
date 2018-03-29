@@ -1,13 +1,15 @@
 # coding:utf-8
 
-import time
-import os
 import datetime
-from config.locator import loc_cust_info, loc_borrower
-from com import custom
-from selenium.webdriver.support.ui import Select
+import os
+import time
+
 from selenium.common import exceptions as ec
+from selenium.webdriver.support.ui import Select
+
+from com import custom
 from com.idCardNumber import IdCardNumber as IDCard
+from config.locator import loc_cust_info, loc_borrower
 
 
 class HouseLoanApplyEntry(object):
@@ -165,13 +167,16 @@ class HouseLoanApplyEntry(object):
 			print(e.msg)
 			return False
 		return True
-	
-	def input_all_bbi_property_info(self, page, data, apply_cust_credit_info, associated=False, product_name=None):
+
+	def input_all_bbi_property_info(
+			self, page, data, apply_cust_credit_info, name, associated=False,
+			product_name=None):
 		"""
 			物业信息录入
 		:param page: 页面对象
 		:param data: 传入的数据对象
 		:param apply_cust_credit_info: 征信数据
+		:param name: 客户姓名
 		:param associated  关联世联
 		:param product_name 过桥通 / 非过桥通
 		:return:
@@ -189,7 +194,7 @@ class HouseLoanApplyEntry(object):
 		
 		try:
 			page.driver.find_element_by_name("propertyOwner").clear()
-			page.driver.find_element_by_name("propertyOwner").send_keys(custom.get_name())  # 产权人
+			page.driver.find_element_by_name("propertyOwner").send_keys(name)  # 产权人
 			page.driver.find_element_by_name("propertyNo").clear()
 			page.driver.find_element_by_name("propertyNo").send_keys(data['propertyNo'])  # 房产证号
 			
