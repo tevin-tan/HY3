@@ -38,14 +38,14 @@ def getdistrictcode():
 			code = node[0:6]
 			codelist.append({
 				"state": state, "city": city, "district": district, "code": code
-				})
+			})
 
 
 def get_validate_checkout(id17):
 	"""获得校验码算法"""
 	weight = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2]  # 十七位数字本体码权重
 	validate = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2']  # mod11,对应校验码字符值
-	
+
 	sum = 0
 	for i in range(0, len(id17)):
 		sum = sum + int(id17[i]) * weight[i]
@@ -63,10 +63,10 @@ def gennerator():
 	da = date.today() + timedelta(days=random.randint(1, 366))  # 月份和日期项
 	id = id + da.strftime('%m%d')
 	id = id + str(random.randint(100, 300))  # ，顺序号简单处理
-	
+
 	checkOut = get_validate_checkout(id)
 	id = id + str(checkOut)
-	
+
 	"""
 		count = 0
 		weight = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2]  # 权重项
@@ -77,7 +77,7 @@ def gennerator():
 			count = count + int(id[i]) * weight[i]
 			id = id + checkcode[str(count % 11)]  # 算出校验码
 	"""
-	
+
 	return id
 
 

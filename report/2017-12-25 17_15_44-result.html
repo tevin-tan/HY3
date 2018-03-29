@@ -232,8 +232,8 @@ Traceback (most recent call last):
   File "E:\HouseLoanAuto\cases\test_suite_cwd.py", line 94, in test_cwd_04_applydata
     self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
   File "E:\HouseLoanAuto\common\common.py", line 50, in input_customer_base_info
-    page._click_control(page.driver, "name", "/house/commonIndex/applyIndex/index")
-  File "E:\HouseLoanAuto\common\login.py", line 143, in _click_control
+    page.click_control(page.driver, "name", "/house/commonIndex/applyIndex/index")
+  File "E:\HouseLoanAuto\common\login.py", line 143, in click_control
     driver.find_element(how, locate).click()
   File "C:\Anaconda2\lib\site-packages\selenium\webdriver\remote\webelement.py", line 78, in click
     self._execute(Command.CLICK_ELEMENT)

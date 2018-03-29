@@ -4,7 +4,7 @@ import json
 import re
 
 
-class h_json():
+class Hjson():
 	def parse_json(self, filename):
 		""" Parse a JSON file
 			First remove comments and then use the json module package

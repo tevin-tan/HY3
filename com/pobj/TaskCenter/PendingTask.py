@@ -482,13 +482,12 @@ class PendingTask(object):
 		page.driver.find_element_by_xpath('//*[@id="checkOpinion"]/textarea').send_keys("回执提放审批")
 		# save
 		page.driver.switch_to.parent_frame()
+		time.sleep(1)
 		page.driver.find_element_by_id("warrant_request_save").click()
-		# page.driver.find_element_by_xpath("/html/body/div[2]/div[3]/a").click()
 		page.driver.find_element_by_xpath("/html/body/div[4]/div[3]/a").click()
 		time.sleep(1)
 		# submit
 		page.driver.find_element_by_id('warrant_request_submit').click()
 		page.driver.find_element_by_xpath('/html/body/div[4]/div[3]/a[1]').click()
-		# page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a[1]').click()
 		time.sleep(1)
 		return True

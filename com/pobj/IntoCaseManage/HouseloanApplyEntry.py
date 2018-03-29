@@ -31,10 +31,10 @@ class HouseLoanApplyEntry(object):
 		# 案件录入
 		time.sleep(2)
 		# 进件管理
-		self._click_control(page.driver, "id", "1DCDFBEA96010001A2941A801EA02310")
+		self.click_control(page.driver, "id", "1DCDFBEA96010001A2941A801EA02310")
 		
 		time.sleep(2)
-		self._click_control(page.driver, "name", "/house/commonIndex/applyIndex/index")
+		self.click_control(page.driver, "name", "/house/commonIndex/applyIndex/index")
 		
 		# 主界面
 		try:
@@ -76,20 +76,20 @@ class HouseLoanApplyEntry(object):
 		"""
 		
 		try:
-			self._click_control(page.driver, "xpath", ".//*[@id='tb']/a[1]/span[2]")
+			self.click_control(page.driver, "xpath", ".//*[@id='tb']/a[1]/span[2]")
 			# Update  2017-12-27
 			# 姓名元素变更，身份证号码变更
 			page.driver.find_element_by_xpath(loc_borrower['jkrxm']).send_keys(data['custName'])  # 借款人姓名
 			time.sleep(1)
 			self._send_data(page.driver, "xpath", loc_borrower['sfzhm'], data["idNum"])  # 身份证号码
 			# 受教育程度
-			self._click_control(page.driver, "id", loc_borrower['sjycd']['locate'])
-			self._click_control(page.driver, "id", loc_borrower['sjycd']['value'])
+			self.click_control(page.driver, "id", loc_borrower['sjycd']['locate'])
+			self.click_control(page.driver, "id", loc_borrower['sjycd']['value'])
 			time.sleep(1)
-			self._click_control(page.driver, "id", loc_borrower['hyzk']['locate'])  # 婚姻状况
+			self.click_control(page.driver, "id", loc_borrower['hyzk']['locate'])  # 婚姻状况
 			
 			time.sleep(1)
-			self._click_control(page.driver, "id", loc_borrower['hyzk']['value'])
+			self.click_control(page.driver, "id", loc_borrower['hyzk']['value'])
 			
 			self._send_data(page.driver, "id", loc_borrower['jtdzxx'], data['address'])  # 家庭地址信息
 			self._send_data(page.driver, "xpath", loc_borrower['xxfs'], data["phone"])  # 联系方式
@@ -98,16 +98,16 @@ class HouseLoanApplyEntry(object):
 			# 公司规模
 			# page.driver.find_element_by_css_selector(loc_borrower['gsgm']['a']).click()
 			# page.driver.find_element_by_xpath(loc_borrower['gsgm']['a']).click()
-			# self._click_control(page.driver, "xpath", loc_borrower['gsgm']['b'])
-			# self._click_control(page.driver, "xpath", loc_borrower['gsgm']['c'])
+			# self.click_control(page.driver, "xpath", loc_borrower['gsgm']['b'])
+			# self.click_control(page.driver, "xpath", loc_borrower['gsgm']['c'])
 			
 			# 此处用这个方法
-			self._click_control(page.driver, "id", loc_borrower['gsgm']['locate'])
-			self._click_control(page.driver, "id", loc_borrower['gsgm']['value'])
+			self.click_control(page.driver, "id", loc_borrower['gsgm']['locate'])
+			self.click_control(page.driver, "id", loc_borrower['gsgm']['value'])
 			
 			# 所属行业
-			self._click_control(page.driver, "id", loc_borrower['sshy']['locate'])
-			self._click_control(page.driver, "id", loc_borrower['sshy']['value'])
+			self.click_control(page.driver, "id", loc_borrower['sshy']['locate'])
+			self.click_control(page.driver, "id", loc_borrower['sshy']['value'])
 			
 			self._send_data(page.driver, "id", loc_borrower['zw'], data["postName"])  # 职位
 			self._send_data(page.driver, "xpath", loc_borrower['rzrq'], data["workDate"])  # 入职日期
@@ -139,8 +139,8 @@ class HouseLoanApplyEntry(object):
 		page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a[1]').click()
 		time.sleep(3)
 		page.driver.find_element_by_xpath("html/body/div[2]/div[3]/a").click()
-	
-	def _click_control(self, driver, how="xpath", locate=None):
+
+	def click_control(self, driver, how="xpath", locate=None):
 		try:
 			if self.is_element_present(driver, how, locate):
 				driver.find_element(how, locate).click()

@@ -239,7 +239,7 @@ class WarrantManage(object):
 					js = "$('input[name=preDeliveryDate]').removeAttr('readonly')"
 					page.driver.execute_script(js)
 					page.driver.find_element_by_xpath('//*[@id="warrantForm"]/div/div[5]/div/div/input').send_keys(
-						str(datetime.date.today()))
+						'2020-12-31')
 					page.driver.find_element_by_name('warrantsCode').send_keys(str(number))
 					# 保存权证信息
 					page.driver.find_element_by_id('saveContent').click()

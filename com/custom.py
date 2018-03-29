@@ -79,14 +79,14 @@ def print_person_info(person_info):
 
 def mylog():
 	"""定义logger级别"""
-	
+
 	logging.basicConfig(
-			level=logging.INFO,
-			format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-			datefmt='%a, %d %b %Y %H:%M:%S',
-			# filename='myapp.log',
-			filemode='w')
-	
+		level=logging.INFO,
+		format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+		datefmt='%a, %d %b %Y %H:%M:%S',
+		# filename='myapp.log',
+		filemode='w')
+
 	return logging
 
 
@@ -106,8 +106,8 @@ def get_name():
 		"倪", "汤", "滕", "殷", "罗", "毕", "郝", "邬", "安", "常",
 		"乐", "于", "时", "傅", "皮", "卞", "齐", "康", "伍", "余",
 		"元", "卜", "顾", "孟", "平", "黄", "和", "穆", "萧", "尹"
-		]
-	
+	]
+
 	last_names = [
 		"子璇", "淼", "国栋", "夫子", "瑞堂", "甜", "敏", "尚", "国贤", "贺祥", "晨涛",
 		"昊轩", "易轩", "益辰", "益帆", "益冉", "瑾春", "瑾昆", "春齐", "杨", "文昊",
@@ -119,8 +119,8 @@ def get_name():
 		"佳怡", "佳惠", "晨茜", "晨璐", "运昊", "汝鑫", "淑君", "晶滢", "润莎", "榕汕",
 		"佳钰", "佳玉", "晓庆", "一鸣", "语晨", "添池", "添昊", "雨泽", "雅晗", "雅涵",
 		"清妍", "诗悦", "嘉乐", "晨涵", "天赫", "玥傲", "佳昊", "天昊", "萌萌", "若萌"
-		]
-	
+	]
+
 	i = random.randint(0, 99)
 	f_name = family_names[i]
 	j = random.randint(0, 99)
@@ -141,23 +141,23 @@ def enviroment_change(filename, number=0, enviroment="SIT"):
 	:param number:  "0" 广州分公司; "1" 长沙分公司
 	:return:    录入的数据， 所选分公司
 	"""
-	
+
 	try:
 		rd = config.source_data.__path__[0]
 		data_config = os.path.join(rd, filename)
 		env_config = os.path.join(rd, 'env.json')
 		print("data_config:" + data_config)
-		
+
 		with open(data_config, 'r', encoding='utf-8') as fd:
 			data = json.load(fd)
-		
+
 		# 环境变量, 切换分公司
 		with open(env_config, 'r', encoding='utf-8') as f1:
 			env = json.load(f1)
 			company = env[enviroment]["company"][number]
-		
+
 		return data, company
-	
+
 	except Exception as e:
 		print("config error:" + str(e))
 		raise
@@ -180,7 +180,7 @@ def get_current_day():
 
 def get_bankcard_number():
 	"""获取真是银行卡号"""
-	
+
 	r_dir = config.__path__[0]
 	f1 = os.path.join(r_dir, 'bankNum')
 	with open(f1, 'r', encoding='utf-8') as f:
@@ -195,10 +195,10 @@ def get_bankcard_number():
 
 def ssh_cmd(hostname, port, username, password, execmd):
 	paramiko.util.log_to_file("paramiko.log")
-	
+
 	s = paramiko.SSHClient()
 	s.set_missing_host_key_policy(paramiko.AutoAddPolicy())  # 跳过了远程连接中选择‘是’的环节,
-	
+
 	s.connect(hostname=hostname, port=port, username=username, password=password)
 	stdin, stdout, stderr = s.exec_command(execmd)
 	# stdin.write("Y")  # Generally speaking, the first connection, need a simple interaction.
@@ -206,11 +206,11 @@ def ssh_cmd(hostname, port, username, password, execmd):
 	print(str(ot, encoding='utf-8'))  # 字节转化为字符串
 
 
-def delete_duplicated_element_from_list(list):
+def delete_duplicated_element_from_list(lst):
 	"""删除列表重复元素"""
 	result_list = []
-	for item in list:
-		if not item in result_list:
+	for item in lst:
+		if item not in result_list:
 			result_list.append(item)
 	return result_list
 
@@ -229,12 +229,11 @@ def delete_duplicated_element_from_mix_list(arg_list):
 					break
 				if k == len(tl):
 					tl.append(e)
-	
+
 	return tl
 
 
 if __name__ == '__main__':
-	
 	res = get_current_day()
 	print(res)
 	print(get_bankcard_number())

@@ -20,7 +20,7 @@ class TimeOut(object):
 		return _call
 
 
-class bss(object):
+class BSS(object):
 	@TimeOut()  # 直接进行调用
 	def runfunc(self):
 		time.sleep(3)

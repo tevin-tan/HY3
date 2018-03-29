@@ -145,8 +145,8 @@ class Login(object):
 			}
 		
 		return user_info
-	
-	def _click_control(self, driver, how="xpath", locate=None):
+
+	def click_control(self, driver, how="xpath", locate=None):
 		try:
 			if self.is_element_present(how, locate):
 				driver.find_element(how, locate).click()

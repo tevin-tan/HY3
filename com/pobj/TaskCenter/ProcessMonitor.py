@@ -1,8 +1,10 @@
 # coding:utf-8
 import time
-from com import custom
+
 from selenium.common import exceptions as ec
 from selenium.webdriver.common.action_chains import ActionChains
+
+from com import custom
 
 
 class ProcessMonitor(object):
@@ -23,7 +25,7 @@ class ProcessMonitor(object):
 			time.sleep(1)
 			page.driver.switch_to_default_content()
 			# 打开任务中心
-			page._click_control(page.driver, "id", "1DBCBC52791800014989140019301189")
+			page.click_control(page.driver, "id", "1DBCBC52791800014989140019301189")
 			time.sleep(1)
 			# 流程监控
 			page.driver.find_element_by_name("/house/commonIndex/processMonitor").click()

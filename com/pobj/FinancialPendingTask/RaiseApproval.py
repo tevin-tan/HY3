@@ -1,8 +1,10 @@
 # coding: utf-8
 
 import time
-from com import custom
+
 from selenium.webdriver.common.action_chains import ActionChains
+
+from com import custom
 
 
 class FinancialApproval(object):
@@ -21,7 +23,7 @@ class FinancialApproval(object):
 		"""
 		
 		self.log.info("发起募资申请")
-		page._click_control(page.driver, "id", "1DBCBC52791800014989140019301189")
+		page.click_control(page.driver, "id", "1DBCBC52791800014989140019301189")
 		page.driver.find_element_by_name('/house/commonIndex/financial/toDoList').click()
 		page.driver.switch_to_frame('bTabs_tab_house_commonIndex_financial_toDoList')
 		

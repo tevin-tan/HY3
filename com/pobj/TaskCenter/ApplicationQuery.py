@@ -1,7 +1,9 @@
 # coding:utf-8
 import time
-from com import custom
+
 from selenium.common import exceptions as ec
+
+from com import custom
 
 
 class ApplicationQuery(object):
@@ -19,7 +21,7 @@ class ApplicationQuery(object):
 		"""
 		try:
 			# 打开任务中心
-			page._click_control(page.driver, "id", "1DBCBC52791800014989140019301189")
+			page.click_control(page.driver, "id", "1DBCBC52791800014989140019301189")
 			time.sleep(1)
 			# 申请件查询
 			page.driver.find_element_by_name('/house/commonIndex/applySearch/index').click()
