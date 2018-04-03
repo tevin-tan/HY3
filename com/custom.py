@@ -12,7 +12,6 @@ import yaml
 from stdnum import luhn
 
 import config
-import config.source_data
 from lib.release_info import version, author, url, author_email
 
 
@@ -143,7 +142,7 @@ def enviroment_change(filename, number=0, enviroment="SIT"):
 	"""
 
 	try:
-		rd = config.source_data.__path__[0]
+		rd = config.__path__[0]
 		data_config = os.path.join(rd, filename)
 		env_config = os.path.join(rd, 'env.json')
 		print("data_config:" + data_config)

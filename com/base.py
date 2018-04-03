@@ -9,14 +9,14 @@ from com.pobj.DoneListTask import ProcessedTask
 from com.pobj.FinancialPendingTask import (
 	FinancialApproval as Fa,
 	RaiseApproval as Ra,
-)
+	)
 from com.pobj.HouseRefuseList import RefuseList
 from com.pobj.IntoCaseManage import HouseloanApplyEntry as Hae
 from com.pobj.TaskCenter import (
 	ApplicationQuery as Aq,
 	PendingTask as Pt,
 	ProcessMonitor as Pm,
-)
+	)
 from com.pobj.WarrantManage import WarrantManageList as Wm
 
 
@@ -32,10 +32,6 @@ class Base(object):
 
 		# 版本信息
 		custom.print_version_info()
-		# 写excel报告
-		# self.xlsx = xlsx.XLS()
-		# self.v_l = []
-
 		self.page = login.Login()
 		self.log = custom.mylog()
 
@@ -112,7 +108,7 @@ class Base(object):
 	def __init_env(self):
 		"""环境初始化"""
 		try:
-			r_dir = config.source_data.__path__[0]
+			r_dir = config.__path__[0]
 			config_env = os.path.join(r_dir, self.env_file)
 			try:
 				with open(config_env, 'r', encoding='utf-8') as f:

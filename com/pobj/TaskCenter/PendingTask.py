@@ -12,11 +12,11 @@ from com.pobj.IntoCaseManage import HouseloanApplyEntry as Hae
 
 class PendingTask(object):
 	"""待处理任务"""
-	
+
 	def __init__(self):
 		self.log = custom.mylog()
 		self.HAE = Hae.HouseLoanApplyEntry()
-	
+
 	def query_task(self, page, condition):
 		"""
 			查询待处理任务
@@ -24,9 +24,9 @@ class PendingTask(object):
 		:param condition: applyCode
 		:return: True/False
 		"""
-		
+
 		self.log.info("查询查处理任务")
-		
+
 		try:
 			page.driver.switch_to_default_content()
 			# 打开任务中心
@@ -34,7 +34,7 @@ class PendingTask(object):
 			page.driver.find_element_by_id('1DBCBC52791800014989140019301189').click()
 			time.sleep(1)
 			page.driver.find_element_by_name("/house/commonIndex/todoList").click()
-			
+
 			try:
 				page.driver.switch_to_frame("bTabs_tab_house_commonIndex_todoList")
 			except ec.NoSuchFrameException as e:
@@ -58,7 +58,7 @@ class PendingTask(object):
 			raise e
 		finally:
 			page.driver.quit()
-	
+
 	def approval_to_review(self, page, condition, remark, action=0, image=False):
 		"""
 			审批审核
@@ -91,6 +91,7 @@ class PendingTask(object):
 		t1 = page.driver.find_element_by_xpath("//*[@id='datagrid-row-r2-2-0']/td[3]")
 		time.sleep(2)
 		if not t1.text:
+			self.log.ERROR("没有找到对应的申请件")
 			return False
 		else:
 			t1.click()
@@ -98,45 +99,47 @@ class PendingTask(object):
 			page.driver.find_element_by_class_name("datagrid-btable").click()
 			# 双击该笔案件
 			ActionChains(page.driver).double_click(t1).perform()
-			time.sleep(1)
-			
-			if action == 0:
-				# 填写批核意见
-				page.driver.find_element_by_class_name("container-fluid").click()
-				time.sleep(1)
-				page.driver.find_element_by_xpath("//*[@id=\"approve_opinion_form\"]/div[5]/div[2]").click()
-				page.driver.find_element_by_xpath("//*[@id=\"remarkable\"]").send_keys(remark)
-				if image:
-					self.HAE.upload_image_file(
+			time.sleep(3)
+			try:
+				if action == 0:
+					# 填写批核意见
+					page.driver.find_element_by_class_name("container-fluid").click()
+					time.sleep(1)
+					page.driver.find_element_by_xpath("//*[@id=\"approve_opinion_form\"]/div[5]/div[2]").click()
+					page.driver.find_element_by_xpath("//*[@id=\"remarkable\"]").send_keys(remark)
+					if image:
+						self.HAE.upload_image_file(
 							page, "E:\\HouseLoanAutoPy3\\bin\\uploadtool.exe",
 							"E:\\HouseLoanAutoPy3\\image\\2.jpg")
-			elif action == 1:
-				# 回退
-				Select(page.driver.find_element_by_name("appResult")).select_by_visible_text(u"回退")
-				Select(page.driver.find_element_by_name("nextActivitiId")).select_by_visible_text(u"风控专员录入")
-				# 填写回退意见
-				page.driver.find_element_by_id('remarkable2').send_keys(remark)
-			elif action == 2:
-				# 取消
-				Select(page.driver.find_element_by_name("appResult")).select_by_visible_text(u"取消")
-				Select(page.driver.find_element_by_name("resultReasonId")).select_by_value("02")
-				# 填写意见
-				page.driver.find_element_by_id('remarkable2').send_keys(remark)
-			elif action == 3:
-				# 拒绝
-				Select(page.driver.find_element_by_name("appResult")).select_by_visible_text(u"拒绝")
-				Select(page.driver.find_element_by_name("resultReasonId")).select_by_value("01")
-				# 填写意见
-				page.driver.find_element_by_id('remarkable2').send_keys(remark)
-			else:
-				self.log.error("输入的参数有误(0-3)!")
-				raise ValueError('参数有误！')
-			
+				elif action == 1:
+					# 回退
+					Select(page.driver.find_element_by_name("appResult")).select_by_visible_text(u"回退")
+					Select(page.driver.find_element_by_name("nextActivitiId")).select_by_visible_text(u"风控专员录入")
+					# 填写回退意见
+					page.driver.find_element_by_id('remarkable2').send_keys(remark)
+				elif action == 2:
+					# 取消
+					Select(page.driver.find_element_by_name("appResult")).select_by_visible_text(u"取消")
+					Select(page.driver.find_element_by_name("resultReasonId")).select_by_value("02")
+					# 填写意见
+					page.driver.find_element_by_id('remarkable2').send_keys(remark)
+				elif action == 3:
+					# 拒绝
+					Select(page.driver.find_element_by_name("appResult")).select_by_visible_text(u"拒绝")
+					Select(page.driver.find_element_by_name("resultReasonId")).select_by_value("01")
+					# 填写意见
+					page.driver.find_element_by_id('remarkable2').send_keys(remark)
+				else:
+					self.log.error("输入的参数有误(0-3)!")
+					raise ValueError('参数有误！')
+			except ec.NoSuchElementException as e:
+				raise e
+
 			# 保存
 			page.driver.find_element_by_xpath("//*[@id=\"apply_module_apply_save\"]/span/span/span[2]").click()
 			time.sleep(1)
 			page.driver.find_element_by_xpath("/html/body/div[5]/div[3]/a/span/span").click()  # 关闭弹窗
-			
+
 			# 提交
 			page.driver.find_element_by_xpath("//*[@id='apply_module_apply_submit']/span/span/span[2]").click()
 			time.sleep(1)
@@ -144,7 +147,7 @@ class PendingTask(object):
 			time.sleep(2)
 			page.driver.find_element_by_xpath("/html/body/div[5]/div[3]/a").click()
 			return True
-	
+
 	def special_approval(self, page, condition, remark):
 		"""
 		风控审批审核（特批）
@@ -165,7 +168,7 @@ class PendingTask(object):
 				page.driver.switch_to.frame("bTabs_tab_house_commonIndex_todoList")
 			except ec.NoSuchFrameException as e:
 				raise e
-			
+
 			# 打开表单
 			time.sleep(1)
 			page.driver.find_element_by_id("frmQuery").click()
@@ -190,18 +193,18 @@ class PendingTask(object):
 				time.sleep(1)
 				# 特批
 				page.driver.find_element_by_xpath('//*[@id="approve_opinion_form"]/div[2]/div[5]/input').click()
-				
+
 				# 填写批核意见
 				page.driver.find_element_by_class_name("container-fluid").click()
 				time.sleep(1)
 				page.driver.find_element_by_xpath("//*[@id=\"approve_opinion_form\"]/div[5]/div[2]").click()
 				page.driver.find_element_by_xpath("//*[@id=\"remarkable\"]").send_keys(remark)
-				
+
 				# 保存
 				page.driver.find_element_by_xpath("//*[@id=\"apply_module_apply_save\"]/span/span/span[2]").click()
 				time.sleep(1)
 				page.driver.find_element_by_xpath("/html/body/div[5]/div[3]/a/span/span").click()  # 关闭弹窗
-				
+
 				# 提交
 				page.driver.find_element_by_xpath("//*[@id='apply_module_apply_submit']/span/span/span[2]").click()
 				time.sleep(2)
@@ -211,7 +214,7 @@ class PendingTask(object):
 				return True
 		except ec.NoSuchElementException as e:
 			raise e
-	
+
 	def risk_approval_fallback(self, page, condition, option, remark):
 		"""
 		风控审批回退
@@ -221,7 +224,7 @@ class PendingTask(object):
 		:param remark:  审批审核意见
 		:return:
 		"""
-		
+
 		self.log.info("开始执行风控审批回退操作")
 		try:
 			# 打开任务中心
@@ -259,18 +262,18 @@ class PendingTask(object):
 				# 双击该笔案件
 				ActionChains(page.driver).double_click(t1).perform()
 				time.sleep(1)
-				
+
 				# 回退
 				Select(page.driver.find_element_by_name("appResult")).select_by_visible_text(u"回退")
 				Select(page.driver.find_element_by_name("nextActivitiId")).select_by_visible_text(option)
 				# 填写回退意见
 				page.driver.find_element_by_id('remarkable2').send_keys(remark)
-				
+
 				# 保存
 				page.driver.find_element_by_xpath("//*[@id=\"apply_module_apply_save\"]/span/span/span[2]").click()
 				time.sleep(1)
 				page.driver.find_element_by_xpath("/html/body/div[5]/div[3]/a/span/span").click()  # 关闭弹窗
-				
+
 				# 提交
 				page.driver.find_element_by_xpath("//*[@id='apply_module_apply_submit']/span/span/span[2]").click()
 				time.sleep(2)
@@ -280,7 +283,7 @@ class PendingTask(object):
 				return True
 			except ec.NoSuchElementException as e:
 				raise e
-	
+
 	@staticmethod
 	def task_search(page, condition):
 		"""
@@ -289,7 +292,7 @@ class PendingTask(object):
 		:param condition:  applyCode
 		:return: 查询表格数据
 		"""
-		
+
 		try:
 			# 打开任务中心
 			page.driver.find_element_by_id('1DBCBC52791800014989140019301189').click()
@@ -318,7 +321,7 @@ class PendingTask(object):
 			return res
 		except ec.NoSuchElementException as e:
 			raise e
-	
+
 	def compliance_audit(self, page, condition, upload=False):
 		"""
 		合规审查
@@ -327,7 +330,7 @@ class PendingTask(object):
 		:param upload : True/False 是否上传影像
 		:return:
 		"""
-		
+
 		# 查询待处理任务
 		t1 = self.task_search(page, condition)
 		if not t1.text:
@@ -343,23 +346,23 @@ class PendingTask(object):
 			for i in range(1, 4):
 				time.sleep(1)
 				page.driver.find_element_by_xpath(
-						'//*[@id="listVue"]/div[1]/form/div[' + str(i) + ']/div/div[3]/input').click()
+					'//*[@id="listVue"]/div[1]/form/div[' + str(i) + ']/div/div[3]/input').click()
 			# 征信信息
 			for i in range(1, 3):
 				time.sleep(1)
 				page.driver.find_element_by_xpath(
-						'//*[@id="listVue"]/div[2]/form/div[' + str(i) + ']/div/div[3]/input').click()
+					'//*[@id="listVue"]/div[2]/form/div[' + str(i) + ']/div/div[3]/input').click()
 			# 房贷信息
 			for i in range(1, 3):
 				time.sleep(1)
 				page.driver.find_element_by_xpath(
-						'//*[@id="listVue"]/div[3]/form/div[' + str(i) + ']/div/div[3]/input').click()
+					'//*[@id="listVue"]/div[3]/form/div[' + str(i) + ']/div/div[3]/input').click()
 			# 贷款银行信息
 			for i in range(1, 3):
 				time.sleep(1)
 				page.driver.find_element_by_xpath(
-						'//*[@id="listVue"]/div[4]/form/div[' + str(i) + ']/div/div[3]/input').click()
-		
+					'//*[@id="listVue"]/div[4]/form/div[' + str(i) + ']/div/div[3]/input').click()
+
 		page.driver.switch_to.parent_frame()
 		if upload is not False:
 			try:
@@ -385,26 +388,26 @@ class PendingTask(object):
 		time.sleep(2)
 		page.driver.quit()
 		return True
-	
+
 	@staticmethod
 	def save(page):
 		page.driver.find_element_by_xpath('//*[@id="apply_module_apply_save"]').click()
 		page.driver.find_element_by_xpath(' /html/body/div[4]/div[3]/a').click()
-	
+
 	@staticmethod
 	def submit(page):
 		page.driver.find_element_by_xpath('//*[@id="apply_module_apply_submit"]').click()
 		page.driver.find_element_by_xpath('/html/body/div[4]/div[3]/a').click()
-	
+
 	def part_warrant_apply(self, page, condition, flag=0):
 		"""
 			部分权证请款
 		:param page: 页面对象
 		:param condition:   applyCode
-		:param flag
+		:param flag 0/1第一、二次请款
 		:return:
 		"""
-		
+
 		# 打开任务中心
 		t1 = self.task_search(page, condition)
 		if not t1.text:
@@ -416,9 +419,9 @@ class PendingTask(object):
 			time.sleep(1)
 			try:
 				page.driver.switch_to_frame("myIframeImage1")  # 切换iframe
+				time.sleep(1)
 			except ec.NoSuchFrameException as e:
 				raise e
-			
 			try:
 				if flag == 0:
 					# 第一次权证请款
@@ -429,7 +432,7 @@ class PendingTask(object):
 					page.driver.find_element_by_xpath('//*[@id="warrantSplitModel"]/div').click()
 					time.sleep(1)
 					page.driver.find_element_by_xpath(
-							'//*[@id="warrantForm"]/div/table/tbody/tr[1]/td[1]/input').click()
+						'//*[@id="warrantForm"]/div/table/tbody/tr[1]/td[1]/input').click()
 					time.sleep(1)
 					# 确定
 					page.driver.find_element_by_id('dialogSplitSure').click()
@@ -445,9 +448,12 @@ class PendingTask(object):
 					page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a[1]').click()
 					time.sleep(1)
 					page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a').click()
-				else:
+
+					return True
+				elif flag == 1:
 					# save
 					page.driver.switch_to.parent_frame()
+					time.sleep(1)
 					page.driver.find_element_by_id('second_warrant_save').click()
 					page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a').click()
 					time.sleep(1)
@@ -455,11 +461,18 @@ class PendingTask(object):
 					page.driver.find_element_by_id('second_warrant_apply').click()
 					time.sleep(1)
 					page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a[1]').click()
-				
-				return True
+					return True
+				else:
+					page.driver.switch_to.parent_frame()
+					page.driver.find_element_by_id('second_warrant_apply').click()  # submit
+					page.driver.switch_to_frame("myIframeImage1")
+					time.sleep(1)
+					messages = page.driver.find_element_by_xpath('/html/body/div[3]/div[2]/div[2]').text
+					assert messages == '第一次放款未全部放款完毕，等待放款完毕才能提交！'
+					return True
 			except ec.NoSuchElementException as e:
 				raise e
-	
+
 	def receipt_return(self, page, apply_code):
 		"""
 		回执提放审批审核
@@ -467,7 +480,7 @@ class PendingTask(object):
 		:param apply_code:
 		:return:
 		"""
-		
+
 		t1 = self.task_search(page, apply_code)
 		if not t1.text:
 			return False

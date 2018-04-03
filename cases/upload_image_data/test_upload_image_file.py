@@ -76,7 +76,9 @@ class UploadImageData(unittest.TestCase, base.Base, SET):
 
 	def test_02_upload_image_delete(self):
 		"""房贷专员删除权证资料"""
+
 		self.skipTest("图片定位困难")
+		self.case_name = custom.get_current_function_name()
 		custom.print_product_info(self.product_info)
 		custom.print_person_info(self.person_info)
 
@@ -322,7 +324,7 @@ class UploadImageData(unittest.TestCase, base.Base, SET):
 			page = Login(self.next_user_id)
 
 			res = ContractSign.ContractSign(page, self.apply_code, self.rec_bank_info, 10)
-			res.execute_sign()
+			res.execute_enter_borroers_bank_info()
 			res.contract_submit()
 
 			self.next_user_id = common.get_next_user(page, self.apply_code)

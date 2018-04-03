@@ -206,7 +206,7 @@ class ContractSign(object):
 		time.sleep(2)
 		self.page.driver.find_element_by_xpath('/html/body/div[5]/div[3]/a').click()  # 确认
 
-	def execute_sign(self):
+	def execute_enter_borroers_bank_info(self):
 		"""
 			添加拆借人银行信息
 		:return:

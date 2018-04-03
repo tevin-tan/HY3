@@ -17,6 +17,7 @@ import time
 
 from selenium.common import exceptions as ec
 
+import config
 from com import common
 
 
@@ -24,17 +25,16 @@ class Login(object):
 	"""
 		登录页面
 	"""
-	
+
 	def __init__(self, username=None, env="SIT"):
 		"""
 		
 		:param username: 登录用户名
 		:param env: 环境选择 SIT/UAT
 		"""
-		
-		import config.source_data
-		self.conf_path = os.path.join(config.source_data.__path__[0], "env.json")
-		
+
+		self.conf_path = os.path.join(config.__path__[0], "env.json")
+
 		with open(self.conf_path, 'r', encoding='utf-8') as f:
 			self.data = json.load(f)
 			self.number = self.data["number"]
@@ -45,7 +45,7 @@ class Login(object):
 			self.username = self.data[self.env]['company'][self.number]['Commissioner']['user']
 		else:
 			self.env = env
-		
+
 		self.user_info = self.init_params(self.env, self.number)  # 分公司切换
 		self.url = self.user_info['url']
 		self.driver = common.browser()
@@ -60,11 +60,11 @@ class Login(object):
 		self.type_submit(self.user_info['locate']["loc_button"])
 		self.driver.implicitly_wait(30)
 		self.accept_next_alert = True
-	
+
 	def open(self):
 		"""打开特定Url"""
 		self.driver.get(self.url)
-	
+
 	def type_username(self, loc, name):
 		"""输入用户名"""
 		try:
@@ -74,18 +74,18 @@ class Login(object):
 		except ec.NoSuchElementException as e:
 			print(e)
 			return False
-	
+
 	def type_password(self, loc, password):
 		"""输入密码"""
 		self.driver.find_element_by_name(loc).clear()
 		self.driver.find_element_by_name(loc).send_keys(password)
-	
+
 	def type_submit(self, loc):
 		self.driver.find_element_by_css_selector(loc).click()
-	
+
 	def quit(self):
 		self.driver.quit()
-	
+
 	def is_element_present(self, how, what):
 		try:
 			self.driver.find_element(by=how, value=what)
@@ -93,7 +93,7 @@ class Login(object):
 			print(e.msg)
 			return False
 		return True
-	
+
 	def is_alert_present(self):
 		try:
 			self.driver.switch_to_alert()
@@ -101,7 +101,7 @@ class Login(object):
 			print(e.msg)
 			return False
 		return True
-	
+
 	def close_alert_and_get_its_text(self):
 		"""
 			关闭弹框
@@ -117,7 +117,7 @@ class Login(object):
 			return alert_text
 		finally:
 			self.accept_next_alert = True
-	
+
 	# 登录参数
 	def init_params(self, env="SIT", n=0):
 		"""
@@ -126,11 +126,11 @@ class Login(object):
 		:param n: 分公司，0： 广州分公司； 1： 长沙分公司
 		:return:
 		"""
-		
+
 		with open(self.conf_path, 'r', encoding='utf-8') as fd:
 			data = json.load(fd)
 			company = data[env]["company"][n]  # 切换分公司
-		
+
 		user_info = {
 			'locate': {
 				'loc_name': 'j_username',
@@ -143,7 +143,7 @@ class Login(object):
 				},  # 用户名/密码
 			'url': data[env]["url"],  # 登录URL
 			}
-		
+
 		return user_info
 
 	def click_control(self, driver, how="xpath", locate=None):
@@ -153,7 +153,7 @@ class Login(object):
 				time.sleep(1)
 		except ec.NoSuchElementException as e:
 			raise e
-	
+
 	def _send_data(self, driver, how, locate="xpath", value=None):
 		try:
 			if self.is_element_present(how, locate):

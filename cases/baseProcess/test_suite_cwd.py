@@ -288,7 +288,7 @@ class CWD(unittest.TestCase, base.Base, SET):
 
 		# 签约
 		rc = Cts.ContractSign(page, self.apply_code, rec_bank_info)
-		res = rc.execute_sign()
+		res = rc.execute_enter_borroers_bank_info()
 		if res:
 			rc.contract_submit()
 

@@ -65,7 +65,7 @@ class WarrantManage(unittest.TestCase, base.Base, SET):
 			# -----------------------------------------------------------------------------
 
 			rc = ContractSign.ContractSign(page, self.apply_code, self.rec_bank_info, 10)
-			res = rc.execute_sign()
+			res = rc.execute_enter_borroers_bank_info()
 			if res:
 				rc.contract_submit()
 
@@ -123,7 +123,7 @@ class WarrantManage(unittest.TestCase, base.Base, SET):
 
 			# 两个人签约
 			rc = ContractSign.ContractSign(page, self.apply_code, self.rec_bank_info, 2)
-			res = rc.execute_sign()
+			res = rc.execute_enter_borroers_bank_info()
 			if res:
 				rc.contract_submit()
 				self.log.info("合同打印完成！")

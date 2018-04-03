@@ -4,7 +4,7 @@ import time
 import unittest
 
 from cases import SET, v_l
-from com import common, base, custom
+from com import common, base, custom, database
 from com.login import Login
 from com.pobj.ContractSign import ContractSign as Cts
 
@@ -30,7 +30,7 @@ class PartRaise(unittest.TestCase, base.Base, SET):
 			"u_time": self.using_time,
 			"s_time": self.s_time,
 			"e_time": str(datetime.datetime.now()).split('.')[0]
-		})
+			})
 		self.se.end_run(v_l)
 		self.page.driver.quit()
 
@@ -55,7 +55,7 @@ class PartRaise(unittest.TestCase, base.Base, SET):
 			self.page, self.data['applyPropertyInfoVo'][0],
 			self.data['applyCustCreditInfoVo'][0],
 			self.cust_name
-		)
+			)
 		# 提交
 		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -85,7 +85,7 @@ class PartRaise(unittest.TestCase, base.Base, SET):
 			"分公司经理审批",
 			"区域预复核审批",
 			"高级审批经理审批"
-		]
+			]
 
 		for e in list_mark:
 			res = self.PT.approval_to_review(page, apply_code, e, 0)
@@ -97,18 +97,9 @@ class PartRaise(unittest.TestCase, base.Base, SET):
 		# 	                        3. 合同打印
 		# -----------------------------------------------------------------------------
 
-		rec_bank_info = dict(
-			recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
-			recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
-			recBankProvince=self.data['houseCommonLoanInfoList'][0]['recBankProvince'],
-			recBankDistrict=self.data['houseCommonLoanInfoList'][0]['recBankDistrict'],
-			recBank=self.data['houseCommonLoanInfoList'][0]['recBank'],
-			recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
-		)
-
 		# 两个人签约
-		rc = Cts.ContractSign(page, self.apply_code, rec_bank_info, 2)
-		res = rc.execute_sign()
+		rc = Cts.ContractSign(page, self.apply_code, self.rec_bank_info, 2)
+		res = rc.execute_enter_borroers_bank_info()
 		if res:
 			rc.contract_submit()
 			self.log.info("合同打印完成！")
@@ -277,7 +268,7 @@ class PartRaise(unittest.TestCase, base.Base, SET):
 			raise AssertionError('财务流程-财务经理审批失败')
 		else:
 			self.log.info("财务流程-财务经理审批完成")
-			self.page.driver.quit()
+			page.driver.quit()
 
 	def test_09_part_funds_raise(self):
 		"""资金主管募资审批"""
@@ -300,6 +291,25 @@ class PartRaise(unittest.TestCase, base.Base, SET):
 		self.test_09_part_funds_raise()
 		self.case_name = custom.get_current_function_name()
 		page = Login(self.company["authority_member"]["user"])
+
+		# 修改数据库，将第一次请款修改为放款成功，然后才能发起第二次权证请款，否则第二次权证办理不能跟提交
+		db = database.DB()
+
+		sql_1 = "UPDATE house_common_loan_info t SET t.pay_date=sysdate, t.status='LOAN_PASS' \
+		WHERE t.apply_id= (SELECT t.apply_id FROM house_apply_info t \
+		WHERE t.apply_code =" + "'" + self.apply_code + "'" + ")"
+
+		contract_no = self.apply_code + '-3-02-1'
+
+		sql_2 = "UPDATE house_funds_info t SET t.Funds_Status = 21  \
+		WHERE t.apply_id = (SELECT t.apply_id FROM house_apply_info t \
+		WHERE t.apply_code = " + "'" + self.apply_code + "'" + ")" + "AND CONTRACT_NO =" + "'" + contract_no + "'"
+
+		db.sql_execute(sql_1)
+		db.sql_execute(sql_2)
+		db.sql_commit()
+		time.sleep(3)
+
 		# 权证员上传权证信息
 		res = self.WM.authority_card_transact_2(page, self.apply_code, 2, self.env)
 		if not res:

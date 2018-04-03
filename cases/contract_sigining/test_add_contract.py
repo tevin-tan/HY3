@@ -49,10 +49,9 @@ class AddContract(unittest.TestCase, base.Base, SET):
 		self.case_name = custom.get_current_function_name()
 		try:
 			self.before_contract_sign(200000)
-			# self.case_name = custom.get_current_function_name()
-			
+
 			rc = Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info)
-			res = rc.execute_sign()
+			res = rc.execute_enter_borroers_bank_info()
 			if res:
 				rc.contract_submit()
 		except Exception as e:
@@ -94,8 +93,8 @@ class AddContract(unittest.TestCase, base.Base, SET):
 			self.update_product_amount(800000)
 			self.before_contract_sign(800000)
 			self.case_name = custom.get_current_function_name()
-			
-			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 4).execute_sign()
+
+			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 4).execute_enter_borroers_bank_info()
 		except Exception as e:
 			self.run_result = False
 			raise e
@@ -108,8 +107,8 @@ class AddContract(unittest.TestCase, base.Base, SET):
 			self.update_product_amount(1000000)
 			self.before_contract_sign(1000000)
 			self.case_name = custom.get_current_function_name()
-			
-			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 5).execute_sign()
+
+			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 5).execute_enter_borroers_bank_info()
 		except Exception as e:
 			self.run_result = False
 			raise e
@@ -122,8 +121,8 @@ class AddContract(unittest.TestCase, base.Base, SET):
 			self.update_product_amount(1200000)
 			self.before_contract_sign(1200000)
 			self.case_name = custom.get_current_function_name()
-			
-			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 6).execute_sign()
+
+			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 6).execute_enter_borroers_bank_info()
 		except Exception as e:
 			self.run_result = False
 			raise e
@@ -137,8 +136,8 @@ class AddContract(unittest.TestCase, base.Base, SET):
 			self.update_product_amount(1400000)
 			self.before_contract_sign(1400000)
 			self.case_name = custom.get_current_function_name()
-			
-			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 7).execute_sign()
+
+			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 7).execute_enter_borroers_bank_info()
 		except Exception as e:
 			self.run_result = False
 			raise e
@@ -153,7 +152,7 @@ class AddContract(unittest.TestCase, base.Base, SET):
 			self.case_name = custom.get_current_function_name()
 			
 			res = Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 10)
-			res.execute_sign()
+			res.execute_enter_borroers_bank_info()
 		except Exception as e:
 			self.run_result = False
 			raise e
@@ -169,7 +168,7 @@ class AddContract(unittest.TestCase, base.Base, SET):
 			self.case_name = custom.get_current_function_name()
 			
 			res = Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 20)
-			res.execute_sign()
+			res.execute_enter_borroers_bank_info()
 		except Exception as e:
 			self.run_result = False
 			raise e

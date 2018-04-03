@@ -274,7 +274,7 @@ class XHD(unittest.TestCase, base.Base, SET):
 
 		# 签约
 		rc = Cts.ContractSign(page, self.apply_code, rec_bank_info)
-		rs = rc.execute_sign()
+		rs = rc.execute_enter_borroers_bank_info()
 		if not rs:
 			self.run_result = False
 			self.log.error("签约失败")

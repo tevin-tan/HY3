@@ -173,6 +173,7 @@ class EYT(unittest.TestCase, base.Base, SET):
 			self.next_user_id = next_id
 			self.log.info("下一个处理人：" + self.next_user_id)
 			# 当前用户退出系统
+
 			self.page.driver.quit()
 
 	@run_time.TimeOut()
@@ -273,7 +274,7 @@ class EYT(unittest.TestCase, base.Base, SET):
 
 		# 签约
 		rc = Cts.ContractSign(page, self.apply_code, rec_bank_info)
-		res = rc.execute_sign()
+		res = rc.execute_enter_borroers_bank_info()
 		if res:
 			rc.contract_submit()
 
