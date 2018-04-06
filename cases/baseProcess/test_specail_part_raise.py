@@ -4,7 +4,7 @@ import time
 import unittest
 
 from cases import SET, v_l
-from com import common, custom
+from com import common, custom, database
 from com.base import Base
 from com.login import Login
 from com.pobj.ContractSign import ContractSign as Cts
@@ -25,6 +25,7 @@ class SpecaiPartRaise(unittest.TestCase, Base, SET):
 		print(self.using_time)
 		v_l.append({
 			"name": self.case_name,
+			"apply_code": self.apply_code,
 			"result": self.run_result,
 			"u_time": self.using_time,
 			"s_time": self.s_time,
@@ -125,6 +126,24 @@ class SpecaiPartRaise(unittest.TestCase, Base, SET):
 		else:
 			self.log.info("募资-资金主管审批完成!")
 			page.driver.quit()
+
+		# 修改数据表为放款成功！
+		db = database.DB()
+
+		sql_1 = "UPDATE house_common_loan_info t SET t.pay_date=sysdate, t.status='LOAN_PASS' \
+				WHERE t.apply_id= (SELECT t.apply_id FROM house_apply_info t \
+				WHERE t.apply_code =" + "'" + self.apply_code + "'" + ")"
+
+		contract_no = self.apply_code + '-3-02-1'
+
+		sql_2 = "UPDATE house_funds_info t SET t.Funds_Status = 21  \
+				WHERE t.apply_id = (SELECT t.apply_id FROM house_apply_info t \
+				WHERE t.apply_code = " + "'" + self.apply_code + "'" + ")" + "AND CONTRACT_NO =" + "'" + contract_no + "'"
+
+		db.sql_execute(sql_1)
+		db.sql_execute(sql_2)
+		db.sql_commit()
+		time.sleep(3)
 
 		# ----------第二次权证办理-----------------------------
 

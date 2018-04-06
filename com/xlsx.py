@@ -37,7 +37,7 @@ class XLS(object):
 			'bottom': 2,  # 底边框
 			'text_wrap': 1,  # 自动换行，可在文本中加 '\n'来控制换行的位置
 			'num_format': 'yyyy-mm-dd'  # 设定格式为日期格式，如：2017-07-01
-		})
+			})
 
 	# self.end()
 
@@ -45,11 +45,13 @@ class XLS(object):
 		self.workbook.close()
 
 	# 设置模式
-	def get_format(self, wd, option=None):
+	@staticmethod
+	def get_format(wd, option=None):
 		return wd.add_format(option)
 
 	# 设置居中
-	def set_format_center(self, wd, num=1):
+	@staticmethod
+	def set_format_center(wd, num=1):
 		return wd.add_format({
 			'align': 'center',
 			'valign': 'vcenter',
@@ -57,18 +59,20 @@ class XLS(object):
 			# 'font_color': '#5833ff',
 			'font_color': '#0026cc',
 			'bold': 1,
-		})
+			})
 
-	def set_format_left(self, wd, num=1):
+	@staticmethod
+	def set_format_left(wd, num=1):
 		return wd.add_format({
 			'align': 'left',
 			'valign': 'vcenter',
 			'font_color': '#0026cc',
 			'border': num,
 			'bold': 1,
-		})
+			})
 
-	def set_font_color(self, wd, color, num=1, ):
+	@staticmethod
+	def set_font_color(wd, color, num=1, ):
 		return wd.add_format({
 			'align': 'center',
 			'valign': 'vcenter',
@@ -76,7 +80,7 @@ class XLS(object):
 			'font_color': color,  # 字体色
 			'border': num,
 			'bold': 1,  # 加粗
-		})
+			})
 
 	# 写数据
 	def _write_center(self, worksheet, cl, data, wd):
@@ -88,17 +92,19 @@ class XLS(object):
 	def _write_font(self, worksheet, cl, data, wd, color):
 		return worksheet.write(cl, data, self.set_font_color(wd, color))
 
-	def set_border_(self, wd, num=1):
+	@staticmethod
+	def set_border_(wd, num=1):
 		return wd.add_format(dict()).set_border(num)
 
 	# 生成饼形图
-	def pie(self, workbook, worksheet):
+	@staticmethod
+	def pie(workbook, worksheet):
 		chart1 = workbook.add_chart({'type': 'pie'})
 		chart1.add_series({
 			'name': '接口测试统计',
 			'categories': '=测试总况!$D$4:$D$5',
 			'values': '=测试总况!$E$4:$E$5',
-		})
+			})
 		chart1.set_title({'name': '接口测试统计'})
 		chart1.set_style(10)
 		worksheet.insert_chart('A9', chart1, {'x_offset': 25, 'y_offset': 10})
@@ -126,7 +132,7 @@ class XLS(object):
 			'bold': True, 'font_size': 18, 'align': 'center',
 			'valign': 'vcenter', 'bg_color': 'blue',
 			'font_color': '#ffffff'
-		}))
+			}))
 
 		self._write_center(worksheet, "A2", '用例ID', self.workbook)
 		self._write_center(worksheet, "B2", '接口名称', self.workbook)
@@ -145,16 +151,16 @@ class XLS(object):
 					"t_hope": "{code:1,msg:登陆成功}",
 					"t_actual": "{code:0,msg:密码错误}",
 					"t_result": "失败"
-				},
+					},
 				{
 					"t_id": "1002", "t_name": "商品列表", "t_method": "get", "t_url": "http://XXX?getFoodList",
 					"t_param": "{}",
 					"t_hope": "{code:1,msg:成功,info:[{name:123,detal:dfadfa,img:product/1.png},{name:456,detal:dfadfa,img:product/1.png}]}",
 					"t_actual": "{code:1,msg:成功,info:[{name:123,detal:dfadfa,img:product/1.png},{name:456,detal:dfadfa,img:product/1.png}]}",
 					"t_result": "成功"
-				}],
+					}],
 			"test_sum": 100, "test_success": 20, "test_failed": 80
-		}
+			}
 		temp = 3
 		for item in data["info"][:]:
 			self._write_center(worksheet, "A" + str(temp), item["t_id"], self.workbook)
@@ -182,21 +188,22 @@ class XLS(object):
 		self.worksheet.set_row(3, 30)
 		self.worksheet.set_row(4, 30)
 		self.worksheet.set_row(5, 30)
+
 		# 加粗处理
-		define_format_H1 = self.get_format(self.workbook, dict(bold=True, font_size=18))
-		define_format_H2 = self.get_format(self.workbook, dict(bold=True, font_size=14))
+		define_format_h1 = self.get_format(self.workbook, dict(bold=True, font_size=18))
+		define_format_h2 = self.get_format(self.workbook, dict(bold=True, font_size=14))
 		# 加粗
-		define_format_H1.set_border(1)
-		define_format_H2.set_border(1)
+		define_format_h1.set_border(1)
+		define_format_h2.set_border(1)
 		# 设置居中
-		define_format_H1.set_align("center")
-		define_format_H1.set_align("center")
-		define_format_H2.set_align("center")
-		define_format_H2.set_bg_color("blue")
-		define_format_H2.set_color("#ffffff")
+		define_format_h1.set_align("center")
+		define_format_h1.set_align("center")
+		define_format_h2.set_align("center")
+		define_format_h2.set_bg_color("blue")
+		define_format_h2.set_color("#ffffff")
 		# 合并单元格
-		worksheet.merge_range('A1:F1', '测试报告总概况', define_format_H1)
-		worksheet.merge_range('A2:F2', '测试概括', define_format_H2)
+		worksheet.merge_range('A1:F1', '测试报告总概况', define_format_h1)
+		worksheet.merge_range('A2:F2', '测试概括', define_format_h2)
 		worksheet.merge_range('A3:A6', '这里放图片', self.set_format_center(self.workbook))
 		# 设置文字居中
 		self._write_center(worksheet, "B3", '项目名称', self.workbook)
@@ -233,8 +240,8 @@ class XLS(object):
 			if i == 'A':
 				self.worksheet.set_column(i + ':' + i, 4)
 			elif i == 'B':
-				self.worksheet.set_column(i + ':' + i, 50)
-			elif i == 'E' or i == 'F':
+				self.worksheet.set_column(i + ':' + i, 60)
+			elif i == 'C' or i == 'G' or i == 'F':
 				self.worksheet.set_column(i + ':' + i, 30)
 			else:
 				self.worksheet.set_column(i + ':' + i, 15)
@@ -253,29 +260,30 @@ class XLS(object):
 		self._set_sheet_row()
 
 		# 加粗处理
-		define_format_H1 = self.get_format(self.workbook, dict(bold=True, font_size=18))
-		define_format_H2 = self.get_format(self.workbook, dict(bold=True, font_size=14))
+		define_format_h1 = self.get_format(self.workbook, dict(bold=True, font_size=18))
+		define_format_h2 = self.get_format(self.workbook, dict(bold=True, font_size=14))
 
 		# 加粗
-		define_format_H1.set_border(1)
-		define_format_H2.set_border(1)
+		define_format_h1.set_border(1)
+		define_format_h2.set_border(1)
 
 		# 设置居中
-		define_format_H1.set_align("center")
-		define_format_H2.set_align("center")
-		define_format_H2.set_bg_color("green")
-		define_format_H2.set_color("#fafafa")
+		define_format_h1.set_align("center")
+		define_format_h2.set_align("center")
+		define_format_h2.set_bg_color("green")
+		define_format_h2.set_color("#fafafa")
 
 		# 合并单元格
-		self.worksheet.merge_range('A1:F1', '测试报告总概况', define_format_H1)
-		self.worksheet.merge_range('A2:F2', '测试概括', define_format_H2)
+		self.worksheet.merge_range('A1:G1', '测试报告总概况', define_format_h1)
+		self.worksheet.merge_range('A2:G2', '测试概括', define_format_h2)
 
 		self._write_center(self.worksheet, "A3", '序号', self.workbook)
 		self._write_center(self.worksheet, "B3", '用例编号', self.workbook)
-		self._write_center(self.worksheet, "C3", '执行结果', self.workbook)
-		self._write_center(self.worksheet, "D3", '执行时长', self.workbook)
-		self._write_center(self.worksheet, "E3", '开始时间', self.workbook)
-		self._write_center(self.worksheet, "F3", '结束时间', self.workbook)
+		self._write_center(self.worksheet, "C3", '申请件单号', self.workbook)
+		self._write_center(self.worksheet, "D3", '执行结果', self.workbook)
+		self._write_center(self.worksheet, "E3", '执行时长', self.workbook)
+		self._write_center(self.worksheet, "F3", '开始时间', self.workbook)
+		self._write_center(self.worksheet, "G3", '结束时间', self.workbook)
 
 		n = 4
 		for i in range(1, len(data) + 1):
@@ -284,13 +292,14 @@ class XLS(object):
 		count = 4
 		for i in data:
 			self._write_left(self.worksheet, "B" + str(count), i["name"], self.workbook)
-			if i['result'] == True:
-				self._write_font(self.worksheet, "C" + str(count), i['result'], self.workbook, '#27b621')
+			self._write_center(self.worksheet, "C" + str(count), i["apply_code"], self.workbook)
+			if i['result'] is True:
+				self._write_font(self.worksheet, "D" + str(count), i['result'], self.workbook, '#27b621')
 			else:
-				self._write_font(self.worksheet, "C" + str(count), i['result'], self.workbook, '#f70c0c')
-			self._write_center(self.worksheet, "D" + str(count), i['u_time'], self.workbook)
-			self._write_center(self.worksheet, "E" + str(count), i['s_time'], self.workbook)
-			self._write_center(self.worksheet, "F" + str(count), i['e_time'], self.workbook)
+				self._write_font(self.worksheet, "D" + str(count), i['result'], self.workbook, '#f70c0c')
+			self._write_center(self.worksheet, "E" + str(count), i['u_time'], self.workbook)
+			self._write_center(self.worksheet, "F" + str(count), i['s_time'], self.workbook)
+			self._write_center(self.worksheet, "G" + str(count), i['e_time'], self.workbook)
 			count = count + 1
 
 
@@ -298,19 +307,21 @@ if __name__ == '__main__':
 	data2 = [
 		dict(
 			name="test_eyt_09_branch_manager_approval",
+			apply_code="GZ20180330C14",
 			result=False,
 			u_time="1min30s",
 			s_time='2018-03-24 20:13:24',
 			e_time='2018-03-25 20:13:24',
-		),
+			),
 		dict(
 			name="test_eyt_10_branch_manager_approval",
+			apply_code="GZ20180330C15",
 			result=True,
 			u_time="2min30s",
 			s_time='2018-03-24 20:13:24',
 			e_time='2018-03-25 20:13:24',
-		),
-	]
+			),
+		]
 	a = XLS()
 	a.test_03(data2)
 	a.end()
