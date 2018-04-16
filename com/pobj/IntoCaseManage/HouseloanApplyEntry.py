@@ -5,6 +5,7 @@ import os
 import time
 
 from selenium.common import exceptions as ec
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import Select
 
 from com import custom
@@ -14,12 +15,12 @@ from config.locator import loc_cust_info, loc_borrower
 
 class HouseLoanApplyEntry(object):
 	"""房贷申请录入"""
-	
+
 	def __init__(self):
 		self.log = custom.mylog()
-	
+
 	# self.log.info("房贷申请录入")
-	
+
 	def input_customer_base_info(self, page, data):
 		"""
 			客户基本信息录入
@@ -27,15 +28,15 @@ class HouseLoanApplyEntry(object):
 		:param data: 数据字典，录入的基本数据
 		:return:
 		"""
-		
+
 		# 案件录入
 		time.sleep(2)
 		# 进件管理
 		self.click_control(page.driver, "id", "1DCDFBEA96010001A2941A801EA02310")
-		
+
 		time.sleep(2)
 		self.click_control(page.driver, "name", "/house/commonIndex/applyIndex/index")
-		
+
 		# 主界面
 		try:
 			# 切换表单(id="myIframe")或者(name="framing")
@@ -44,10 +45,10 @@ class HouseLoanApplyEntry(object):
 			raise e.msg
 		try:
 			Select(page.driver.find_element_by_xpath(".//*[@id='apply_module_product_id']")).select_by_visible_text(
-					data["productName"])  # 产品
+				data["productName"])  # 产品
 		except ec.ElementNotVisibleException as e:
 			raise e.msg
-		
+
 		try:
 			self._send_data(page.driver, "id", loc_cust_info['je_id'], data["applyAmount"])  # 金额
 			self._send_data(page.driver, "id", loc_cust_info['dkts_id'], data["applyPeriod"])  # 贷款天数
@@ -62,11 +63,11 @@ class HouseLoanApplyEntry(object):
 			self._send_data(page.driver, "name", loc_cust_info['zyyjbz_name'], data["checkApprove"])  # 专员意见备注
 		except ec.NoSuchElementException as e:
 			raise e.msg
-		
+
 		# 保存
 		self.save(page)
 		return True
-	
+
 	def input_customer_borrow_info(self, page, data):
 		"""
 			客户基本信息 - 借款人/共贷人/担保人信息
@@ -74,7 +75,7 @@ class HouseLoanApplyEntry(object):
 		:param data 传入的数据
 		:return:
 		"""
-		
+
 		try:
 			self.click_control(page.driver, "xpath", ".//*[@id='tb']/a[1]/span[2]")
 			# Update  2017-12-27
@@ -87,34 +88,36 @@ class HouseLoanApplyEntry(object):
 			self.click_control(page.driver, "id", loc_borrower['sjycd']['value'])
 			time.sleep(1)
 			self.click_control(page.driver, "id", loc_borrower['hyzk']['locate'])  # 婚姻状况
-			
+
 			time.sleep(1)
 			self.click_control(page.driver, "id", loc_borrower['hyzk']['value'])
-			
+
 			self._send_data(page.driver, "id", loc_borrower['jtdzxx'], data['address'])  # 家庭地址信息
 			self._send_data(page.driver, "xpath", loc_borrower['xxfs'], data["phone"])  # 联系方式
 			self._send_data(page.driver, "xpath", loc_borrower['dwmc'], data["companyName"])  # 单位名称
-			
+
 			# 公司规模
 			# page.driver.find_element_by_css_selector(loc_borrower['gsgm']['a']).click()
 			# page.driver.find_element_by_xpath(loc_borrower['gsgm']['a']).click()
 			# self.click_control(page.driver, "xpath", loc_borrower['gsgm']['b'])
 			# self.click_control(page.driver, "xpath", loc_borrower['gsgm']['c'])
-			
+
 			# 此处用这个方法
 			self.click_control(page.driver, "id", loc_borrower['gsgm']['locate'])
 			self.click_control(page.driver, "id", loc_borrower['gsgm']['value'])
-			
+
 			# 所属行业
 			self.click_control(page.driver, "id", loc_borrower['sshy']['locate'])
 			self.click_control(page.driver, "id", loc_borrower['sshy']['value'])
-			
+
 			self._send_data(page.driver, "id", loc_borrower['zw'], data["postName"])  # 职位
 			self._send_data(page.driver, "xpath", loc_borrower['rzrq'], data["workDate"])  # 入职日期
 			self._send_data(page.driver, "id", loc_borrower['gzyx'], data['workYear'])  # 工作年限
 			self._send_data(page.driver, "id", loc_borrower['yjsr'], data['monthIncoming'])  # 月均收入
-			page.driver.find_element_by_css_selector("input[type=\"checkbox\"]").click()  # 是否有社保
-			
+			# page.driver.find_element_by_css_selector("input[type=\"checkbox\"]").click()  # 是否有社保
+			page.driver.find_element_by_css_selector(
+				'#datagrid-row-r1-2-0 > td:nth-child(20) > div > table > tbody > tr > td > input[type="checkbox"]').click()  # 是否有社保
+
 			page.driver.find_element_by_xpath('//*[@id="tb"]/a[3]/span[2]').click()
 			# 临时保存
 			self.save(page)
@@ -123,16 +126,16 @@ class HouseLoanApplyEntry(object):
 			self.log.error(e)
 			raise e.msg
 		# 申请录入保存
-	
+
 	@staticmethod
 	def save(page):
 		page.driver.find_element_by_css_selector(
-				"#apply_module_apply_save > span.l-btn-left > span.l-btn-text > span.a_text").click()
+			"#apply_module_apply_save > span.l-btn-left > span.l-btn-text > span.a_text").click()
 		time.sleep(1)
 		# 弹窗关闭
 		page.driver.find_element_by_xpath("html/body/div[2]/div[3]/a").click()  # 确认保存
 		time.sleep(1)
-	
+
 	def submit(self, page):
 		self.log.info("申请件提交")
 		page.driver.find_element_by_id("apply_module_apply_submit").click()
@@ -147,7 +150,7 @@ class HouseLoanApplyEntry(object):
 				time.sleep(1)
 		except ec.NoSuchElementException as e:
 			raise e
-	
+
 	def _send_data(self, driver, how, locate="xpath", value=None):
 		try:
 			if self.is_element_present(driver, how, locate):
@@ -158,7 +161,7 @@ class HouseLoanApplyEntry(object):
 				time.sleep(1)
 		except ec.NoSuchElementException as e:
 			raise e
-	
+
 	@staticmethod
 	def is_element_present(driver, how, what):
 		try:
@@ -181,7 +184,7 @@ class HouseLoanApplyEntry(object):
 		:param product_name 过桥通 / 非过桥通
 		:return:
 		"""
-		
+
 		# 这步骤很关键，没有选中，则定位不到下面的元素
 		try:
 			t1 = page.driver.find_element_by_class_name("house-head-line")
@@ -191,36 +194,35 @@ class HouseLoanApplyEntry(object):
 		except ec.ElementNotVisibleException as e:
 			self.log.error(e.msg)
 			return False
-		
 		try:
 			page.driver.find_element_by_name("propertyOwner").clear()
 			page.driver.find_element_by_name("propertyOwner").send_keys(name)  # 产权人
 			page.driver.find_element_by_name("propertyNo").clear()
 			page.driver.find_element_by_name("propertyNo").send_keys(data['propertyNo'])  # 房产证号
-			
+
 			time.sleep(2)
 			page.driver.find_element_by_name("propertyStatus").click()  # 是否涉贷物业
-			
+
 			page.driver.find_element_by_name("propertyAge").click()
 			page.driver.find_element_by_name("propertyAge").clear()
 			page.driver.find_element_by_name("propertyAge").send_keys(data['propertyAge'])  # 房龄
-			
+
 			page.driver.find_element_by_name("propertyArea").clear()
 			page.driver.find_element_by_name("propertyArea").send_keys(data['propertyArea'])  # 建筑面积
-			
+
 			page.driver.find_element_by_name("registrationPrice").clear()
 			page.driver.find_element_by_name("registrationPrice").send_keys(data['registrationPrice'])  # 等级价
-			
+
 			# 地址
 			Select(page.driver.find_element_by_name("propertyAddressProvince")).select_by_visible_text(
-					data['propertyAddressProvince'])
+				data['propertyAddressProvince'])
 			Select(page.driver.find_element_by_name("propertyAddressCity")).select_by_visible_text(
-					data['propertyAddressCity'])
+				data['propertyAddressCity'])
 			Select(page.driver.find_element_by_name("propertyAddressDistinct")).select_by_visible_text(
-					data['propertyAddressDistinct'])
+				data['propertyAddressDistinct'])
 			page.driver.find_element_by_id("propertyAddressDetail").clear()
 			page.driver.find_element_by_id("propertyAddressDetail").send_keys(data['propertyAddressDetails'])
-			
+
 			page.driver.find_element_by_name("evaluationSumAmount").clear()
 			page.driver.find_element_by_name("evaluationSumAmount").send_keys(data['evaluationSumAmount'])  # 评估公允价总值
 			page.driver.find_element_by_name("evaluationNetAmount").clear()
@@ -249,27 +251,36 @@ class HouseLoanApplyEntry(object):
 			page.driver.find_element_by_name("assessmentOrigin").send_keys(data['assessmentOrigin'])  # 评估来源
 			page.driver.find_element_by_name("localAssessmentOrigin").clear()
 			page.driver.find_element_by_name("localAssessmentOrigin").send_keys(data['localAssessmentOrigin'])
-			
+
 			page.driver.find_element_by_name("evaluationCaseDescrip").clear()
 			page.driver.find_element_by_name("evaluationCaseDescrip").send_keys(data['evaluationCaseDescrip'])  # 评估情况描述
-			
+
 			if associated:
 				page.driver.find_element_by_link_text('关联').click()
 				time.sleep(1)
-				page.driver.find_element_by_id('evaRalationModal').click()
-				
-				# 搜索条件
-				page.driver.find_element_by_name('cityName').send_keys(u'长沙市')
-				page.driver.find_element_by_name('constructionName').send_keys(u'金帆小区')
-				page.driver.find_element_by_name('buildingName').send_keys('10')
-				page.driver.find_element_by_name('houseName').send_keys('101')
-				# 查询
-				page.driver.find_element_by_xpath('//*[@id="admitsSearchForm"]/div[6]/button[1]').click()
-				time.sleep(1)
-				page.driver.find_element_by_xpath(
-						'//*[@id="evaRalationModal"]/div/div/div[2]/div[2]/div/div/div[1]/div[2]/div[2]/table').click()
-				page.driver.find_element_by_id('evaRalationBtn').click()
-				time.sleep(1)
+				# page.driver.find_element_by_id('evaRalationModal').click()
+
+				try:
+					page.driver.find_element_by_xpath('//*[@id="evaRalationModal"]').click()
+					assert page.driver.find_element_by_id('myModalLabel').text == '世联关联列表'
+					page.driver.find_element_by_id('admitsSearchForm').click()
+				except ec.ElementNotVisibleException as e:
+					raise e.msg
+				# 硬关联
+				t3 = page.driver.find_element_by_xpath('//*[@id="evaRalationModal"]/div/div/div[2]')
+				ActionChains(page.driver).double_click(t3).perform()
+			# # 搜索条件
+			# page.driver.find_element_by_name('cityName').send_keys(u'长沙市')
+			# page.driver.find_element_by_name('constructionName').send_keys(u'金帆小区')
+			# page.driver.find_element_by_name('buildingName').send_keys('10')
+			# page.driver.find_element_by_name('houseName').send_keys('101')
+			# # 查询
+			# page.driver.find_element_by_xpath('//*[@id="admitsSearchForm"]/div[6]/button[1]').click()
+			# time.sleep(1)
+			# page.driver.find_element_by_xpath(
+			# 	'//*[@id="evaRalationModal"]/div/div/div[2]/div[2]/div/div/div[1]/div[2]/div[2]/table').click()
+			# page.driver.find_element_by_id('evaRalationBtn').click()
+			# time.sleep(1)
 			time.sleep(2)
 			# 征信信息
 			page.driver.find_element_by_link_text("征信信息").click()
@@ -281,7 +292,7 @@ class HouseLoanApplyEntry(object):
 			page.driver.find_element_by_name("queryLoanNum").send_keys(apply_cust_credit_info['queryLoanNum'])
 			page.driver.find_element_by_name("loanOtherAmt").clear()
 			page.driver.find_element_by_name("loanOtherAmt").send_keys(apply_cust_credit_info['loanOtherAmt'])
-			
+
 			if product_name == 'gqt':
 				page.driver.find_element_by_link_text("垫资情况").click()
 				# 基本情况
@@ -304,21 +315,21 @@ class HouseLoanApplyEntry(object):
 				page.driver.find_element_by_name('tradeSumAmount').send_keys('1000000')
 				page.driver.find_element_by_name('deposit').send_keys('800000')
 				page.driver.find_element_by_name('fundSupervisionAmount').send_keys('800000')
-			
+
 			# 网查信息
 			page.driver.find_element_by_link_text(u"网查信息").click()
 			page.driver.find_element_by_class_name("remark").click()
 			p1 = page.driver.find_element_by_xpath("//*[@id='apply_module_check_data_form']/div/div/textarea")
 			p1.click()
 			p1.send_keys(u"哈哈哈哈哈，无异常")
-			
+
 			# 借款用途及回款来源
 			page.driver.find_element_by_link_text(u"借款用途及回款来源").click()
 			page.driver.find_element_by_id("apply_module_payment_source").send_keys(u"薪资回款")
 			p2 = page.driver.find_element_by_xpath("//*[@id=\"apply_module_remark\"]")
 			p2.click()
 			p2.send_keys(u"无异常")
-			
+
 			# 风控措施
 			page.driver.find_element_by_link_text(u"风控措施").click()
 			page.driver.find_element_by_name("riskRemark").click()
@@ -329,7 +340,7 @@ class HouseLoanApplyEntry(object):
 		except ec.NoSuchElementException as e:
 			self.log.error(e.msg)
 			return False
-	
+
 	def upload_image_file(self, page, exe, image, delete=None):
 		"""
 		上传影像资料
@@ -339,7 +350,7 @@ class HouseLoanApplyEntry(object):
 		:param delete: 是否删除图片
 		:return:
 		"""
-		
+
 		self.log.info("开始上传影像资料")
 		try:
 			page.driver.find_element_by_link_text("影像资料").click()
@@ -352,19 +363,18 @@ class HouseLoanApplyEntry(object):
 			page.driver.find_element_by_id('browse').click()
 			os.system(exe + " " + image)
 			# os.system('E:\\HouseLoanAutoPy3\\bin\\uploadtool.exe "E:\\HouseLoanAutoPy3\\image\\2.jpg"')
-			
+
 			# Todo 图片名称随机变动，不好处理
 			if delete:
-				
 				t_time = custom.get_current_day()[0]
 				t_s = t_time.split(":")[0].replace("-", "/").replace(" ", "/")
 				print(t_s)
 				# match_str = '//*[starts-with(@id, "signPersonForm")]/'
 				jpg_name = '//*[ends-with(@id, "jpg")]'
 				# jpg_name = 'substring(@id, string-length(@id) - string-length("jpg") +1) = "jpg"'
-				
+
 				se = page.driver.find_element_by_xpath(
-						'//*[@id="checkhttp://uat-img.xnph66.com/AttachFiles/loanbefore/' + t_s + jpg_name)
+					'//*[@id="checkhttp://uat-img.xnph66.com/AttachFiles/loanbefore/' + t_s + jpg_name)
 				# se = page.driver.find_element_by_xpath(jpg_name)
 				se.click()
 				# delete image
@@ -377,7 +387,7 @@ class HouseLoanApplyEntry(object):
 		finally:
 			time.sleep(1)
 			page.driver.switch_to.parent_frame()
-	
+
 	def input_more_borrower(self, page):
 		"""
 		客户基本信息 - 借款人/共贷人/担保人信息
@@ -388,12 +398,12 @@ class HouseLoanApplyEntry(object):
 			page.driver.find_element_by_xpath('//*[@id="tb"]/a[1]/span[2]').click()
 			# NAME
 			page.driver.find_element_by_xpath(
-					'//*[@id="datagrid-row-r1-2-1"]/td[5]/div/table/tbody/tr/td/input').send_keys(custom.get_name())
+				'//*[@id="datagrid-row-r1-2-1"]/td[5]/div/table/tbody/tr/td/input').send_keys(custom.get_name())
 			time.sleep(1)
 			# IDNUMBER
 			page.driver.find_element_by_xpath(
-					'//*[@id="datagrid-row-r1-2-1"]/td[6]/div/table/tbody/tr/td/input').send_keys(
-					IDCard.getRandomIdNumber()[0])
+				'//*[@id="datagrid-row-r1-2-1"]/td[6]/div/table/tbody/tr/td/input').send_keys(
+				IDCard.getRandomIdNumber()[0])
 			time.sleep(1)
 			# 受教育程度
 			page.driver.find_element_by_id('_easyui_textbox_input14').click()
@@ -405,12 +415,12 @@ class HouseLoanApplyEntry(object):
 			page.driver.find_element_by_id('_easyui_textbox_input16').send_keys(IDCard.getRandomIdNumber()[1])
 			# 联系方式
 			page.driver.find_element_by_xpath(
-					'//*[@id="datagrid-row-r1-2-1"]/td[11]/div/table/tbody/tr/td/input').send_keys(
+				'//*[@id="datagrid-row-r1-2-1"]/td[11]/div/table/tbody/tr/td/input').send_keys(
 				IDCard.create_phone())
 			time.sleep(1)
 			# 单位名称
 			page.driver.find_element_by_xpath(
-					'//*[@id="datagrid-row-r1-2-1"]/td[12]/div/table/tbody/tr/td/input').send_keys("小牛资本投资股份有限公司")
+				'//*[@id="datagrid-row-r1-2-1"]/td[12]/div/table/tbody/tr/td/input').send_keys("小牛资本投资股份有限公司")
 			time.sleep(1)
 			# 公司规模
 			page.driver.find_element_by_id('_easyui_textbox_input17').click()
@@ -422,8 +432,8 @@ class HouseLoanApplyEntry(object):
 			page.driver.find_element_by_id('_easyui_textbox_input20').send_keys("总裁助理")
 			# 入职日期
 			page.driver.find_element_by_xpath(
-					'//*[@id="datagrid-row-r1-2-1"]/td[17]/div/table/tbody/tr/td/input').send_keys(
-					str(datetime.date.today()))
+				'//*[@id="datagrid-row-r1-2-1"]/td[17]/div/table/tbody/tr/td/input').send_keys(
+				str(datetime.date.today()))
 			time.sleep(1)
 			# 工作年限
 			page.driver.find_element_by_id('_easyui_textbox_input21').send_keys(12)
@@ -433,7 +443,7 @@ class HouseLoanApplyEntry(object):
 			time.sleep(1)
 			# 是否有社保
 			page.driver.find_element_by_xpath(
-					'//*[@id="datagrid-row-r1-2-1"]/td[20]/div/table/tbody/tr/td/input').click()
+				'//*[@id="datagrid-row-r1-2-1"]/td[20]/div/table/tbody/tr/td/input').click()
 			time.sleep(1)
 			page.driver.find_element_by_xpath(
 				'//*[@id="datagrid-row-r1-2-1"]/td[21]/div/table/tbody/tr/td/input').click()
@@ -441,25 +451,25 @@ class HouseLoanApplyEntry(object):
 			page.driver.find_element_by_xpath('//*[@id="tb"]/a[3]/span[2]').click()
 		except ec.NoSuchElementException as e:
 			raise e.msg
-		
+
 		# ----------------------------------------------------------------------
 		#                       关联关系信息
 		# ----------------------------------------------------------------------
 		try:
 			page.driver.find_element_by_xpath('//*[@id="tbs"]/a[1]').click()
-			
+
 			page.driver.find_element_by_id('_easyui_textbox_input23').click()
 			page.driver.find_element_by_id('_easyui_combobox_i12_0').click()
-			
+
 			page.driver.find_element_by_id('_easyui_textbox_input24').click()
 			page.driver.find_element_by_id('_easyui_combobox_i13_1').click()
-			
+
 			page.driver.find_element_by_id('_easyui_textbox_input25').click()
 			page.driver.find_element_by_id('_easyui_combobox_i14_0').click()
-			
+
 			# 确认
 			page.driver.find_element_by_xpath('//*[@id="tbs"]/a[3]').click()
-			
+
 			# 保存
 			page.driver.find_element_by_id('apply_module_apply_save').click()
 			page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a').click()

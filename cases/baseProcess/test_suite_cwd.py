@@ -30,11 +30,12 @@ class CWD(unittest.TestCase, base.Base, SET):
 		print(self.using_time)
 		v_l.append({
 			"name": self.case_name,
+			"apply_code": self.apply_code,
 			"result": self.run_result,
 			"u_time": self.using_time,
 			"s_time": self.s_time,
 			"e_time": str(datetime.datetime.now()).split('.')[0]
-		})
+			})
 		self.se.end_run(v_l)
 		self.page.driver.quit()
 
