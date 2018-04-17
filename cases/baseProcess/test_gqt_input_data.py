@@ -9,7 +9,7 @@ import time
 import unittest
 
 from cases import SET, v_l
-from com import common, custom, base
+from com import base, common, custom
 from com.login import Login
 from com.pobj.ContractSign import ContractSign as Cts
 

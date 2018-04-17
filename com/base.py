@@ -3,7 +3,7 @@ import json
 import os
 
 import config.source_data
-from com import login, custom, common
+from com import common, custom, login
 from com.idCardNumber import IdCardNumber as IDCard
 from com.pobj.DoneListTask import ProcessedTask
 from com.pobj.FinancialPendingTask import (
@@ -47,18 +47,24 @@ class Base(object):
 		# 数据初始化
 		self.__init_data()
 
+		# pd = random.choice(product.product)
+		# print(pd)
+		# # 自动选产品及期数
+		# self.data['applyVo']['productName'] = pd['name']
+		# self.data['applyVo']['applyPeriod'] = str(pd['period'])
+		# 默认产品
 		self.product_info = dict(
 			name=self.data['applyVo']['productName'],
 			amount=self.data['applyVo']['applyAmount'],
 			period=self.data['applyVo']['applyPeriod'],
-		)
+			)
 
 		self.person_info = dict(
 			name=self.data['custInfoVo'][0]['custName'],
 			idNum=self.data['custInfoVo'][0]['idNum'],
 			phone=self.data['custInfoVo'][0]['phone'],
 			address=self.data['custInfoVo'][0]['address']
-		)
+			)
 		self.rec_bank_info = dict(
 			recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
 			recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
@@ -66,7 +72,7 @@ class Base(object):
 			recBankDistrict=self.data['houseCommonLoanInfoList'][0]['recBankDistrict'],
 			recBank=self.data['houseCommonLoanInfoList'][0]['recBank'],
 			recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
-		)
+			)
 
 		# 信息输出
 		custom.print_env_info(self.env, self.company)
@@ -183,7 +189,7 @@ class Base(object):
 			self.data['applyPropertyInfoVo'][0],
 			self.data['applyCustCreditInfoVo'][0],
 			self.cust_name
-		)
+			)
 		# 提交
 		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
@@ -251,7 +257,7 @@ class Base(object):
 			"高级审批经理审批",
 			"风控总监审批",
 			"首席风控官"
-		]
+			]
 
 		if amount > 2000000:
 			for e in list_mark:
