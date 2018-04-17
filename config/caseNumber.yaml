@@ -1,3 +1,25 @@
+RandomProduct:
+ - test_random_product_01_base_info
+ - test_random_product_02_borrowr_info
+ - test_random_product_03_Property_info
+ - test_random_product_04_applydata
+ - test_random_product_05_get_applyCode
+ - test_random_product_06_show_task
+ - test_random_product_07_process_monitor
+ - test_random_product_08_branch_supervisor_approval
+ - test_random_product_09_branch_manager_approval
+ - test_random_product_10_regional_prereview
+ - test_random_product_11_manager_approval
+ - test_random_product_12_contract_signing
+ - test_random_product_13_compliance_audit
+ - test_random_product_14_authority_card_member_transact
+ - test_random_product_15_warrant_apply
+ - test_random_product_16_finace_transact
+ - test_random_product_17_finace_approval_branch_manager
+ - test_random_product_18_finace_approval_risk_control_manager
+ - test_random_product_19_finace_approval_financial_accounting
+ - test_random_product_20_finace_approval_financial_manager
+ - test_random_product_21_funds_raise
 cwd:
  - test_cwd_01_base_info
  - test_cwd_02_borrowr_info
