@@ -20,12 +20,13 @@ class HouseLoanApplyEntry(object):
 		self.log = custom.mylog()
 
 	# self.log.info("房贷申请录入")
-
-	def input_customer_base_info(self, page, data):
+	
+	def input_customer_base_info(self, page, data, flag=False):
 		"""
 			客户基本信息录入
 		:param page: 浏览器对象
 		:param data: 数据字典，录入的基本数据
+		:param flag: True, 新产品， False 老产品
 		:return:
 		"""
 
@@ -61,6 +62,8 @@ class HouseLoanApplyEntry(object):
 			self._send_data(page.driver, "id", loc_cust_info['khjlgh_id'], data["saleCode"])  # 客户经理工号
 			self._send_data(page.driver, "id", loc_cust_info['lsyjsr_id'], data["monthIncome"])  # 流水月均收入
 			self._send_data(page.driver, "name", loc_cust_info['zyyjbz_name'], data["checkApprove"])  # 专员意见备注
+			if flag:
+				self._send_data(page.driver, "name", 'intoChannelName', '我是新产品渠道单')
 		except ec.NoSuchElementException as e:
 			raise e.msg
 

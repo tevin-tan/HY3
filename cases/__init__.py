@@ -9,6 +9,7 @@ v_l = []
 
 class SET(object):
 	def __init__(self):
+		self.city = ['东莞分公司', '南通分公司', '南京分公司', '无锡分公司', '苏州分公司', '常州分公司']
 		self.run_result = True
 		self.case_name = None
 		self.begin_time = time.clock()

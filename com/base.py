@@ -46,12 +46,6 @@ class Base(object):
 
 		# 数据初始化
 		self.__init_data()
-
-		# pd = random.choice(product.product)
-		# print(pd)
-		# # 自动选产品及期数
-		# self.data['applyVo']['productName'] = pd['name']
-		# self.data['applyVo']['applyPeriod'] = str(pd['period'])
 		# 默认产品
 		self.product_info = dict(
 			name=self.data['applyVo']['productName'],
