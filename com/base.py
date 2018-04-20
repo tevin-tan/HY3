@@ -22,28 +22,28 @@ from com.pobj.WarrantManage import WarrantManageList as Wm
 
 class Base(object):
 	"""基类"""
-
+	
 	def __init__(self, env_file, data_file):
 		"""
 		构造函数
 		:param env_file:  环境配置文件
 		:param data_file: 数据配置文件
 		"""
-
+		
 		# 版本信息
 		custom.print_version_info()
 		self.page = login.Login()
 		self.log = custom.mylog()
-
+		
 		self.using_time = None  # 执行时长
 		self.apply_code = None
 		self.next_user_id = None
 		self.data_file = data_file
 		self.env_file = env_file
-
+		
 		# 环境初始化,解析环境
 		self.__init_env()
-
+		
 		# 数据初始化
 		self.__init_data()
 		# 默认产品
@@ -52,7 +52,7 @@ class Base(object):
 			amount=self.data['applyVo']['applyAmount'],
 			period=self.data['applyVo']['applyPeriod'],
 			)
-
+		
 		self.person_info = dict(
 			name=self.data['custInfoVo'][0]['custName'],
 			idNum=self.data['custInfoVo'][0]['idNum'],
@@ -67,25 +67,25 @@ class Base(object):
 			recBank=self.data['houseCommonLoanInfoList'][0]['recBank'],
 			recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
 			)
-
+		
 		# 信息输出
 		custom.print_env_info(self.env, self.company)
 		custom.print_person_info(self.person_info)
-
+		
 		self.__init__object()
 		self.__user_define()
-
+	
 	def __user_define(self):
 		# 设置角色
 		self.treasurer = 'xn0007533'  # 资金主管账号
 		self.senior_manager = 'xn003625'  # 高级审批经理
-
+	
 	def __init__object(self):
 		"""
 		页面对象实例化
 		:return:
 		"""
-
+		
 		# 房贷进件
 		self.HAE = Hae.HouseLoanApplyEntry()
 		# 申请件查询
@@ -104,7 +104,7 @@ class Base(object):
 		self.HRL = RefuseList.HouseRefuseLIst()
 		# 已处理任务列表：
 		self.DL = ProcessedTask.ProcessedTask()
-
+	
 	def __init_env(self):
 		"""环境初始化"""
 		try:
@@ -118,13 +118,13 @@ class Base(object):
 		except Exception as e:
 			self.log.error('load config error:', str(e))
 			raise e
-
+		
 		self.number = env_data["number"]
 		self.env = env_data["enviroment"]
 		self.exe = env_data['upload_exe']
 		self.image = env_data["image_jpg"]
 		self.company = env_data[self.env]["company"][self.number]
-
+	
 	def __init_data(self):
 		"""
 		数据初始化, 根据产品的不同，读取不同的配置文件
@@ -132,15 +132,15 @@ class Base(object):
 		filename = self.data_file
 		rd = config.source_data.__path__[0]
 		data_config = os.path.join(rd, filename)
-
+		
 		with open(data_config, 'r', encoding='utf-8') as fd:
 			data_source = json.load(fd)
-
+		
 		# 自动赋值
 		self.set_value(data_source)
 		self.data = data_source
 		self.cust_name = self.data['custInfoVo'][0]['custName']
-
+	
 	@staticmethod
 	def set_value(data_source):
 		"""
@@ -153,7 +153,7 @@ class Base(object):
 			data_source['custInfoVo'][0]['idNum'] = IDCard.getRandomIdNumber()[0]
 			data_source['custInfoVo'][0]['phone'] = IDCard.create_phone()
 			data_source['custInfoVo'][0]['address'] = IDCard.getRandomIdNumber()[1]
-
+	
 	def update_product_amount(self, amount):
 		"""
 		修改贷款金额
@@ -163,20 +163,20 @@ class Base(object):
 		self.data['applyVo']['applyAmount'] = amount
 		self.product_info.update(dict(amount=amount))
 		custom.print_product_info(self.product_info)
-
+	
 	def before_application_entry(self):
 		"""进件提交"""
-
+		
 		# 贷款产品信息
 		custom.print_product_info(self.product_info)
-
+		
 		# 1 客户信息-业务基本信息
 		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
-
+		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
 		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
-
+		
 		# 3 物业信息
 		self.HAE.input_all_bbi_property_info(
 			self.page,
@@ -187,7 +187,7 @@ class Base(object):
 		# 提交
 		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
-
+		
 		applycode = self.AQ.get_applycode(self.page, self.cust_name)
 		if applycode:
 			self.apply_code = applycode
@@ -202,17 +202,17 @@ class Base(object):
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
-
+	
 	def before_contract_sign(self, amount=1000000):
 		"""签约前操作"""
-
+		
 		# 1 客户信息-业务基本信息
 		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
-
+		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
 		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
-
+		
 		# 3 物业信息
 		self.HAE.input_all_bbi_property_info(
 			self.page, self.data['applyPropertyInfoVo'][0],
@@ -221,7 +221,7 @@ class Base(object):
 		# 提交
 		self.HAE.submit(self.page)
 		self.log.info("申请件录入完成提交")
-
+		
 		apply_code = self.AQ.get_applycode(self.page, self.cust_name)
 		if apply_code:
 			self.apply_code = apply_code
@@ -236,14 +236,14 @@ class Base(object):
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
-
+		
 		# ---------------------------------------------------------------------------------------
 		# 	                        2. 风控审批流程
 		# ---------------------------------------------------------------------------------------
-
+		
 		# 下一个处理人重新登录
 		self.page = login.Login(self.next_user_id)
-
+		
 		list_mark = [
 			"分公司主管审批",
 			"分公司经理审批",
@@ -252,7 +252,7 @@ class Base(object):
 			"风控总监审批",
 			"首席风控官"
 			]
-
+		
 		if amount > 2000000:
 			for e in list_mark:
 				res = self.PT.approval_to_review(self.page, self.apply_code, e, 0)
@@ -266,12 +266,17 @@ class Base(object):
 				# 下一个处理人重新登录
 				self.page = login.Login(self.next_user_id)
 		else:
+			count = 0
 			for e in list_mark[:4]:
+				if count == 3:
+					if self.next_user_id != self.senior_manager:
+						return
 				res1 = self.PT.approval_to_review(self.page, self.apply_code, e, 0)
 				self.risk_approval_result(res1, e, self.page, self.apply_code)
+				count = count + 1
 				# 下一个处理人重新登录
 				self.page = login.Login(self.next_user_id)
-
+	
 	def risk_approval_result(self, res, mark, page, apply_code):
 		"""
 		校验风控审批结果
@@ -287,7 +292,7 @@ class Base(object):
 		else:
 			self.log.info(mark + ",审批通过")
 			self.next_user_id = common.get_next_user(page, apply_code)
-
+	
 	def case_using_time(self, begin_time, end_time):
 		run_time = end_time - begin_time
 		m, s = divmod(run_time, 60)

@@ -45,14 +45,9 @@ class EntryRandomProduct(unittest.TestCase, base.Base, SET):
 		self.se.end_run(v_l)
 		self.page.driver.quit()
 	
-	"""
-		E押通案件数据录入
-	"""
-	
 	def test_random_product_01_base_info(self):
 		"""客户基本信息录入"""
 		self.case_name = custom.get_current_function_name()
-		
 		try:
 			# 打印贷款产品信息
 			custom.print_product_info(self.product_info)
@@ -264,22 +259,22 @@ class EntryRandomProduct(unittest.TestCase, base.Base, SET):
 			# 获取审批经理ID
 			self.test_random_product_10_regional_prereview()
 			self.case_name = custom.get_current_function_name()
-			# 下一个处理人重新登录
-			page = Login(self.next_user_id)
-			
-			# 审批审核
-			self.PT.approval_to_review(page, self.apply_code, u'高级审批经理审批')
-			
-			# 查看下一步处理人
-			res = self.PM.process_monitor(page, self.apply_code)
-			if not res:
-				raise AssertionError('没有找到下一个处理人')
+			if self.next_user_id is not self.senior_manager:
+				return
 			else:
-				self.next_user_id = res
-				self.next_user_id = res
-				self.log.info("下一个处理人:" + res)
-				# 当前用户退出系统
-				page.driver.quit()
+				# 下一个处理人重新登录
+				page = Login(self.next_user_id)
+				# 审批审核
+				self.PT.approval_to_review(page, self.apply_code, u'高级审批经理审批')
+				# 查看下一步处理人
+				res = self.PM.process_monitor(page, self.apply_code)
+				if not res:
+					raise AssertionError('没有找到下一个处理人')
+				else:
+					self.next_user_id = res
+					self.log.info("下一个处理人:" + res)
+					# 当前用户退出系统
+					page.driver.quit()
 		except Exception as e:
 			self.run_result = False
 			raise e
@@ -303,7 +298,6 @@ class EntryRandomProduct(unittest.TestCase, base.Base, SET):
 			self.case_name = custom.get_current_function_name()
 			# 下一个处理人重新登录
 			page = Login(self.next_user_id)
-			
 			# 签约
 			rc = Cts.ContractSign(page, self.apply_code, rec_bank_info)
 			res = rc.execute_enter_borroers_bank_info()
@@ -442,7 +436,6 @@ class EntryRandomProduct(unittest.TestCase, base.Base, SET):
 		"""财务风控经理审批"""
 		
 		remark = u'风控经理审批'
-		
 		self.test_random_product_17_finace_approval_branch_manager()
 		self.case_name = custom.get_current_function_name()
 		page = Login(self.next_user_id)
@@ -466,9 +459,7 @@ class EntryRandomProduct(unittest.TestCase, base.Base, SET):
 	
 	def test_random_product_19_finace_approval_financial_accounting(self):
 		"""财务会计审批"""
-		
 		remark = u'财务会计审批'
-		
 		self.test_random_product_18_finace_approval_risk_control_manager()
 		self.case_name = custom.get_current_function_name()
 		page = Login(self.next_user_id)
@@ -496,7 +487,6 @@ class EntryRandomProduct(unittest.TestCase, base.Base, SET):
 		remark = u'财务经理审批'
 		
 		self.test_random_product_19_finace_approval_financial_accounting()
-		
 		self.case_name = custom.get_current_function_name()
 		page = Login(self.next_user_id)
 		res = self.FA.finace_approval(page, self.apply_code, remark)

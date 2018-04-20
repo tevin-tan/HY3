@@ -30,12 +30,12 @@ class GQT(unittest.TestCase, base.Base, SET):
 		self.case_using_time(self.begin_time, self.end_time)
 		print(self.using_time)
 		v_l.append({
-			"name": self.case_name,
+			"name":       self.case_name,
 			"apply_code": self.apply_code,
-			"result": self.run_result,
-			"u_time": self.using_time,
-			"s_time": self.s_time,
-			"e_time": str(datetime.datetime.now()).split('.')[0]
+			"result":     self.run_result,
+			"u_time":     self.using_time,
+			"s_time":     self.s_time,
+			"e_time":     str(datetime.datetime.now()).split('.')[0]
 			})
 		self.se.end_run(v_l)
 		self.page.driver.quit()
@@ -76,13 +76,13 @@ class GQT(unittest.TestCase, base.Base, SET):
 		self.case_name = custom.get_current_function_name()
 		try:
 			res = self.HAE.input_all_bbi_property_info(
-					self.page,
-					self.data['applyPropertyInfoVo'][0],
-					self.data['applyCustCreditInfoVo'][0],
+				self.page,
+				self.data['applyPropertyInfoVo'][0],
+				self.data['applyCustCreditInfoVo'][0],
 				self.cust_name,
-					True,
-					'gqt'  # 过桥通产品需填写垫资情况
-					)
+				True,
+				'gqt'  # 过桥通产品需填写垫资情况
+				)
 			if res:
 				self.log.info("录入物业信息结束")
 			else:
@@ -229,30 +229,32 @@ class GQT(unittest.TestCase, base.Base, SET):
 		# 获取审批经理ID
 		self.test_gqt_10_regional_prereview()
 		self.case_name = custom.get_current_function_name()
-		# 下一个处理人重新登录
-		page = Login(self.next_user_id)
-		
-		# 审批审核
-		res = self.PT.approval_to_review(page, self.apply_code, u'高级审批经理审批')
-		if not res:
-			self.run_result = False
-			self.log.error("can't find applycode")
-			raise ValueError("can't find applycode")
-		
-		# 查看下一步处理人
-		self.next_user_id = common.get_next_user(page, self.apply_code)
+		if self.next_user_id is not self.senior_manager:
+			return
+		else:
+			# 下一个处理人重新登录
+			page = Login(self.next_user_id)
+			# 审批审核
+			res = self.PT.approval_to_review(page, self.apply_code, u'高级审批经理审批')
+			if not res:
+				self.run_result = False
+				self.log.error("can't find applycode")
+				raise ValueError("can't find applycode")
+			
+			# 查看下一步处理人
+			self.next_user_id = common.get_next_user(page, self.apply_code)
 	
 	def test_gqt_12_contract_signing(self):
 		"""签约"""
 		
 		rec_bank_info = dict(
-				recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
-				recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
-				recBankProvince=self.data['houseCommonLoanInfoList'][0]['recBankProvince'],
-				recBankDistrict=self.data['houseCommonLoanInfoList'][0]['recBankDistrict'],
-				recBank=self.data['houseCommonLoanInfoList'][0]['recBank'],
-				recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
-				)
+			recBankNum=self.data['houseCommonLoanInfoList'][0]['recBankNum'],
+			recPhone=self.data['houseCommonLoanInfoList'][0]['recPhone'],
+			recBankProvince=self.data['houseCommonLoanInfoList'][0]['recBankProvince'],
+			recBankDistrict=self.data['houseCommonLoanInfoList'][0]['recBankDistrict'],
+			recBank=self.data['houseCommonLoanInfoList'][0]['recBank'],
+			recBankBranch=self.data['houseCommonLoanInfoList'][0]['recBankBranch'],
+			)
 		
 		try:
 			# 获取合同打印专员ID
