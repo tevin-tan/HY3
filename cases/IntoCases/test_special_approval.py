@@ -109,7 +109,7 @@ class SPA(unittest.TestCase, base.Base, SET):
 					raise AssertionError('区域特批出错！')
 				else:
 					self.log.info('区域特批通过！')
-					page.driver.quit()
+					self.get_next_user(page, self.apply_code)
 		except Exception as e:
 			self.run_result = False
 			raise e

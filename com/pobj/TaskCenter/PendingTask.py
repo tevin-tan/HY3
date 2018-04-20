@@ -192,8 +192,8 @@ class PendingTask(object):
 				ActionChains(page.driver).double_click(t1).perform()
 				time.sleep(1)
 				# 特批
-				page.driver.find_element_by_xpath('//*[@id="approve_opinion_form"]/div[2]/div[5]/input').click()
-
+				# page.driver.find_element_by_xpath('//*[@id="approve_opinion_form"]/div[3]/div[5]/input').click()
+				page.driver.find_element_by_name('isNed').click()
 				# 填写批核意见
 				page.driver.find_element_by_class_name("container-fluid").click()
 				time.sleep(1)
