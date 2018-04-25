@@ -90,10 +90,10 @@ xhd:
  - test_xhd_21_funds_raise
 
 gqt:
- - test_gqt_01_base_info
- - test_gqt_02_input
- - test_gqt_03_Property_info
- - test_gqt_04_applydata
+# - test_gqt_01_base_info
+# - test_gqt_02_input
+# - test_gqt_03_Property_info
+# - test_gqt_04_applydata
 # - test_gqt_05_get_applyCode
 # - test_gqt_06_show_task
 # - test_gqt_07_process_monitor
@@ -111,7 +111,7 @@ gqt:
 # - test_gqt_19_funds_approval
 # - test_gqt_20_finace_approval_financial_accounting
 # - test_gqt_21_finace_approval_financial_manager
-# - test_gqt_22_funds_raise
+ - test_gqt_22_funds_raise
 
 IntoCase:
  - test_01_one_borrower

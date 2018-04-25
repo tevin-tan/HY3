@@ -7,8 +7,10 @@ import yaml
 
 import config
 from cases.IntoCases import test_done_task_list, test_fallback, test_into_case, test_special_approval
-from cases.baseProcess import test_entry_random_product, test_eyt_input_data, test_gqt_input_data, test_part_raise, \
+from cases.baseProcess import (
+	test_entry_random_product, test_eyt_input_data, test_gqt_input_data, test_part_raise,
 	test_suite_cwd, test_xhd_input_data
+	)
 from cases.contract_sigining import test_add_contract, test_more_person_sign
 from cases.message_authentication import test_contract_message_auth
 from cases.upload_image_data import test_upload_image_file
@@ -45,20 +47,20 @@ if __name__ == "__main__":
 	suite = unittest.TestSuite()
 
 	suite_list = [
-		# 'cwd',  # 车位贷
-		# 'eyt',  # E押通
-		# 'xhd',  # 循环贷
-		# 'gqt',  # 过桥通
-		# 'IntoCase',  # 申请录入进件场景
-		# 'fallback',  # 回退场景
-		# 'contract',  # 合同签约
-		# 'AddContract',  # 添加拆借人签约
-		# "SPA",  # 特批
-		# "PartRaise",  # 部分募资
-		# "WarrantManage",  # 权证请款
-		# "UploadImageData",  # 上传影像资料
-		# "Message",  # 电子签约短信验证
-		# "DoneList",
+		'cwd',  # 车位贷
+		'eyt',  # E押通
+		'xhd',  # 循环贷
+		'gqt',  # 过桥通
+		'IntoCase',  # 申请录入进件场景
+		'fallback',  # 回退场景
+		'contract',  # 合同签约
+		'AddContract',  # 添加拆借人签约
+		"SPA",  # 特批
+		"PartRaise",  # 部分募资
+		"WarrantManage",  # 权证请款
+		"UploadImageData",  # 上传影像资料
+		"Message",  # 电子签约短信验证
+		"DoneList",
 		"RandomProduct",  # 随机产品
 		]
 
