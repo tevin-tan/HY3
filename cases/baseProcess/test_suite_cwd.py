@@ -246,7 +246,7 @@ class CWD(unittest.TestCase, base.Base, SET):
 		# 获取审批经理ID
 		self.test_cwd_10_regional_prereview()
 		self.case_name = custom.get_current_function_name()
-		if self.next_user_id is not self.senior_manager:
+		if self.next_user_id != self.senior_manager:
 			return
 		else:
 			# 下一个处理人重新登录

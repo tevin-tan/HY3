@@ -195,7 +195,7 @@ class Base(object):
 			print("applycode:" + self.apply_code)
 		# 流程监控
 		result = self.PM.process_monitor(self.page, self.apply_code)
-		if result is not None:
+		if result != None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
 			self.page.driver.quit()
@@ -229,7 +229,7 @@ class Base(object):
 			print("apply_code:" + self.apply_code)
 		# 流程监控
 		result = self.PM.process_monitor(self.page, apply_code)
-		if result is not None:
+		if result != None:
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
 			self.page.driver.quit()

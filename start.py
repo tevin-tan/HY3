@@ -30,7 +30,7 @@ def set_reporter_path():
 
 # 执行用例
 def run_case(element, case):
-	if element is not None:
+	if element != None:
 		for i in temp[element]:
 			suite.addTest(case(i))
 

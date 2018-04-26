@@ -364,7 +364,7 @@ class PendingTask(object):
 					'//*[@id="listVue"]/div[4]/form/div[' + str(i) + ']/div/div[3]/input').click()
 
 		page.driver.switch_to.parent_frame()
-		if upload is not False:
+		if upload != False:
 			try:
 				page.driver.find_element_by_link_text("影像资料").click()
 				try:
@@ -465,11 +465,9 @@ class PendingTask(object):
 				else:
 					page.driver.switch_to.parent_frame()
 					page.driver.find_element_by_id('second_warrant_apply').click()  # submit
-					page.driver.switch_to_frame("myIframeImage1")
 					time.sleep(1)
-					messages = page.driver.find_element_by_xpath('/html/body/div[3]/div[2]/div[2]').text
-					assert messages == '第一次放款未全部放款完毕，等待放款完毕才能提交！'
-					return True
+					page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a[1]').click()
+					time.sleep(3)
 			except ec.NoSuchElementException as e:
 				raise e
 
@@ -492,7 +490,8 @@ class PendingTask(object):
 				page.driver.switch_to_frame("myIframeImage1")  # 切换iframe
 			except ec.NoSuchFrameException as e:
 				raise e
-		page.driver.find_element_by_xpath('//*[@id="checkOpinion"]/textarea').send_keys("回执提放审批")
+		import random
+		page.driver.find_element_by_xpath('//*[@id="checkOpinion"]/textarea').send_keys("回执提放审批" + str(random.random()))
 		# save
 		page.driver.switch_to.parent_frame()
 		time.sleep(1)

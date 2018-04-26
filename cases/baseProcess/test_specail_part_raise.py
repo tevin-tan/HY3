@@ -161,7 +161,7 @@ class SpecaiPartRaise(unittest.TestCase, Base, SET):
 		# 下一个处理人重新登录
 		page = Login(self.next_user_id)
 		
-		# 第二次请款金额为0,第一次请款没有发起募资，则不能发起请款操作
+		# 第二次请款金额为0
 		res = self.PT.part_warrant_apply(page, self.apply_code, 2)
 		if not res:
 			raise ValueError('第二次权证请款金额为0请款流程出错！')
