@@ -205,3 +205,7 @@ Message:
 
 DoneList:
  - test_01_query_done_list
+
+QueryProdcut:
+ - test_query_all_enable_product
+ - test_query_all_disable_product

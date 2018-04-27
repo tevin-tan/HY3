@@ -45,6 +45,7 @@ class PartRaise(unittest.TestCase, base.Base, SET):
 		self.update_product_amount(400000)
 		
 		# 1 客户信息-业务基本信息
+		
 		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
 			self.log.info("录入基本信息完成")
 		

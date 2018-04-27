@@ -260,17 +260,17 @@ class CWD(unittest.TestCase, base.Base, SET):
 				raise ValueError("can't find applycode")
 			else:
 				self.log.info("风控审批-审批经理审批结束")
-		
-		# 查看下一步处理人
-		res = self.PM.process_monitor(page, self.apply_code)
-		if not res:
-			self.run_result = False
-			self.log.error("Can't found next user!")
-		else:
-			self.next_user_id = res
-			self.log.info("下一个处理人：" + self.next_user_id)
-			# 当前用户退出系统
-			self.page.driver.quit()
+			
+			# 查看下一步处理人
+			res = self.PM.process_monitor(page, self.apply_code)
+			if not res:
+				self.run_result = False
+				self.log.error("Can't found next user!")
+			else:
+				self.next_user_id = res
+				self.log.info("下一个处理人：" + self.next_user_id)
+				# 当前用户退出系统
+				self.page.driver.quit()
 	
 	def test_cwd_12_contract_signing(self):
 		"""签约"""

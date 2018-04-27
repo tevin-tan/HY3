@@ -30,16 +30,24 @@ class Base(object):
 		:param data_file: 数据配置文件
 		"""
 		
-		# 版本信息
-		custom.print_version_info()
-		self.page = login.Login()
-		self.log = custom.mylog()
-		
 		self.using_time = None  # 执行时长
 		self.apply_code = None
 		self.next_user_id = None
-		self.data_file = data_file
-		self.env_file = env_file
+		
+		# 版本信息
+		custom.print_version_info()
+		self.log = custom.mylog()
+		
+		if env_file is not None:
+			self.env_file = env_file
+		else:
+			return
+		if data_file is not None:
+			self.data_file = data_file
+		else:
+			return
+		
+		self.page = login.Login()
 		
 		# 环境初始化,解析环境
 		self.__init_env()

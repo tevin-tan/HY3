@@ -11,6 +11,7 @@ from com.pobj.ContractSign import ContractSign as Cts
 
 
 class SpecaiPartRaise(unittest.TestCase, Base, SET):
+	"""特别的募资场景"""
 	def setUp(self):
 		self.env_file = "env.json"
 		self.data_file = "data_eyt.json"
@@ -167,4 +168,15 @@ class SpecaiPartRaise(unittest.TestCase, Base, SET):
 			raise ValueError('第二次权证请款金额为0请款流程出错！')
 		else:
 			self.log.info("第二次权证请款金额为0请款流程ok！")
+		self.next_user_id = common.get_next_user(page, self.apply_code)
+		page.driver.quit()
+		
+		# --------------------------回执审批流程---------------------
+		page = Login(self.next_user_id)
+		rec = self.PT.receipt_return(page, self.apply_code)
+		if not rec:
+			self.log.error("审批失败")
+			raise ValueError('失败')
+		else:
+			self.log.info("审批通过,放款成功")
 			page.driver.quit()

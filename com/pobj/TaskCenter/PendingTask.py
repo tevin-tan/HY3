@@ -12,11 +12,11 @@ from com.pobj.IntoCaseManage import HouseloanApplyEntry as Hae
 
 class PendingTask(object):
 	"""待处理任务"""
-
+	
 	def __init__(self):
 		self.log = custom.mylog()
 		self.HAE = Hae.HouseLoanApplyEntry()
-
+	
 	def query_task(self, page, condition):
 		"""
 			查询待处理任务
@@ -24,9 +24,9 @@ class PendingTask(object):
 		:param condition: applyCode
 		:return: True/False
 		"""
-
+		
 		self.log.info("查询查处理任务")
-
+		
 		try:
 			page.driver.switch_to_default_content()
 			# 打开任务中心
@@ -34,7 +34,7 @@ class PendingTask(object):
 			page.driver.find_element_by_id('1DBCBC52791800014989140019301189').click()
 			time.sleep(1)
 			page.driver.find_element_by_name("/house/commonIndex/todoList").click()
-
+			
 			try:
 				page.driver.switch_to_frame("bTabs_tab_house_commonIndex_todoList")
 			except ec.NoSuchFrameException as e:
@@ -58,7 +58,7 @@ class PendingTask(object):
 			raise e
 		finally:
 			page.driver.quit()
-
+	
 	def approval_to_review(self, page, condition, remark, action=0, image=False):
 		"""
 			审批审核
@@ -134,12 +134,12 @@ class PendingTask(object):
 					raise ValueError('参数有误！')
 			except ec.NoSuchElementException as e:
 				raise e
-
+			
 			# 保存
 			page.driver.find_element_by_xpath("//*[@id=\"apply_module_apply_save\"]/span/span/span[2]").click()
 			time.sleep(1)
 			page.driver.find_element_by_xpath("/html/body/div[5]/div[3]/a/span/span").click()  # 关闭弹窗
-
+			
 			# 提交
 			page.driver.find_element_by_xpath("//*[@id='apply_module_apply_submit']/span/span/span[2]").click()
 			time.sleep(1)
@@ -147,7 +147,7 @@ class PendingTask(object):
 			time.sleep(2)
 			page.driver.find_element_by_xpath("/html/body/div[5]/div[3]/a").click()
 			return True
-
+	
 	def special_approval(self, page, condition, remark):
 		"""
 		风控审批审核（特批）
@@ -168,7 +168,7 @@ class PendingTask(object):
 				page.driver.switch_to.frame("bTabs_tab_house_commonIndex_todoList")
 			except ec.NoSuchFrameException as e:
 				raise e
-
+			
 			# 打开表单
 			time.sleep(1)
 			page.driver.find_element_by_id("frmQuery").click()
@@ -199,12 +199,12 @@ class PendingTask(object):
 				time.sleep(1)
 				page.driver.find_element_by_xpath("//*[@id=\"approve_opinion_form\"]/div[5]/div[2]").click()
 				page.driver.find_element_by_xpath("//*[@id=\"remarkable\"]").send_keys(remark)
-
+				
 				# 保存
 				page.driver.find_element_by_xpath("//*[@id=\"apply_module_apply_save\"]/span/span/span[2]").click()
 				time.sleep(1)
 				page.driver.find_element_by_xpath("/html/body/div[5]/div[3]/a/span/span").click()  # 关闭弹窗
-
+				
 				# 提交
 				page.driver.find_element_by_xpath("//*[@id='apply_module_apply_submit']/span/span/span[2]").click()
 				time.sleep(2)
@@ -214,7 +214,7 @@ class PendingTask(object):
 				return True
 		except ec.NoSuchElementException as e:
 			raise e
-
+	
 	def risk_approval_fallback(self, page, condition, option, remark):
 		"""
 		风控审批回退
@@ -224,7 +224,7 @@ class PendingTask(object):
 		:param remark:  审批审核意见
 		:return:
 		"""
-
+		
 		self.log.info("开始执行风控审批回退操作")
 		try:
 			# 打开任务中心
@@ -262,18 +262,18 @@ class PendingTask(object):
 				# 双击该笔案件
 				ActionChains(page.driver).double_click(t1).perform()
 				time.sleep(1)
-
+				
 				# 回退
 				Select(page.driver.find_element_by_name("appResult")).select_by_visible_text(u"回退")
 				Select(page.driver.find_element_by_name("nextActivitiId")).select_by_visible_text(option)
 				# 填写回退意见
 				page.driver.find_element_by_id('remarkable2').send_keys(remark)
-
+				
 				# 保存
 				page.driver.find_element_by_xpath("//*[@id=\"apply_module_apply_save\"]/span/span/span[2]").click()
 				time.sleep(1)
 				page.driver.find_element_by_xpath("/html/body/div[5]/div[3]/a/span/span").click()  # 关闭弹窗
-
+				
 				# 提交
 				page.driver.find_element_by_xpath("//*[@id='apply_module_apply_submit']/span/span/span[2]").click()
 				time.sleep(2)
@@ -283,7 +283,7 @@ class PendingTask(object):
 				return True
 			except ec.NoSuchElementException as e:
 				raise e
-
+	
 	@staticmethod
 	def task_search(page, condition):
 		"""
@@ -292,7 +292,7 @@ class PendingTask(object):
 		:param condition:  applyCode
 		:return: 查询表格数据
 		"""
-
+		
 		try:
 			# 打开任务中心
 			page.driver.find_element_by_id('1DBCBC52791800014989140019301189').click()
@@ -321,7 +321,7 @@ class PendingTask(object):
 			return res
 		except ec.NoSuchElementException as e:
 			raise e
-
+	
 	def compliance_audit(self, page, condition, upload=False):
 		"""
 		合规审查
@@ -330,7 +330,7 @@ class PendingTask(object):
 		:param upload : True/False 是否上传影像
 		:return:
 		"""
-
+		
 		# 查询待处理任务
 		t1 = self.task_search(page, condition)
 		if not t1.text:
@@ -362,7 +362,7 @@ class PendingTask(object):
 				time.sleep(1)
 				page.driver.find_element_by_xpath(
 					'//*[@id="listVue"]/div[4]/form/div[' + str(i) + ']/div/div[3]/input').click()
-
+		
 		page.driver.switch_to.parent_frame()
 		if upload != False:
 			try:
@@ -388,17 +388,17 @@ class PendingTask(object):
 		time.sleep(2)
 		page.driver.quit()
 		return True
-
+	
 	@staticmethod
 	def save(page):
 		page.driver.find_element_by_xpath('//*[@id="apply_module_apply_save"]').click()
 		page.driver.find_element_by_xpath(' /html/body/div[4]/div[3]/a').click()
-
+	
 	@staticmethod
 	def submit(page):
 		page.driver.find_element_by_xpath('//*[@id="apply_module_apply_submit"]').click()
 		page.driver.find_element_by_xpath('/html/body/div[4]/div[3]/a').click()
-
+	
 	def part_warrant_apply(self, page, condition, flag=0):
 		"""
 			部分权证请款
@@ -407,7 +407,7 @@ class PendingTask(object):
 		:param flag 0/1第一、二次请款
 		:return:
 		"""
-
+		
 		# 打开任务中心
 		t1 = self.task_search(page, condition)
 		if not t1.text:
@@ -448,7 +448,7 @@ class PendingTask(object):
 					page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a[1]').click()
 					time.sleep(1)
 					page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a').click()
-
+					
 					return True
 				elif flag == 1:
 					# save
@@ -467,10 +467,11 @@ class PendingTask(object):
 					page.driver.find_element_by_id('second_warrant_apply').click()  # submit
 					time.sleep(1)
 					page.driver.find_element_by_xpath('/html/body/div[2]/div[3]/a[1]').click()
-					time.sleep(3)
+					time.sleep(2)
+					return True
 			except ec.NoSuchElementException as e:
 				raise e
-
+	
 	def receipt_return(self, page, apply_code):
 		"""
 		回执提放审批审核
@@ -478,7 +479,7 @@ class PendingTask(object):
 		:param apply_code:
 		:return:
 		"""
-
+		
 		t1 = self.task_search(page, apply_code)
 		if not t1.text:
 			return False
