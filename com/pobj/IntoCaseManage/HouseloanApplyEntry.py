@@ -64,7 +64,7 @@ class HouseLoanApplyEntry(object):
 			self._send_data(page.driver, "name", loc_cust_info['zyyjbz_name'], data["checkApprove"])  # 专员意见备注
 			if flag:
 				s2 = Select(page.driver.find_element_by_xpath('//*[@id="apply_module_channel_name_key"]'))
-				s2.select_by_index(0)
+				s2.select_by_index(1)
 		except ec.NoSuchElementException as e:
 			raise e.msg
 

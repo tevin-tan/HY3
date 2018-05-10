@@ -55,7 +55,7 @@ if __name__ == "__main__":
 		'fallback',  # 回退场景
 		'contract',  # 合同签约
 		'AddContract',  # 添加拆借人签约
-		# "SPA",  # 特批
+		"SPA",  # 特批
 		"PartRaise",  # 部分募资
 		"WarrantManage",  # 权证请款
 		"UploadImageData",  # 上传影像资料

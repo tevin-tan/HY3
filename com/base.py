@@ -30,6 +30,7 @@ class Base(object):
 		:param data_file: 数据配置文件
 		"""
 		
+		self.city = ['东莞分公司', '南通分公司', '南京分公司', '无锡分公司', '苏州分公司', '常州分公司']
 		self.using_time = None  # 执行时长
 		self.apply_code = None
 		self.next_user_id = None
@@ -175,12 +176,25 @@ class Base(object):
 	def before_application_entry(self):
 		"""进件提交"""
 		
-		# 贷款产品信息
-		custom.print_product_info(self.product_info)
-		
-		# 1 客户信息-业务基本信息
-		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
-			self.log.info("录入基本信息完成")
+		try:
+			# 打印贷款产品信息
+			custom.print_product_info(self.product_info)
+			if self.company['branchName'] not in self.city:
+				# 非渠道城市进件
+				self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
+			else:
+				# 渠道城市非新产品
+				if 'E押通-2.1' not in self.product_info['name']:
+					self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
+				else:
+					# 渠道城市新产品
+					self.HAE.input_customer_base_info(self.page, self.data['applyVo'], True)
+		except Exception as e:
+			raise e
+		#
+		# # 1 客户信息-业务基本信息
+		# if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
+		# 	self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
 		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
@@ -214,9 +228,21 @@ class Base(object):
 	def before_contract_sign(self, amount=1000000):
 		"""签约前操作"""
 		
-		# 1 客户信息-业务基本信息
-		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
-			self.log.info("录入基本信息完成")
+		try:
+			# 打印贷款产品信息
+			custom.print_product_info(self.product_info)
+			if self.company['branchName'] not in self.city:
+				# 非渠道城市进件
+				self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
+			else:
+				# 渠道城市非新产品
+				if 'E押通-2.1' not in self.product_info['name']:
+					self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
+				else:
+					# 渠道城市新产品
+					self.HAE.input_customer_base_info(self.page, self.data['applyVo'], True)
+		except Exception as e:
+			raise e
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
 		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
