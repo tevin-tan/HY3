@@ -191,10 +191,6 @@ class Base(object):
 					self.HAE.input_customer_base_info(self.page, self.data['applyVo'], True)
 		except Exception as e:
 			raise e
-		#
-		# # 1 客户信息-业务基本信息
-		# if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
-		# 	self.log.info("录入基本信息完成")
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
 		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])

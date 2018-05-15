@@ -178,7 +178,22 @@ class IntoCase(unittest.TestCase, base.Base, SET):
 			print("当前用例编号:" + self.case_name)
 
 			# 录入基本信息
-			self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
+			try:
+				# 打印贷款产品信息
+				if self.company['branchName'] not in self.city:
+					# 非渠道城市进件
+					self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
+				else:
+					# 渠道城市非新产品
+					if 'E押通-2.1' not in self.product_info['name']:
+						self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
+					else:
+						# 渠道城市新产品
+						self.HAE.input_customer_base_info(self.page, self.data['applyVo'], True)
+			except Exception as e:
+				self.run_result = False
+				raise e
+			
 			# 录入借款人/共贷人信息
 			self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])
 			self.HAE.input_more_borrower(self.page)

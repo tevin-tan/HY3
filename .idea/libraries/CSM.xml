@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="CSM">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../DB/.idea/dataSources/be00d734-3524-4c6c-8afa-1c112f3172cd/_src_/schema/CSM.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
