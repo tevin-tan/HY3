@@ -118,7 +118,7 @@ IntoCase:
  - test_03_two_borrower
  - test_gqt_04_applydata
  - test_04_random_person
- - test_random_product_05_get_applyCode
+ - test_05_entry_more_person_find_one
 
 fallback:
  - test_01_branch_director_fallback

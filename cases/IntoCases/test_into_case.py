@@ -291,7 +291,7 @@ class IntoCase(unittest.TestCase, base.Base, SET):
 			self.run_result = False
 			raise e
 	
-	def test_05_entry_more_person_find_one_in_(self):
+	def test_05_entry_more_person_find_one(self):
 		"""根据公贷人或者第二借款人在申请件查询中搜索"""
 		
 		try:
