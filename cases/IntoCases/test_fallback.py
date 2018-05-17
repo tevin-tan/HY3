@@ -965,7 +965,8 @@ class FallBack(unittest.TestCase, base.Base, SET):
 				page = Login(self.next_user_id)
 				res = self.PT.approval_to_review(page, self.apply_code, i, 0)
 				self.risk_approval_result(res, i, page, self.apply_code)
-			
+			if self.next_user_id != self.senior_manager:
+				return
 			# 下一个处理人重新登录
 			page = Login(self.next_user_id)
 			

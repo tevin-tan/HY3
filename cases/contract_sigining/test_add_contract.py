@@ -1,10 +1,12 @@
 import datetime
+import random
 import time
 import unittest
 
 from cases import SET, v_l
 from com import base, custom
 from com.pobj.ContractSign import ContractSign as Cts
+from config.product import product
 
 
 class AddContract(unittest.TestCase, base.Base, SET):
@@ -18,18 +20,25 @@ class AddContract(unittest.TestCase, base.Base, SET):
 		SET.__init__(self)
 		self.se = SET()
 		self.se.start_run()
+		
+		pd = random.choice(product)
+		print(pd)
+		self.product_info.update(dict(name=pd['name']), period=str(pd['period']))
+		# 设置产品
+		self.data['applyVo']['productName'] = pd['name']
+		self.data['applyVo']['applyPeriod'] = str(pd['period'])
 	
 	def tearDown(self):
 		self.end_time = time.clock()
 		self.case_using_time(self.begin_time, self.end_time)
 		print(self.using_time)
 		v_l.append({
-			"name": self.case_name,
+			"name":       self.case_name,
 			"apply_code": self.apply_code,
-			"result": self.run_result,
-			"u_time": self.using_time,
-			"s_time": self.s_time,
-			"e_time": str(datetime.datetime.now()).split('.')[0]
+			"result":     self.run_result,
+			"u_time":     self.using_time,
+			"s_time":     self.s_time,
+			"e_time":     str(datetime.datetime.now()).split('.')[0]
 			})
 		self.se.end_run(v_l)
 		self.page.driver.quit()
@@ -50,7 +59,7 @@ class AddContract(unittest.TestCase, base.Base, SET):
 		self.case_name = custom.get_current_function_name()
 		try:
 			self.before_contract_sign(200000)
-
+			
 			rc = Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info)
 			res = rc.execute_enter_borroers_bank_info()
 			if res:
@@ -67,7 +76,7 @@ class AddContract(unittest.TestCase, base.Base, SET):
 			self.before_contract_sign(400000)
 			self.case_name = custom.get_current_function_name()
 			
-			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 2)
+			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 2).execute_enter_borroers_bank_info()
 		except Exception as e:
 			self.run_result = False
 			raise e
@@ -81,7 +90,7 @@ class AddContract(unittest.TestCase, base.Base, SET):
 			self.before_contract_sign(600000)
 			self.case_name = custom.get_current_function_name()
 			
-			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 3)
+			rc = Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 3).execute_enter_borroers_bank_info()
 		except Exception as e:
 			self.run_result = False
 			raise e
@@ -94,7 +103,7 @@ class AddContract(unittest.TestCase, base.Base, SET):
 			self.update_product_amount(800000)
 			self.before_contract_sign(800000)
 			self.case_name = custom.get_current_function_name()
-
+			
 			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 4).execute_enter_borroers_bank_info()
 		except Exception as e:
 			self.run_result = False
@@ -108,7 +117,7 @@ class AddContract(unittest.TestCase, base.Base, SET):
 			self.update_product_amount(1000000)
 			self.before_contract_sign(1000000)
 			self.case_name = custom.get_current_function_name()
-
+			
 			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 5).execute_enter_borroers_bank_info()
 		except Exception as e:
 			self.run_result = False
@@ -122,7 +131,7 @@ class AddContract(unittest.TestCase, base.Base, SET):
 			self.update_product_amount(1200000)
 			self.before_contract_sign(1200000)
 			self.case_name = custom.get_current_function_name()
-
+			
 			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 6).execute_enter_borroers_bank_info()
 		except Exception as e:
 			self.run_result = False
@@ -137,7 +146,7 @@ class AddContract(unittest.TestCase, base.Base, SET):
 			self.update_product_amount(1400000)
 			self.before_contract_sign(1400000)
 			self.case_name = custom.get_current_function_name()
-
+			
 			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 7).execute_enter_borroers_bank_info()
 		except Exception as e:
 			self.run_result = False
