@@ -7,6 +7,7 @@ from cases import SET, v_l
 from com import common, base, custom, database
 from com.login import Login
 from com.pobj.ContractSign import ContractSign as Cts
+from config import product
 
 
 class PartRaise(unittest.TestCase, base.Base, SET):
@@ -46,8 +47,18 @@ class PartRaise(unittest.TestCase, base.Base, SET):
 		
 		# 1 客户信息-业务基本信息
 		
-		if self.HAE.input_customer_base_info(self.page, self.data['applyVo']):
-			self.log.info("录入基本信息完成")
+		try:
+			# 打印贷款产品信息
+			custom.print_product_info(self.product_info)
+			if self.company['branchName'] not in product.product_city:
+				# 非渠道城市进件
+				self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
+			else:
+				# 渠道城市新产品
+				self.HAE.input_customer_base_info(self.page, self.data['applyVo'], True)
+		except Exception as e:
+			self.run_result = False
+			raise e
 		
 		# 2 客户基本信息 - 借款人/共贷人/担保人信息
 		self.HAE.input_customer_borrow_info(self.page, self.data['custInfoVo'][0])

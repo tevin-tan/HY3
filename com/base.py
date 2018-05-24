@@ -12,6 +12,7 @@ from com.pobj.FinancialPendingTask import (
 	)
 from com.pobj.HouseRefuseList import RefuseList
 from com.pobj.IntoCaseManage import HouseloanApplyEntry as Hae
+from com.pobj.LendingConfirm import BaseDataPush
 from com.pobj.TaskCenter import (
 	ApplicationQuery as Aq,
 	PendingTask as Pt,
@@ -113,6 +114,8 @@ class Base(object):
 		self.HRL = RefuseList.HouseRefuseLIst()
 		# 已处理任务列表：
 		self.DL = ProcessedTask.ProcessedTask()
+		# 基础数据同步
+		self.BaseData = BaseDataPush.BaseDataPush()
 	
 	def __init_env(self):
 		"""环境初始化"""
@@ -231,12 +234,8 @@ class Base(object):
 				# 非渠道城市进件
 				self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
 			else:
-				# 渠道城市非新产品
-				if 'E押通-2.1' not in self.product_info['name']:
-					self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
-				else:
-					# 渠道城市新产品
-					self.HAE.input_customer_base_info(self.page, self.data['applyVo'], True)
+				# 渠道城市新产品
+				self.HAE.input_customer_base_info(self.page, self.data['applyVo'], True)
 		except Exception as e:
 			raise e
 		

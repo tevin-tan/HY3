@@ -21,7 +21,7 @@ class AddContract(unittest.TestCase, base.Base, SET):
 		self.se = SET()
 		self.se.start_run()
 		
-		pd = random.choice(product)
+		pd = random.choice(product['YES'])
 		print(pd)
 		self.product_info.update(dict(name=pd['name']), period=str(pd['period']))
 		# 设置产品

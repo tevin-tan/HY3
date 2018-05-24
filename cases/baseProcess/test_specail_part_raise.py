@@ -12,6 +12,7 @@ from com.pobj.ContractSign import ContractSign as Cts
 
 class SpecaiPartRaise(unittest.TestCase, Base, SET):
 	"""特别的募资场景"""
+	
 	def setUp(self):
 		self.env_file = "env.json"
 		self.data_file = "data_eyt.json"
@@ -178,5 +179,6 @@ class SpecaiPartRaise(unittest.TestCase, Base, SET):
 			self.log.error("审批失败")
 			raise ValueError('失败')
 		else:
+			
 			self.log.info("审批通过,放款成功")
 			page.driver.quit()

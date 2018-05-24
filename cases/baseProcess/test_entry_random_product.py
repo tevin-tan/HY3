@@ -5,10 +5,10 @@ import time
 import unittest
 
 from cases import SET, v_l
-from com import base, custom
+from com import base, custom, database
 from com.login import Login
 from com.pobj.ContractSign import ContractSign as Cts
-from config.product import product
+from config.product import product, product_city
 
 
 class EntryRandomProduct(unittest.TestCase, base.Base, SET):
@@ -23,7 +23,7 @@ class EntryRandomProduct(unittest.TestCase, base.Base, SET):
 		self.se = SET()
 		self.se.start_run()
 		
-		pd = random.choice(product)
+		pd = random.choice(product['YES'])  # 渠道产品
 		print(pd)
 		self.product_info.update(dict(name=pd['name']), period=str(pd['period']))
 		# 设置产品
@@ -51,16 +51,12 @@ class EntryRandomProduct(unittest.TestCase, base.Base, SET):
 		try:
 			# 打印贷款产品信息
 			custom.print_product_info(self.product_info)
-			if self.company['branchName'] not in self.city:
+			if self.company['branchName'] not in product_city:
 				# 非渠道城市进件
 				self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
 			else:
-				# 渠道城市非新产品
-				if 'E押通-2.1' not in self.product_info['name']:
-					self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
-				else:
-					# 渠道城市新产品
-					self.HAE.input_customer_base_info(self.page, self.data['applyVo'], True)
+				# 渠道城市新产品
+				self.HAE.input_customer_base_info(self.page, self.data['applyVo'], True)
 		except Exception as e:
 			self.run_result = False
 			raise e
@@ -301,8 +297,8 @@ class EntryRandomProduct(unittest.TestCase, base.Base, SET):
 			# 签约
 			rc = Cts.ContractSign(page, self.apply_code, rec_bank_info)
 			res = rc.execute_enter_borroers_bank_info()
-			if res:
-				rc.contract_submit()
+			# if res:
+			# 	rc.contract_submit()
 			
 			# 查看下一步处理人
 			res = self.PM.process_monitor(page, self.apply_code)
@@ -512,7 +508,42 @@ class EntryRandomProduct(unittest.TestCase, base.Base, SET):
 		else:
 			self.log.info("募资-资金主管审批完成!")
 			self.page.driver.quit()
+	
+	def test_random_product_22_base_data_push(self):
+		"""基础数据推送数据"""
+		try:
+			self.test_random_product_21_funds_raise()
+		except Exception as e:
+			self.log.error("募资错误")
+			raise e
 
+		# self.apply_code = 'DG20180524C42'
+		
+		# 修改放款
+		sql_1 = "UPDATE house_common_loan_info t SET t.pay_date=sysdate, t.status='LOAN_PASS' \
+				WHERE t.apply_id= (SELECT t.apply_id FROM house_apply_info t \
+				WHERE t.apply_code =" + "'" + self.apply_code + "'" + ")"
+		
+		sql_2 = "UPDATE house_funds_info t SET t.Funds_Status = 21  \
+				WHERE t.apply_id = (SELECT t.apply_id FROM house_apply_info t \
+				WHERE t.apply_code = " + "'" + self.apply_code + "'" + ")"
+		
+		# 修改合同签约表
+		sql_3 = "UPDATE HOUSE_CONTRACT_SIGN SET STATUS = 'PASS' " \
+		        " WHERE APPLY_ID = (SELECT t.apply_id FROM house_apply_info t \
+				WHERE t.apply_code =" + "'" + self.apply_code + "')"
+		
+		db = database.DB()
+		db.sql_execute(sql_1)
+		db.sql_execute(sql_2)
+		db.sql_execute(sql_3)
+		db.sql_commit()
+		time.sleep(3)
+		
+		# 基础数据同步
+		page = Login(self.treasurer)
+		self.BaseData.push_data_to_financial(page, self.apply_code)
+		page.driver.quit()
 
 if __name__ == '__main__':
 	unittest.main()

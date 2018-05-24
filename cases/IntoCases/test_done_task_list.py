@@ -45,12 +45,8 @@ class DoneList(unittest.TestCase, base.Base, SET):
 					# 非渠道城市进件
 					self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
 				else:
-					# 渠道城市非新产品
-					if 'E押通-2.1' not in self.product_info['name']:
-						self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
-					else:
-						# 渠道城市新产品
-						self.HAE.input_customer_base_info(self.page, self.data['applyVo'], True)
+					# 渠道城市新产品
+					self.HAE.input_customer_base_info(self.page, self.data['applyVo'], True)
 			except Exception as e:
 				self.run_result = False
 				raise e

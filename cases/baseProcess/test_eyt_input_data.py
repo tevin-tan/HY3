@@ -7,6 +7,7 @@ from cases import SET, v_l
 from com import custom, run_time, base
 from com.login import Login
 from com.pobj.ContractSign import ContractSign as Cts
+from config import product
 
 
 class EYT(unittest.TestCase, base.Base, SET):
@@ -47,8 +48,13 @@ class EYT(unittest.TestCase, base.Base, SET):
 		try:
 			# 打印贷款产品信息
 			custom.print_product_info(self.product_info)
-			self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
-		
+			# self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
+			if self.company['branchName'] not in product.product_city:
+				# 非渠道城市进件
+				self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
+			else:
+				# 渠道城市新产品
+				self.HAE.input_customer_base_info(self.page, self.data['applyVo'], True)
 		except Exception as e:
 			self.run_result = False
 			raise e
