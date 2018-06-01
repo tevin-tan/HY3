@@ -23,5 +23,15 @@
         <property name="v$session.program" value="DataGrip" />
       </driver-properties>
     </data-source>
+    <data-source source="LOCAL" name="10.20.22.42(STG)" uuid="bb69a667-8fd6-48cc-ba87-ff365a9c48b2">
+      <driver-ref>oracle</driver-ref>
+      <synchronize>true</synchronize>
+      <auto-commit>false</auto-commit>
+      <jdbc-driver>oracle.jdbc.OracleDriver</jdbc-driver>
+      <jdbc-url>jdbc:oracle:thin:@//10.20.22.42:1521/xnph</jdbc-url>
+      <driver-properties>
+        <property name="v$session.program" value="DataGrip" />
+      </driver-properties>
+    </data-source>
   </component>
 </project>

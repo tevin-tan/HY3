@@ -90,7 +90,7 @@ class AddContract(unittest.TestCase, base.Base, SET):
 			self.before_contract_sign(600000)
 			self.case_name = custom.get_current_function_name()
 			
-			rc = Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 3).execute_enter_borroers_bank_info()
+			Cts.ContractSign(self.page, self.apply_code, self.rec_bank_info, 3).execute_enter_borroers_bank_info()
 		except Exception as e:
 			self.run_result = False
 			raise e

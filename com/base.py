@@ -19,6 +19,7 @@ from com.pobj.TaskCenter import (
 	ProcessMonitor as Pm,
 	)
 from com.pobj.WarrantManage import WarrantManageList as Wm
+from config import product
 
 
 class Base(object):
@@ -230,7 +231,8 @@ class Base(object):
 		try:
 			# 打印贷款产品信息
 			custom.print_product_info(self.product_info)
-			if self.company['branchName'] not in self.city:
+			if self.company['branchName'] not in product.product_city or self.data['applyVo']['productName'] not in \
+					product.product['YES']:
 				# 非渠道城市进件
 				self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
 			else:
