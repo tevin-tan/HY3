@@ -264,6 +264,7 @@ class Base(object):
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
 			self.page.driver.quit()
+			
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
