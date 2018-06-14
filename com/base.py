@@ -32,7 +32,6 @@ class Base(object):
 		:param data_file: 数据配置文件
 		"""
 		
-		self.city = ['东莞分公司', '南通分公司', '南京分公司', '无锡分公司', '苏州分公司', '常州分公司']
 		self.using_time = None  # 执行时长
 		self.apply_code = None
 		self.next_user_id = None
@@ -183,7 +182,7 @@ class Base(object):
 		try:
 			# 打印贷款产品信息
 			custom.print_product_info(self.product_info)
-			if self.company['branchName'] not in self.city:
+			if self.company['branchName'] not in product.product['YES']:
 				# 非渠道城市进件
 				self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
 			else:
@@ -231,13 +230,14 @@ class Base(object):
 		try:
 			# 打印贷款产品信息
 			custom.print_product_info(self.product_info)
-			if self.company['branchName'] not in product.product_city or self.data['applyVo']['productName'] not in \
-					product.product['YES']:
+			if self.company['branchName'] not in product.product_city:
 				# 非渠道城市进件
 				self.HAE.input_customer_base_info(self.page, self.data['applyVo'])
 			else:
-				# 渠道城市新产品
-				self.HAE.input_customer_base_info(self.page, self.data['applyVo'], True)
+				k = [i for i in product.product['YES'] if self.data['applyVo']['productName'] in i['name']]
+				if k is not None:
+					# 渠道城市新产品
+					self.HAE.input_customer_base_info(self.page, self.data['applyVo'], True)
 		except Exception as e:
 			raise e
 		
@@ -264,7 +264,7 @@ class Base(object):
 			self.next_user_id = result
 			self.log.info("完成流程监控查询")
 			self.page.driver.quit()
-			
+		
 		else:
 			self.log.error("流程监控查询出错！")
 			raise AssertionError('流程监控查询出错！')
