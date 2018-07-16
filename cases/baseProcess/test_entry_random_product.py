@@ -511,13 +511,13 @@ class EntryRandomProduct(unittest.TestCase, base.Base, SET):
 	
 	def test_random_product_22_base_data_push(self):
 		"""基础数据推送数据"""
-		# try:
-		# 	self.test_random_product_21_funds_raise()
-		# except Exception as e:
-		# 	self.log.error("募资错误")
-		# 	raise e
+		try:
+			self.test_random_product_21_funds_raise()
+		except Exception as e:
+			self.log.error("募资错误")
+			raise e
 		
-		self.apply_code = 'NT20180529E08'
+		# self.apply_code = 'NT20180529E08'
 		
 		# 修改放款
 		sql_1 = "UPDATE house_common_loan_info t SET t.pay_date=sysdate, t.status='LOAN_PASS' \
